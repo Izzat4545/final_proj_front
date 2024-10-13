@@ -32,8 +32,10 @@ const login = async () => {
                     <input v-model="password" id="password" type="password"
                         class="w-full mt-1 p-2 border border-gray-300 rounded-md" required />
                 </div>
-                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                    Login
+                <button :disabled="authStore.loading" type="submit"
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    <div v-if="authStore.loading">Loading..</div>
+                    <div v-if="!authStore.loading">Login</div>
                 </button>
             </form>
             <p class="mt-4 text-center">
