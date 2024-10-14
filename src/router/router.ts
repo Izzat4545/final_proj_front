@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Register from "../pages/register/Register.vue";
-import Login from "../pages/login/Login.vue";
+import Register from "../pages/authentication/register/Register.vue";
+import Login from "../pages/authentication/login/Login.vue";
 import Home from "../pages/home/Home.vue";
 import { useAuthStore } from "../store/authStore";
 import Settings from "../pages/settings/Settings.vue";
 import Events from "../pages/events/Events.vue";
+import AuthCallback from "../pages/authentication/authCallback/AuthCallback.vue";
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/auth/callback",
+    name: "AuthCallback",
+    component: AuthCallback,
   },
 ];
 

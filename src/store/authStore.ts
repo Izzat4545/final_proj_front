@@ -1,19 +1,20 @@
-// src/stores/auth.ts
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { authTypes } from "../types/authTypes";
 import { userType } from "../types/userType";
-import { getUserInfo } from "../services/getUserInfo";
+import { getEnv } from "../utils/getEnv";
 
 export const useAuthStore = defineStore("auth", () => {
-  // State
-  const user = ref<userType | null>(null); // Allows null or userType
+  const user = ref<userType | null>(null);
   const token = ref<string | null>(localStorage.getItem("token") || null);
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const BASE_URL = "http://localhost:3000";
+  const BASE_URL = getEnv("VITE_BASE_URL");
 
-  // Actions
+  const setToken = (token: string) => {
+    localStorage.setItem("token", token);
+  };
+
   const login = async (email: string, password: string) => {
     loading.value = true;
     error.value = null;
@@ -33,10 +34,6 @@ export const useAuthStore = defineStore("auth", () => {
       }
       token.value = tokenResult.token;
 
-      const getUser = await getUserInfo(BASE_URL, token.value);
-      const userResult: userType = await getUser.json();
-      user.value = userResult;
-
       // Store token in localStorage
       localStorage.setItem("token", token.value ?? "");
     } catch (err) {
@@ -54,6 +51,12 @@ export const useAuthStore = defineStore("auth", () => {
   ) => {
     loading.value = true;
     error.value = null;
+
+    if (password !== repeatPassword) {
+      error.value = "Passwords do not match.";
+      loading.value = false;
+      return;
+    }
     try {
       const response = await fetch(BASE_URL + "/auth/register", {
         method: "POST",
@@ -64,7 +67,6 @@ export const useAuthStore = defineStore("auth", () => {
           ...(name ? { name } : {}),
           email,
           password,
-          repeatPassword,
         }),
       });
 
@@ -74,10 +76,6 @@ export const useAuthStore = defineStore("auth", () => {
         throw new Error(tokenResult.error);
       }
       token.value = tokenResult.token;
-
-      const getUser = await getUserInfo(BASE_URL, token.value || "");
-      const userResult: userType = await getUser.json();
-      user.value = userResult;
 
       // Store token in localStorage
       localStorage.setItem("token", token.value ?? "");
@@ -89,11 +87,9 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const logout = () => {
-    // Clear user and token
     user.value = null;
     token.value = null;
 
-    // Remove token from localStorage
     localStorage.removeItem("token");
   };
 
@@ -110,5 +106,6 @@ export const useAuthStore = defineStore("auth", () => {
     register,
     logout,
     isAuthenticated,
+    setToken,
   };
 });
