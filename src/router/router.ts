@@ -6,6 +6,7 @@ import { useAuthStore } from "../store/authStore";
 import Settings from "../pages/settings/Settings.vue";
 import Events from "../pages/events/Events.vue";
 import AuthCallback from "../pages/authentication/authCallback/AuthCallback.vue";
+import ForgotPassword from "../pages/authentication/forgotPassword/forgotPassword.vue";
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
     component: Login,
   },
   {
+    path: "/auth/reset",
+    name: "ForgotPassword",
+    component: ForgotPassword,
+  },
+  {
     path: "/auth/callback",
     name: "AuthCallback",
     component: AuthCallback,
@@ -50,7 +56,13 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = authStore.isAuthenticated();
 
   // Redirect logged-in users away from login and register routes
-  if (isAuthenticated && (to.name === "Register" || to.name === "Login")) {
+  if (
+    isAuthenticated &&
+    (to.name === "Register" ||
+      to.name === "Login" ||
+      to.name === "AuthCallback" ||
+      to.name === "ForgotPassword")
+  ) {
     next({ name: "Home" });
   }
   // Check if user is not authenticated and trying to access protected routes
