@@ -94,14 +94,17 @@ const register = async () => {
           <div v-if="!authStore.loading">Register</div>
         </button>
       </form>
-      <p class="mt-4 text-center">
+      <p class="my-4 text-center">
         Already have an account?
         <router-link to="/login" class="text-blue-500 hover:underline"
           >Login</router-link
         >
       </p>
-      <div v-if="authStore.error" class="text-red-500">
-        {{ authStore.error || "" }}
+      <div
+        v-if="authStore.error"
+        class="p-4 text-red-800 bg-red-100 rounded-lg"
+      >
+        {{ authStore.error }}
       </div>
     </div>
   </div>

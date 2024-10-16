@@ -19,7 +19,7 @@ const login = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex justify-center items-center bg-gray-100">
+  <div class="min-h-screen flex justify-center items-center">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
       <h1 class="text-2xl font-semibold mb-6 text-center">Login</h1>
       <div class="my-2">
@@ -70,13 +70,16 @@ const login = async () => {
           <div v-if="!authStore.loading">Login</div>
         </button>
       </form>
-      <p class="mt-4 text-center">
+      <p class="my-4 text-center">
         Don't have an account?
         <router-link to="/register" class="text-blue-500 hover:underline"
           >Register</router-link
         >
       </p>
-      <div v-if="authStore.error" class="text-red-500">
+      <div
+        v-if="authStore.error"
+        class="p-4 mb-4 text-red-800 bg-red-100 rounded-lg"
+      >
         {{ authStore.error }}
       </div>
     </div>
