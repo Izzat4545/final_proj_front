@@ -1,11 +1,22 @@
 <script setup lang="ts">
 import { INSTRCTIONS } from "./info/instructions";
 import { useAuthStore } from "../../store/authStore";
-import { computed } from "vue";
-import PopularGiftCarousel from "./components/carouselStuff/PopularGiftCarousel.vue";
+import { computed, onMounted } from "vue";
+import Carousel from "../../globalComponents/carouselComponent/Carousel.vue";
+import { usePublicGiftStore } from "../../store/publicGiftsStore";
+import GiftCard from "./components/GiftCard.vue";
+import { storeToRefs } from "pinia";
 
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated());
+const publicGiftStore = usePublicGiftStore();
+const { error, data, loading } = storeToRefs(publicGiftStore);
+const { GetPublicGifts } = publicGiftStore;
+
+onMounted(() => {
+  GetPublicGifts();
+})
+
 </script>
 <template>
   <!-- INSTRUCTIONS -->
@@ -28,21 +39,27 @@ const isAuthenticated = computed(() => authStore.isAuthenticated());
     </div>
     <!-- CREATE WISHLIST BTN -->
     <div class="flex justify-center mt-5">
-      <router-link
-        :to="isAuthenticated ? '/events' : '/register'"
-        class="text-gray-700 hover:text-blue-500"
-        ><button
-          class="bg-red-500 text-white p-3 scale-button rounded-md text-lg"
-        >
+      <router-link :to="isAuthenticated ? '/events' : '/register'" class="text-gray-700 hover:text-blue-500"><button
+          class="bg-red-500 text-white p-3 scale-button rounded-md text-lg">
           Create my wishlist
-        </button></router-link
-      >
+        </button></router-link>
     </div>
     <!-- POPULAR GIFTS -->
     <div class="text-center my-10 text-2xl font-bold">Most Popular Gifts</div>
-    <div class="relative">
-      <PopularGiftCarousel />
+
+    <div class="flex justify-center">
+      <span v-if="loading" class="loading loading-infinity loading-lg"></span>
+      <div class="text-red-500" v-if="error">{{ error }}</div>
     </div>
+    <Carousel v-if="!error && !loading && data && data.length > 0" :show-controls="true">
+      <div v-for="gift in data" :key="gift.id" class="embla__slide">
+        <GiftCard :gift="gift" />
+      </div>
+    </Carousel>
+    <div class="text-center" v-if="!error && !loading && data && data.length < 1">
+      No pupular gifts to show
+    </div>
+
   </div>
 </template>
 
@@ -56,9 +73,11 @@ const isAuthenticated = computed(() => authStore.isAuthenticated());
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
+
   100% {
     transform: scale(1);
   }

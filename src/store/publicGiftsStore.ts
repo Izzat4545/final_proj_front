@@ -7,7 +7,7 @@ import { globalGet } from "../utils/networkRequests";
 export const usePublicGiftStore = defineStore("publicGiftStore", () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const data = ref<PopularGifts[] | null>(null);
+  const data = ref<PopularGifts[] | []>([]);
   const BASE_URL = getEnv("VITE_BASE_URL");
 
   const GetPublicGifts = async () => {

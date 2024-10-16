@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import emblaCarouselVue from "embla-carousel-vue";
-import { storeToRefs } from "pinia";
-import { usePublicGiftStore } from "../../../../store/publicGiftsStore";
-import GiftCard from "../GiftCard.vue";
-import PrevButton from "../carouselStuff/PrevButton.vue";
-import NextButton from "../carouselStuff/NextButton.vue";
-import { onMounted } from "vue";
+import PrevButton from "./PrevButton.vue";
+import NextButton from "./NextButton.vue";
 
-const publicGiftStore = usePublicGiftStore();
-const { error, data, loading } = storeToRefs(publicGiftStore);
-const { GetPublicGifts } = publicGiftStore;
-
-onMounted(() => {
-  GetPublicGifts();
+defineProps({
+  showControls: {
+    type: Boolean,
+    default: true,
+  },
 });
-const [emblaRef, emblaApi] = emblaCarouselVue({ loop: false });
 
+const [emblaRef, emblaApi] = emblaCarouselVue();
+
+// Scroll functions for prev/next
 const scrollToPrev = () => {
   if (emblaApi.value) {
     emblaApi.value.scrollPrev();
@@ -30,20 +27,14 @@ const scrollToNext = () => {
 </script>
 
 <template>
-  <div class="flex justify-center">
-    <span v-if="loading" class="loading loading-infinity loading-lg"></span>
-    <div v-if="error">{{ error }}</div>
-  </div>
-  <div class="carousel-container" :class="loading ? 'hidden' : 'block'">
+  <div class="carousel-container">
     <div class="embla" ref="emblaRef">
       <div class="embla__container">
-        <div v-for="gift in data" :key="gift.id" class="embla__slide">
-          <GiftCard :gift="gift" />
-        </div>
+        <slot></slot>
       </div>
-      <div class="button-container">
-        <PrevButton @click="scrollToPrev">Prev</PrevButton>
-        <NextButton @click="scrollToNext">Next</NextButton>
+      <div v-if="showControls" class="button-container">
+        <PrevButton @click="scrollToPrev" />
+        <NextButton @click="scrollToNext" />
       </div>
     </div>
   </div>
