@@ -53,29 +53,6 @@ const scrollToNext = () => {
   display: flex;
 }
 
-.embla__slide {
-  flex: 0 0 30%;
-  margin: 0 10px;
-}
-
-@media (max-width: 1200px) {
-  .embla__slide {
-    flex: 0 0 45%;
-  }
-}
-
-@media (max-width: 768px) {
-  .embla__slide {
-    flex: 0 0 70%;
-  }
-}
-
-@media (max-width: 480px) {
-  .embla__slide {
-    flex: 0 0 90%;
-  }
-}
-
 .button-container {
   display: flex;
   justify-content: space-between;
