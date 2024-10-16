@@ -62,16 +62,9 @@ const handleSubmit = async () => {
       <form @submit.prevent="handleSubmit">
         <!-- Email Input -->
         <div v-if="step === 1" class="mb-4">
-          <label for="email" class="block text-sm font-medium text-gray-700"
-            >Email</label
-          >
-          <input
-            v-model="email"
-            id="email"
-            type="email"
-            class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-            required
-          />
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input v-model="email" id="email" type="email" class="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            required />
         </div>
 
         <!-- Verification Code Sent Notification -->
@@ -82,32 +75,14 @@ const handleSubmit = async () => {
         <!-- New Password Inputs -->
         <div v-if="step === 3">
           <div class="mb-4">
-            <label
-              for="newPassword"
-              class="block text-sm font-medium text-gray-700"
-              >New Password</label
-            >
-            <input
-              v-model="newPassword"
-              id="newPassword"
-              type="password"
-              class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-              required
-            />
+            <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+            <input v-model="newPassword" id="newPassword" type="password"
+              class="w-full mt-1 p-2 border border-gray-300 rounded-md" required />
           </div>
           <div class="mb-6">
-            <label
-              for="repeatPassword"
-              class="block text-sm font-medium text-gray-700"
-              >Repeat New Password</label
-            >
-            <input
-              v-model="repeatPassword"
-              id="repeatPassword"
-              type="password"
-              class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-              required
-            />
+            <label for="repeatPassword" class="block text-sm font-medium text-gray-700">Repeat New Password</label>
+            <input v-model="repeatPassword" id="repeatPassword" type="password"
+              class="w-full mt-1 p-2 border border-gray-300 rounded-md" required />
           </div>
         </div>
         <!-- Success -->
@@ -116,21 +91,16 @@ const handleSubmit = async () => {
         </div>
 
         <!-- Submit Button -->
-        <button
-          v-if="step !== 2 && step !== 4"
-          :disabled="authStore.loading"
-          type="submit"
-          class="w-full text-white py-2 px-4 rounded"
-          :class="
-            authStore.loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600'
-          "
-        >
+        <button v-if="step !== 2 && step !== 4" :disabled="authStore.loading" type="submit"
+          class="w-full text-white py-2 px-4 rounded" :class="authStore.loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600'
+            ">
           <div v-if="authStore.loading">Loading..</div>
           <div v-else>
             {{ step === 1 ? "Send Verification Code" : "Reset Password" }}
           </div>
         </button>
       </form>
+      <div class="text-red-600">{{ authStore.error }}</div>
     </div>
   </div>
 </template>
