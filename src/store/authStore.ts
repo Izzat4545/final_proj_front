@@ -2,14 +2,13 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { AuthTypes } from "../types/authTypes";
 import { UserType } from "../types/userType";
-import { getEnv } from "../utils/getEnv";
+import { globalPost } from "../utils/networkRequests";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref<UserType | null>(null);
   const token = ref<string | null>(localStorage.getItem("token") || null);
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const BASE_URL = getEnv("VITE_BASE_URL");
 
   const setToken = (token: string) => {
     localStorage.setItem("token", token);
@@ -18,23 +17,20 @@ export const useAuthStore = defineStore("auth", () => {
   const login = async (email: string, password: string) => {
     loading.value = true;
     error.value = null;
+
     try {
-      const getToken = await fetch(BASE_URL + "/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const tokenResult: AuthTypes = await globalPost("auth/login", {
+        email,
+        password,
       });
 
-      const tokenResult: AuthTypes = await getToken.json();
-      if (!getToken.ok && tokenResult.error) {
+      if (tokenResult.error) {
         error.value = tokenResult.error;
         throw new Error(tokenResult.error);
       }
+
       token.value = tokenResult.token;
 
-      // Store token in localStorage
       localStorage.setItem("token", token.value ?? "");
     } catch (err) {
       error.value = (err as Error).message || "Login failed";
@@ -57,30 +53,22 @@ export const useAuthStore = defineStore("auth", () => {
       loading.value = false;
       return;
     }
+
     try {
-      const response = await fetch(BASE_URL + "/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...(name ? { name } : {}),
-          email,
-          password,
-        }),
+      const tokenResult: AuthTypes = await globalPost("auth/register", {
+        ...(name ? { name } : {}),
+        email,
+        password,
       });
 
-      const tokenResult: AuthTypes = await response.json();
       if (tokenResult.error) {
         error.value = tokenResult.error;
         throw new Error(tokenResult.error);
       }
       token.value = tokenResult.token;
-
-      // Store token in localStorage
       localStorage.setItem("token", token.value ?? "");
     } catch (err) {
-      error.value = (err as Error).message;
+      error.value = (err as Error).message || "Registration failed";
     } finally {
       loading.value = false;
     }
@@ -100,18 +88,10 @@ export const useAuthStore = defineStore("auth", () => {
   const requestPasswordReset = async (email: string) => {
     loading.value = true;
     error.value = null;
-    console.log(error.value);
-    try {
-      const response = await fetch(BASE_URL + "/auth/sendCode", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
 
-      const result = await response.json();
-      if (!response.ok) {
+    try {
+      const result = await globalPost("auth/sendCode", { email });
+      if (result.error) {
         error.value = result.error || "Failed to send verification code";
         throw new Error(result.error);
       }
@@ -121,7 +101,6 @@ export const useAuthStore = defineStore("auth", () => {
       loading.value = false;
     }
   };
-
   const resetPassword = async (
     code: string,
     newPassword: string,
@@ -131,6 +110,7 @@ export const useAuthStore = defineStore("auth", () => {
     loading.value = true;
     error.value = null;
 
+    // Check if passwords match
     if (newPassword !== repeatPassword) {
       error.value = "Passwords do not match.";
       loading.value = false;
@@ -138,16 +118,12 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     try {
-      const response = await fetch(BASE_URL + `/auth/resetPassword`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ code, password: newPassword, email }),
+      const result = await globalPost("auth/resetPassword", {
+        code,
+        password: newPassword,
+        email,
       });
-
-      const result = await response.json();
-      if (!response.ok) {
+      if (result.error) {
         error.value = result.error || "Failed to reset password";
         throw new Error(result.error);
       }

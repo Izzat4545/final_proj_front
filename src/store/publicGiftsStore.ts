@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getEnv } from "../utils/getEnv";
 import { PopularGifts } from "../types/pupularGifts";
+import { globalGet } from "../utils/networkRequests";
 
 export const usePublicGiftStore = defineStore("publicGiftStore", () => {
   const loading = ref(false);
@@ -13,20 +14,12 @@ export const usePublicGiftStore = defineStore("publicGiftStore", () => {
     loading.value = true;
     error.value = null;
     try {
-      const response = await fetch(BASE_URL + "/gifts/public", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const getPublicGiftsResult = await globalGet("gifts/public");
 
-      const getPublicGiftsResult = await response.json();
-
-      if (!response.ok) {
+      if (getPublicGiftsResult.error) {
         error.value = getPublicGiftsResult.error;
         throw new Error(getPublicGiftsResult.error);
       }
-
       data.value = getPublicGiftsResult.map((gift: PopularGifts) => ({
         ...gift,
         image: gift.image

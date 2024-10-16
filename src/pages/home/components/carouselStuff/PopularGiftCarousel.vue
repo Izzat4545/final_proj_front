@@ -66,6 +66,7 @@ const scrollToNext = () => {
   flex: 0 0 30%;
   margin: 0 10px;
 }
+
 @media (max-width: 1200px) {
   .embla__slide {
     flex: 0 0 45%;
