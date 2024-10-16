@@ -2,6 +2,18 @@ import { getEnv } from "./getEnv";
 
 const BASE_URL = getEnv("VITE_BASE_URL");
 
+const getAuthToken = () => {
+  return localStorage.getItem("token");
+};
+
+const getHeaders = () => {
+  const token = getAuthToken();
+  return {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+};
+
 export const globalGet = async (
   endpoint: string,
   params: Record<string, any> = {}
@@ -14,6 +26,7 @@ export const globalGet = async (
 
     const response = await fetch(url.toString(), {
       method: "GET",
+      headers: getHeaders(),
     });
 
     const data = await response.json();
@@ -33,9 +46,7 @@ export const globalPost = async (endpoint: string, payload: any) => {
   try {
     const response = await fetch(`${BASE_URL}/${endpoint}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getHeaders(),
       body: JSON.stringify(payload),
     });
 
@@ -56,9 +67,7 @@ export const globalPut = async (endpoint: string, payload: any) => {
   try {
     const response = await fetch(`${BASE_URL}/${endpoint}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getHeaders(),
       body: JSON.stringify(payload),
     });
 
@@ -79,6 +88,7 @@ export const globalDelete = async (endpoint: string) => {
   try {
     const response = await fetch(`${BASE_URL}/${endpoint}`, {
       method: "DELETE",
+      headers: getHeaders(),
     });
 
     const data = await response.json();
