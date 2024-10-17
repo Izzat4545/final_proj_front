@@ -19,7 +19,7 @@ defineProps<{
       />
     </figure>
     <div class="card-body">
-      <h2 class="card-title">{{ event.title }}</h2>
+      <h2 class="card-title text-[16px]">{{ event.title }}</h2>
       <p>Event Date: {{ event.date }}</p>
       <div
         class="flex gap-2 absolute top-0 right-2 opacity-0 transition-all duration-300 group-hover:opacity-100 flex-col mt-3"

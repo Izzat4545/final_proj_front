@@ -8,9 +8,9 @@ const { error, loading, createEvents, getEvents } = useEventsStore();
 
 const title = ref("");
 const date = ref("");
-const visibility = ref(EventVisibility.PUBLIC);
+const visibility = ref(EventVisibility.PRIVATE);
 const description = ref("");
-const image = ref<File | null>(null);
+let image = ref<File | null>(null);
 
 const handleCreateEvent = async () => {
   try {
@@ -21,7 +21,13 @@ const handleCreateEvent = async () => {
       description.value,
       image.value
     );
-    if (!error) await getEvents();
+    if (!error) {
+      await getEvents();
+      (title.value = ""),
+        (date.value = ""),
+        (description.value = ""),
+        (image.value = null);
+    }
   } catch (err) {
     throw new Error((err as Error).message || "Failed to create event");
   }

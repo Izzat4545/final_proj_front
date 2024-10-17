@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { AuthTypes } from "../types/authTypes";
 import { UserType } from "../types/userType";
 import { globalPost } from "../utils/networkRequests";
 
@@ -19,7 +18,7 @@ export const useAuthStore = defineStore("auth", () => {
     error.value = null;
 
     try {
-      const tokenResult: AuthTypes = await globalPost("auth/login", {
+      const tokenResult = await globalPost("auth/login", {
         email,
         password,
       });
@@ -55,7 +54,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     try {
-      const tokenResult: AuthTypes = await globalPost("auth/register", {
+      const tokenResult = await globalPost("auth/register", {
         ...(name ? { name } : {}),
         email,
         password,

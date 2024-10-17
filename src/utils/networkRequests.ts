@@ -60,13 +60,13 @@ export const globalPost = async (
 
     const data = await response.json();
 
-    if (!response.ok && data.error) {
-      throw new Error(`Error: ${data.error}`);
-    }
+    // if (!response.ok && data.error) {
+    //   console.error("POST request error:", data.error);
+    //   throw new Error(`Error: ${data.error}`);
+    // }
 
     return data;
   } catch (error) {
-    console.error("POST request error:", error);
     throw (error as Error).message;
   }
 };

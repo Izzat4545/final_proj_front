@@ -33,11 +33,6 @@ export const useEventsStore = defineStore("events", () => {
 
       const postEvents = await globalPost("events", formData, true);
 
-      if (postEvents.error) {
-        error.value = postEvents.error;
-        throw new Error(postEvents.error);
-      }
-
       data.value = postEvents.map((event: Events) => ({
         ...event,
         image: event.image
@@ -45,12 +40,12 @@ export const useEventsStore = defineStore("events", () => {
           : `src/assets/defaultEventImage.png`,
       }));
     } catch (err) {
-      error.value = (err as Error).message || "Failed to create event";
+      error.value =
+        err instanceof Error ? err.message : "Failed to create event";
     } finally {
       loading.value = false;
     }
   };
-
   const getEvents = async () => {
     loading.value = true;
     error.value = null;
