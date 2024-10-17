@@ -6,11 +6,11 @@ const getAuthToken = () => {
   return localStorage.getItem("token");
 };
 
-const getHeaders = () => {
+const getHeaders = (isFormData?: boolean) => {
   const token = getAuthToken();
   return {
-    "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
   };
 };
 
@@ -42,12 +42,20 @@ export const globalGet = async (
   }
 };
 
-export const globalPost = async (endpoint: string, payload: any) => {
+export const globalPost = async (
+  endpoint: string,
+  payload: any,
+  isFormData = false
+) => {
   try {
+    const headers: Record<string, string> = {
+      ...getHeaders(isFormData),
+    };
+
     const response = await fetch(`${BASE_URL}/${endpoint}`, {
       method: "POST",
-      headers: getHeaders(),
-      body: JSON.stringify(payload),
+      headers,
+      body: isFormData ? payload : JSON.stringify(payload),
     });
 
     const data = await response.json();
@@ -59,7 +67,7 @@ export const globalPost = async (endpoint: string, payload: any) => {
     return data;
   } catch (error) {
     console.error("POST request error:", error);
-    throw error;
+    throw (error as Error).message;
   }
 };
 

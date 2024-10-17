@@ -11,10 +11,10 @@ const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated());
 const publicGiftStore = usePublicGiftStore();
 const { error, data, loading } = storeToRefs(publicGiftStore);
-const { GetPublicGifts } = publicGiftStore;
+const { getPublicGifts } = publicGiftStore;
 
 onMounted(() => {
-  GetPublicGifts();
+  getPublicGifts();
 });
 </script>
 <template>

@@ -13,7 +13,7 @@ const logout = () => {
 </script>
 <template>
   <header class="bg-white shadow">
-    <div class="container mx-auto flex justify-between items-center py-4">
+    <div class="container mx-auto flex justify-between mb-5 items-center py-4">
       <div class="flex items-center">
         <router-link to="/" class="flex items-center">
           <span class="text-2xl font-bold"
