@@ -9,6 +9,7 @@ import {
 } from "../utils/networkRequests";
 import { Events } from "../types/events";
 import { filterDate } from "../utils/filterDate";
+import defaultEventImage from "../assets/defaultEventImage.png";
 
 export const useEventsStore = defineStore("events", () => {
   const loading = ref(false);
@@ -63,9 +64,7 @@ export const useEventsStore = defineStore("events", () => {
 
       data.value = getEvents.reverse().map((event: Events) => ({
         ...event,
-        image: event.image
-          ? `${BASE_URL}/${event.image}`
-          : `src/assets/defaultEventImage.png`,
+        image: event.image ? `${BASE_URL}/${event.image}` : defaultEventImage,
         date: filterDate(event.date),
       }));
     } catch (err) {

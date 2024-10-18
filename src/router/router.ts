@@ -25,6 +25,11 @@ const routes = [
     component: Events,
   },
   {
+    path: "/events/:id",
+    name: "EventsById",
+    component: Events,
+  },
+  {
     path: "/register",
     name: "Register",
     component: Register,
@@ -51,7 +56,7 @@ export const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore();
   const isAuthenticated = authStore.isAuthenticated();
 
@@ -68,7 +73,7 @@ router.beforeEach((to, from, next) => {
   // Check if user is not authenticated and trying to access protected routes
   else if (
     !isAuthenticated &&
-    (to.name === "Settings" || to.name === "Events")
+    (to.name === "Settings" || to.name === "Events" || to.name === "EventsById")
   ) {
     next({ name: "Login" });
   } else {
