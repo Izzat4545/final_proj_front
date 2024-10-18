@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Events } from "../../../types/events";
 import { useEventsStore } from "../../../store/eventsStore";
+import ShareEvent from "./ShareEvent.vue";
 
 const props = defineProps<{
   event: Events;
@@ -18,7 +19,7 @@ const handleDelete = async () => {
 
 <template>
   <div
-    class="card cursor-pointer card-compact bg-base-100 group border mb-3 shadow-md p-3"
+    class="card cursor-pointer card-compact bg-base-100 border mb-3 shadow-md p-3"
   >
     <figure>
       <img
@@ -32,7 +33,7 @@ const handleDelete = async () => {
       <h2 class="card-title text-[16px]">{{ event.title }}</h2>
       <p>Event Date: {{ event.date }}</p>
       <div
-        class="flex gap-2 absolute top-0 right-2 opacity-0 transition-all duration-300 group-hover:opacity-100 flex-col mt-3"
+        class="flex gap-2 absolute top-0 right-2 transition-all flex-col mt-3"
       >
         <label
           :for="event.id"
@@ -47,6 +48,8 @@ const handleDelete = async () => {
         >
           <img src="../../../assets/delete.svg" alt="Delete" />
         </button>
+        <!-- share -->
+        <ShareEvent :event="event" />
       </div>
     </div>
   </div>
