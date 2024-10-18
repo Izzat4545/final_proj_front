@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import EventCard from "./components/EventCard.vue";
 import Carousel from "../../globalComponents/carouselComponent/Carousel.vue";
-import AddEventModal from "./components/AddEventModal.vue";
+import EventModal from "./components/EventModal.vue";
 import { useEventsStore } from "../../store/eventsStore";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 
 const eventStore = useEventsStore();
 
-const { error, data, loading } = storeToRefs(eventStore);
+const { getError, data, loading } = storeToRefs(eventStore);
 
 onMounted(async () => {
   await eventStore.getEvents();
@@ -29,17 +29,17 @@ onMounted(async () => {
     <!-- Events -->
     <div class="flex justify-center">
       <span v-if="loading" class="loading loading-infinity loading-lg"></span>
-      <div class="text-red-500" v-if="error">{{ error }}</div>
+      <div class="text-red-500" v-if="getError">{{ getError }}</div>
     </div>
     <Carousel
-      v-if="!loading && data.length > 0 && !error"
+      v-if="!loading && data.length > 0 && !getError"
       :show-controls="false"
     >
       <div v-for="event in data" class="embla__slide">
         <EventCard :event="event" />
       </div>
     </Carousel>
-    <AddEventModal />
+    <EventModal />
   </div>
 </template>
 

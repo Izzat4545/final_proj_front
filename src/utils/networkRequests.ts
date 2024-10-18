@@ -6,7 +6,7 @@ const getAuthToken = () => {
   return localStorage.getItem("token");
 };
 
-const getHeaders = (isFormData?: boolean) => {
+const getHeaders = (isFormData = false) => {
   const token = getAuthToken();
   return {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -57,14 +57,7 @@ export const globalPost = async (
       headers,
       body: isFormData ? payload : JSON.stringify(payload),
     });
-
     const data = await response.json();
-
-    // if (!response.ok && data.error) {
-    //   console.error("POST request error:", data.error);
-    //   throw new Error(`Error: ${data.error}`);
-    // }
-
     return data;
   } catch (error) {
     throw (error as Error).message;

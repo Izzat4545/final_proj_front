@@ -3,8 +3,13 @@ import { ref } from "vue";
 import Modal from "../../../globalComponents/Modal.vue";
 import { useEventsStore } from "../../../store/eventsStore";
 import { EventVisibility } from "../../../enums/EventVisibility";
+import { storeToRefs } from "pinia";
 
-const { error, loading, createEvents, getEvents } = useEventsStore();
+const eventStore = useEventsStore();
+
+const { postError, loading } = storeToRefs(eventStore);
+
+const { createEvents } = useEventsStore();
 
 const title = ref("");
 const date = ref("");
@@ -21,13 +26,6 @@ const handleCreateEvent = async () => {
       description.value,
       image.value
     );
-    if (!error) {
-      await getEvents();
-      (title.value = ""),
-        (date.value = ""),
-        (description.value = ""),
-        (image.value = null);
-    }
   } catch (err) {
     throw new Error((err as Error).message || "Failed to create event");
   }
@@ -125,7 +123,9 @@ const handleCreateEvent = async () => {
         </button>
       </form>
       <!-- Error Message -->
-      <div v-if="error" class="text-red-600 mb-4">{{ error }}</div>
+      <div v-if="postError" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
+        {{ postError }}
+      </div>
     </div>
   </Modal>
 </template>

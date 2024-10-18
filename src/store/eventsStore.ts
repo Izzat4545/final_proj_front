@@ -1,13 +1,15 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getEnv } from "../utils/getEnv";
-import { globalGet, globalPost } from "../utils/networkRequests";
+import { globalDelete, globalGet, globalPost } from "../utils/networkRequests";
 import { Events } from "../types/events";
 import { filterDate } from "../utils/filterDate";
 
 export const useEventsStore = defineStore("events", () => {
   const loading = ref(false);
-  const error = ref<string | null>(null);
+  const getError = ref<string | null>(null);
+  const postError = ref<string | null>(null);
+  const deleteError = ref<string | null>(null);
   const data = ref<Events[] | []>([]);
   const BASE_URL = getEnv("VITE_BASE_URL");
 
@@ -19,44 +21,42 @@ export const useEventsStore = defineStore("events", () => {
     image?: File | null
   ) => {
     loading.value = true;
-    error.value = null;
+    postError.value = null;
 
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("date", date);
       formData.append("visibility", visibility);
-
       if (description) formData.append("description", description);
-
       if (image) formData.append("image", image);
 
       const postEvents = await globalPost("events", formData, true);
 
-      data.value = postEvents.map((event: Events) => ({
-        ...event,
-        image: event.image
-          ? `${BASE_URL}/${event.image}`
-          : `src/assets/defaultEventImage.png`,
-      }));
+      if (!postEvents || postEvents.error) {
+        throw new Error(postEvents.error || "Unknown error occurred");
+      }
+      await getEvents();
     } catch (err) {
-      error.value =
+      postError.value =
         err instanceof Error ? err.message : "Failed to create event";
+      throw err;
     } finally {
       loading.value = false;
     }
   };
+
   const getEvents = async () => {
     loading.value = true;
-    error.value = null;
+    getError.value = null;
     try {
       const getEvents = await globalGet("events");
 
-      if (getEvents.error) {
-        error.value = getEvents.error;
-        throw new Error(getEvents.error);
+      if (!getEvents || getEvents.error) {
+        throw new Error(getEvents.error || "Failed to fetch events");
       }
-      data.value = getEvents.map((event: Events) => ({
+
+      data.value = getEvents.reverse().map((event: Events) => ({
         ...event,
         image: event.image
           ? `${BASE_URL}/${event.image}`
@@ -64,7 +64,29 @@ export const useEventsStore = defineStore("events", () => {
         date: filterDate(event.date),
       }));
     } catch (err) {
-      error.value = (err as Error).message || "Fetch failed";
+      getError.value = err instanceof Error ? err.message : "Fetch failed";
+      console.error("Fetch Events Error:", err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const deleteEventById = async (id: string) => {
+    loading.value = true;
+    deleteError.value = null;
+    try {
+      const deleteEvents = await globalDelete("events/" + id);
+
+      if (!deleteEvents || deleteEvents.error) {
+        throw new Error(deleteEvents.error || "Failed to delete events");
+      }
+
+      data.value = data.value.filter((event: Events) => event.id !== id);
+    } catch (err) {
+      deleteError.value = err instanceof Error ? err.message : "Fetch failed";
+      console.error("Fetch Events Error:", err);
+      throw err;
     } finally {
       loading.value = false;
     }
@@ -73,7 +95,9 @@ export const useEventsStore = defineStore("events", () => {
   return {
     data,
     loading,
-    error,
+    getError,
+    postError,
+    deleteEventById,
     getEvents,
     createEvents,
   };

@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import { Events } from "../../../types/events";
+import { useEventsStore } from "../../../store/eventsStore";
 
-defineProps<{
+const props = defineProps<{
   event: Events;
 }>();
+
+const eventsStore = useEventsStore();
+
+const handleDelete = async () => {
+  try {
+    await eventsStore.deleteEventById(props.event.id);
+  } catch (error) {
+    throw (error as Error).message;
+  }
+};
 </script>
 
 <template>
@@ -28,7 +39,10 @@ defineProps<{
           <img src="../../../assets/edit.svg" alt="Edit" />
         </button>
 
-        <button class="btn rounded-full btn-ghost btn-circle btn-sm">
+        <button
+          @click="handleDelete"
+          class="btn rounded-full btn-ghost btn-circle btn-sm"
+        >
           <img src="../../../assets/delete.svg" alt="Delete" />
         </button>
       </div>
