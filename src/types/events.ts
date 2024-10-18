@@ -5,7 +5,7 @@ export interface Events {
   id: string;
   title: string;
   date: string;
-  description: null;
+  description: string;
   image: string;
   visibility: EventVisibility;
   userId: string;

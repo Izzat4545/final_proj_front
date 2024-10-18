@@ -10,7 +10,7 @@ export const usePublicGiftStore = defineStore("publicGiftStore", () => {
   const data = ref<PopularGifts[] | []>([]);
   const BASE_URL = getEnv("VITE_BASE_URL");
 
-  const GetPublicGifts = async () => {
+  const getPublicGifts = async () => {
     loading.value = true;
     error.value = null;
     try {
@@ -37,6 +37,6 @@ export const usePublicGiftStore = defineStore("publicGiftStore", () => {
     data,
     loading,
     error,
-    GetPublicGifts,
+    getPublicGifts,
   };
 });

@@ -9,7 +9,7 @@ export const useSettings = defineStore("settings", () => {
   const data = ref<UserType | undefined>();
   const updateResult = ref<{ message: string } | undefined>();
 
-  const UpdateSettings = async (
+  const updateSettings = async (
     oldPassword?: string,
     newPassword?: string,
     newEmail?: string,
@@ -46,7 +46,7 @@ export const useSettings = defineStore("settings", () => {
     }
   };
 
-  const GetUserSettings = async () => {
+  const getUserSettings = async () => {
     loading.value = true;
     error.value = null;
     try {
@@ -69,7 +69,7 @@ export const useSettings = defineStore("settings", () => {
     updateResult,
     loading,
     error,
-    UpdateSettings,
-    GetUserSettings,
+    updateSettings,
+    getUserSettings,
   };
 });

@@ -16,7 +16,7 @@ const currency = ref<Currencies | undefined>();
 
 const handleUpdate = async () => {
   try {
-    await settingsStore.UpdateSettings(
+    await settingsStore.updateSettings(
       oldPassword.value,
       newPassword.value,
       newEmail.value,
@@ -30,7 +30,7 @@ const handleUpdate = async () => {
 
 onMounted(async () => {
   try {
-    await settingsStore.GetUserSettings();
+    await settingsStore.getUserSettings();
     if (data.value) {
       newEmail.value = data.value.email || "";
       newName.value = data.value.name || "";

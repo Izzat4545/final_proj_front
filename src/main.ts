@@ -6,4 +6,10 @@ import { router } from "./router/router";
 
 const pinia = createPinia();
 
-createApp(App).use(router).use(pinia).mount("#app");
+const app = createApp(App);
+app.use(router);
+app.use(pinia);
+app.mount("#app");
+app.config.errorHandler = (err, vm, info) => {
+  console.error("Global error handler:", err, info);
+};
