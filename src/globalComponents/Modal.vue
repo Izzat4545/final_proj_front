@@ -1,6 +1,8 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+defineProps<{ name: string }>();
+</script>
 <template>
-  <dialog id="globalModal" class="modal">
+  <!-- <dialog :id="name" class="modal">
     <div class="modal-box">
       <div class="modal-action">
         <form method="dialog">
@@ -13,5 +15,19 @@
       </div>
       <slot></slot>
     </div>
-  </dialog>
+  </dialog> -->
+
+  <input type="checkbox" :id="name" class="modal-toggle" />
+  <div class="modal" role="dialog">
+    <div class="modal-box">
+      <slot></slot>
+      <div class="modal-action">
+        <label
+          class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          :for="name"
+          >✕</label
+        >
+      </div>
+    </div>
+  </div>
 </template>

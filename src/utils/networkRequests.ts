@@ -64,12 +64,16 @@ export const globalPost = async (
   }
 };
 
-export const globalPut = async (endpoint: string, payload: any) => {
+export const globalPut = async (
+  endpoint: string,
+  payload: any,
+  isFormData = false
+) => {
   try {
     const response = await fetch(`${BASE_URL}/${endpoint}`, {
       method: "PUT",
-      headers: getHeaders(),
-      body: JSON.stringify(payload),
+      headers: getHeaders(isFormData),
+      body: isFormData ? payload : JSON.stringify(payload),
     });
 
     const data = await response.json();

@@ -1,7 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getEnv } from "../utils/getEnv";
-import { globalDelete, globalGet, globalPost } from "../utils/networkRequests";
+import {
+  globalDelete,
+  globalGet,
+  globalPost,
+  globalPut,
+} from "../utils/networkRequests";
 import { Events } from "../types/events";
 import { filterDate } from "../utils/filterDate";
 
@@ -72,6 +77,40 @@ export const useEventsStore = defineStore("events", () => {
     }
   };
 
+  const updateEventById = async (
+    id: string,
+    title: string,
+    date: string,
+    visibility: string,
+    description?: string,
+    image?: File | null
+  ) => {
+    loading.value = true;
+    postError.value = null;
+
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("date", date);
+      formData.append("visibility", visibility);
+      if (description) formData.append("description", description);
+      if (image) formData.append("image", image);
+
+      const postEvents = await globalPut("events/" + id, formData, true);
+
+      if (!postEvents || postEvents.error) {
+        throw new Error(postEvents.error || "Unknown error occurred");
+      }
+      await getEvents();
+    } catch (err) {
+      postError.value =
+        err instanceof Error ? err.message : "Failed to create event";
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const deleteEventById = async (id: string) => {
     loading.value = true;
     deleteError.value = null;
@@ -98,6 +137,7 @@ export const useEventsStore = defineStore("events", () => {
     getError,
     postError,
     deleteEventById,
+    updateEventById,
     getEvents,
     createEvents,
   };
