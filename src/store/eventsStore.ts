@@ -102,6 +102,7 @@ export const useEventsStore = defineStore("events", () => {
         throw new Error(postEvents.error || "Unknown error occurred");
       }
       await getEvents();
+      console.log("nice");
     } catch (err) {
       postError.value =
         err instanceof Error ? err.message : "Failed to create event";

@@ -40,6 +40,8 @@ const handleEvent = async () => {
         description.value,
         image.value
       );
+      // resettings the form
+      (title.value = ""), (date.value = ""), (description.value = "");
     }
   } catch (err) {
     throw new Error((err as Error).message || "Failed to create event");
