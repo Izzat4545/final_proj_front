@@ -1,4 +1,4 @@
-import { Events } from "vue";
+import { Events } from "./events";
 
 export type PopularGifts = {
   id: string;

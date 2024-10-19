@@ -19,7 +19,7 @@ export const useEventsStore = defineStore("events", () => {
   const data = ref<Events[] | []>([]);
   const BASE_URL = getEnv("VITE_BASE_URL");
 
-  const createEvents = async (
+  const createEvent = async (
     title: string,
     date: string,
     visibility: string,
@@ -37,10 +37,10 @@ export const useEventsStore = defineStore("events", () => {
       if (description) formData.append("description", description);
       if (image) formData.append("image", image);
 
-      const postEvents = await globalPost("events", formData, true);
+      const postEvent = await globalPost("events", formData, true);
 
-      if (!postEvents || postEvents.error) {
-        throw new Error(postEvents.error || "Unknown error occurred");
+      if (!postEvent || postEvent.error) {
+        throw new Error(postEvent.error || "Unknown error occurred");
       }
       await getEvents();
     } catch (err) {
@@ -138,6 +138,6 @@ export const useEventsStore = defineStore("events", () => {
     deleteEventById,
     updateEventById,
     getEvents,
-    createEvents,
+    createEvents: createEvent,
   };
 });

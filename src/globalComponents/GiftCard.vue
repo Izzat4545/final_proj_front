@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import GiftModal from '../pages/gifts/components/GiftModal.vue';
 import { useGiftsStore } from '../store/giftsStore';
 import { Gifts } from '../types/gifts';
 import { formatNumbers } from '../utils/formatNumbers';
@@ -19,8 +18,9 @@ const handleDelete = async (giftId: string, eventId: string,) => {
                 class="w-full h-48 object-cover rounded-lg mb-4" />
             <h3 class="text-lg font-semibold mb-2">{{ gift.name }}</h3>
             <!-- Reserve btn if it is public -->
-            <label v-if="isPublic" :for="gift.id" class="btn btn-success rounded w-full text-white btn-sm">
-                Reserve
+            <label v-if="isPublic" :for="gift.id" :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
+                class="btn rounded w-full text-white btn-sm">
+                {{ gift.reservedEmail ? 'reserved' : 'reserve' }}
             </label>
             <p class="text-gray-600 text-sm mb-2">{{ gift.description }}</p>
             <a :href="gift.link" target="_blank"

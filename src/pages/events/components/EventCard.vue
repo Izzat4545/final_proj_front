@@ -24,12 +24,20 @@ const handleDelete = async () => {
 };
 
 const getGiftByParams = async () => {
-  await router.push(`/events/${props.event.id}`)
-  await useGiftsStore().getGifsByEventId(route.params.id.toString())
+  try {
+    await router.push(`/events/${props.event.id}`)
+    if (route.params.id) {
+      await useGiftsStore().getGifsByEventId(route.params.id.toString())
+    }
+  } catch (error) {
+    throw (error as Error)
+  }
 }
 
 onMounted(async () => {
-  await getGiftByParams()
+  if (route.params.id) {
+    await useGiftsStore().getGifsByEventId(route.params.id.toString())
+  }
 })
 </script>
 

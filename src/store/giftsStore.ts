@@ -10,6 +10,8 @@ import {
 } from "../utils/networkRequests";
 import { PopularGifts } from "../types/pupularGifts";
 import defaultGift from "../assets/defaultGift.jpeg";
+import defaultEventImage from "../assets/defaultEventImage.png";
+import { filterDate } from "../utils/filterDate";
 
 export const useGiftsStore = defineStore("gifts", () => {
   const loading = ref(false);
@@ -76,6 +78,13 @@ export const useGiftsStore = defineStore("gifts", () => {
         gifts: getGifts.gifts.map((gift: PopularGifts) => ({
           ...gift,
           image: gift.image ? `${BASE_URL}/${gift.image}` : defaultGift,
+          event: {
+            ...gift.event,
+            image: gift.event.image
+              ? `${BASE_URL}/${gift.image}`
+              : defaultEventImage,
+            date: filterDate(gift.event.date),
+          },
         })),
       };
     } catch (err) {
@@ -135,7 +144,31 @@ export const useGiftsStore = defineStore("gifts", () => {
       await getGifsByEventId(eventId);
     } catch (err) {
       deleteError.value = err instanceof Error ? err.message : "Fetch failed";
-      console.error("Fetch Events Error:", err);
+      console.error("Delete Gift Error:", err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const reserveGiftByEmail = async (
+    email: string,
+    giftId: string,
+    eventId: string
+  ) => {
+    loading.value = true;
+    postError.value = null;
+    try {
+      const reserveGift = await globalPut("gifts/reservation/" + giftId, {
+        email,
+      });
+      if (!reserveGift || reserveGift.error) {
+        throw new Error(reserveGift.error || "Failed to update gift");
+      }
+      await getGifsByEventId(eventId);
+    } catch (err) {
+      postError.value = err instanceof Error ? err.message : "Fetch failed";
+      console.error("Update Gift Error:", err);
       throw err;
     } finally {
       loading.value = false;
@@ -151,5 +184,6 @@ export const useGiftsStore = defineStore("gifts", () => {
     createGift,
     getGifsByEventId,
     updateGiftById,
+    reserveGiftByEmail,
   };
 });

@@ -7,6 +7,7 @@ import Settings from "../pages/settings/Settings.vue";
 import Events from "../pages/events/Events.vue";
 import AuthCallback from "../pages/authentication/authCallback/AuthCallback.vue";
 import ForgotPassword from "../pages/authentication/forgotPassword/forgotPassword.vue";
+import Gifts from "../pages/gifts/Gifts.vue";
 
 const routes = [
   {
@@ -28,6 +29,11 @@ const routes = [
     path: "/events/:id",
     name: "EventsById",
     component: Events,
+  },
+  {
+    path: "/gifts/:eventId",
+    name: "GiftsByEventId",
+    component: Gifts,
   },
   {
     path: "/register",
