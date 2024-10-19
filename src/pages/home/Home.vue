@@ -38,15 +38,10 @@ onMounted(() => {
     </div>
     <!-- CREATE WISHLIST BTN -->
     <div class="flex justify-center mt-5">
-      <router-link
-        :to="isAuthenticated ? '/events' : '/register'"
-        class="text-gray-700 hover:text-blue-500"
-        ><button
-          class="bg-red-500 text-white p-3 scale-button rounded-md text-lg"
-        >
+      <router-link :to="isAuthenticated ? '/events' : '/register'" class="text-gray-700 hover:text-blue-500"><button
+          class="bg-red-500 text-white p-3 scale-button rounded-md text-lg">
           Create my wishlist
-        </button></router-link
-      >
+        </button></router-link>
     </div>
     <!-- POPULAR GIFTS -->
     <div class="text-center my-10 text-2xl font-bold">Most Popular Gifts</div>
@@ -55,18 +50,12 @@ onMounted(() => {
       <span v-if="loading" class="loading loading-infinity loading-lg"></span>
       <div class="text-red-500" v-if="error">{{ error }}</div>
     </div>
-    <Carousel
-      v-if="!error && !loading && data && data.length > 0"
-      :show-controls="true"
-    >
+    <Carousel v-if="!error && !loading && data && data.length > 0" :show-controls="true">
       <div v-for="gift in data" :key="gift.id" class="embla__slide">
         <GiftCard :gift="gift" />
       </div>
     </Carousel>
-    <div
-      class="text-center"
-      v-if="!error && !loading && data && data.length < 1"
-    >
+    <div class="text-center" v-if="!error && !loading && data && data.length < 1">
       No pupular gifts to show
     </div>
   </div>
@@ -79,26 +68,8 @@ onMounted(() => {
 }
 
 .embla__slide {
-  flex: 0 0 20%;
+  flex: 0 0 300px;
   margin: 0 10px;
-}
-
-@media (max-width: 1200px) {
-  .embla__slide {
-    flex: 0 0 45%;
-  }
-}
-
-@media (max-width: 768px) {
-  .embla__slide {
-    flex: 0 0 70%;
-  }
-}
-
-@media (max-width: 480px) {
-  .embla__slide {
-    flex: 0 0 90%;
-  }
 }
 
 @keyframes scaleAnimation {
