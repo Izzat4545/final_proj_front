@@ -4,23 +4,31 @@ import Carousel from "../../globalComponents/carouselComponent/Carousel.vue";
 import EventModal from "./components/EventModal.vue";
 import { useEventsStore } from "../../store/eventsStore";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useGiftsStore } from "../../store/giftsStore";
 import GiftCard from "../../globalComponents/GiftCard.vue";
 import GiftModal from "../gifts/components/GiftModal.vue";
+import GiftList from "../../globalComponents/GiftList.vue";
 
 
 const eventStore = useEventsStore();
 const giftsStore = useGiftsStore()
 const route = useRoute()
-
+const isList = ref<boolean>(false)
 const { data: giftData, getError: giftGetError, loading: giftLoading } = storeToRefs(giftsStore)
 const { getError, data, loading } = storeToRefs(eventStore);
 
 onMounted(async () => {
   await eventStore.getEvents();
 });
+
+const handleSelectChange = (event: Event) => {
+  const selectedValue = (event.target as HTMLSelectElement).value;
+  // Update `isList` based on the selected value
+  isList.value = selectedValue === 'Show as: list';
+};
+
 
 </script>
 <template>
@@ -49,8 +57,15 @@ onMounted(async () => {
     <div>
       <div class="flex justify-between items-center">
         <div class="text-2xl my-3 font-bold">Gifts</div>
-        <label for="createGiftModal" :class="route.params.id ? 'btn-success' : 'btn-disabled'"
-          class="text-md btn btn-md btn-success mb-3 text-white">Add Gift</label>
+        <div class="flex items-center gap-2">
+          <select @change="handleSelectChange" :class="route.params.id ? 'select-bordered' : 'select-disabled'"
+            class="select select-md w-full max-w-xs">
+            <option>Show as: list</option>
+            <option selected>Show as: cart</option>
+          </select>
+          <label for="createGiftModal" :class="route.params.id ? 'btn-success' : 'btn-disabled'"
+            class="text-md btn btn-md btn-success text-white">Add Gift</label>
+        </div>
       </div>
       <div class="flex justify-center">
         <span v-if="giftLoading" class="loading loading-infinity loading-lg"></span>
@@ -65,7 +80,8 @@ onMounted(async () => {
           event</div>
       </div>
       <div v-if="!giftGetError && !giftLoading && giftData.gifts.length > 0">
-        <GiftCard :is-list="false" :gifts="giftData" :is-public="false" />
+        <GiftCard v-if="!isList" :gifts="giftData" :is-public="false" />
+        <GiftList v-if="isList" :gifts="giftData" :is-public="false" />
       </div>
     </div>
     <!-- update modal -->
