@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { getEnv } from "../utils/getEnv";
 import { PopularGifts } from "../types/pupularGifts";
 import { globalGet } from "../utils/networkRequests";
+import defaultGift from "../assets/defaultGift.jpeg";
 
 export const usePublicGiftStore = defineStore("publicGiftStore", () => {
   const loading = ref(false);
@@ -22,9 +23,7 @@ export const usePublicGiftStore = defineStore("publicGiftStore", () => {
       }
       data.value = getPublicGiftsResult.map((gift: PopularGifts) => ({
         ...gift,
-        image: gift.image
-          ? `${BASE_URL}/${gift.image}`
-          : `src/assets/defaultGift.jpeg`,
+        image: gift.image ? `${BASE_URL}/${gift.image}` : defaultGift,
       }));
     } catch (err) {
       error.value = (err as Error).message || "Fetch failed";
