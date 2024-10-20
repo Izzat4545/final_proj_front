@@ -14,7 +14,9 @@ const { data, getError, loading } = storeToRefs(giftStore)
 const route = useRoute()
 
 onMounted(async () => {
-    await getGifsByEventId(route.params.eventId.toString())
+    if (route.params.eventId) {
+        await getGifsByEventId(route.params.eventId.toString())
+    }
 })
 </script>
 <template>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "../../../store/authStore";
 
 const authStore = useAuthStore();
 const router = useRouter();
+const route = useRoute()
 
 const email = ref(localStorage.getItem("email") || "");
 const newPassword = ref("");
@@ -12,8 +13,7 @@ const repeatPassword = ref("");
 const step = ref(1);
 
 onMounted(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get("code");
+  const code = route.query.code;
 
   if (code) {
     step.value = 3;

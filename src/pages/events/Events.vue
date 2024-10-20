@@ -57,7 +57,7 @@ onMounted(async () => {
         <div v-if="giftGetError" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
           {{ giftGetError }}
         </div>
-        <div v-if="!route.params.id" class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg">
+        <div v-if="!route.params.id && !giftGetError" class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg">
           Select event
         </div>
         <div class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg"

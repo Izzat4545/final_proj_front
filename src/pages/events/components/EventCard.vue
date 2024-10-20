@@ -5,6 +5,7 @@ import ShareEvent from "./ShareEvent.vue";
 import { useRouter, useRoute } from "vue-router";
 import { useGiftsStore } from "../../../store/giftsStore";
 import { onMounted } from "vue";
+import { shortenText } from "../../../utils/textShortener";
 
 
 const props = defineProps<{
@@ -13,6 +14,8 @@ const props = defineProps<{
 const router = useRouter();
 const eventsStore = useEventsStore();
 const route = useRoute()
+
+
 const handleDelete = async () => {
   try {
     await eventsStore.deleteEventById(props.event.id);
@@ -36,9 +39,15 @@ const getGiftByParams = async () => {
 
 onMounted(async () => {
   if (route.params.id) {
-    await useGiftsStore().getGifsByEventId(route.params.id.toString())
+    const eventExists = eventsStore.data.some(event => event.id.toString() === route.params.id?.toString());
+
+    if (eventExists) {
+      await useGiftsStore().getGifsByEventId(route.params.id.toString());
+    } else {
+      await router.push("/events");
+    }
   }
-})
+});
 </script>
 
 <template>
@@ -48,7 +57,7 @@ onMounted(async () => {
       <img crossorigin="anonymous" class="h-[130px] object-cover" :src="event.image" alt="Event Image" />
     </figure>
     <div class="card-body">
-      <h2 class="card-title text-[16px]">{{ event.title }}</h2>
+      <h2 class="card-title text-[16px]">{{ shortenText(event.title, 15) }}</h2>
       <p>Event Date: {{ event.date }}</p>
       <div @click.stop class="flex gap-2 absolute top-0 right-2 transition-all flex-col mt-3">
         <label :for="event.id" class="btn rounded-full btn-ghost btn-circle btn-sm">

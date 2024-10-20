@@ -120,7 +120,8 @@ export const useEventsStore = defineStore("events", () => {
         throw new Error(deleteEvents.error || "Failed to delete events");
       }
 
-      data.value = data.value.filter((event: Events) => event.id !== id);
+      // data.value = data.value.filter((event: Events) => event.id !== id);
+      await getEvents();
     } catch (err) {
       deleteError.value = err instanceof Error ? err.message : "Fetch failed";
       console.error("Fetch Events Error:", err);
