@@ -22,7 +22,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd final_proj_front
-            git pull origin Giftsa
+            git pull
             pm2 stop all
             npm install
             npm run build
