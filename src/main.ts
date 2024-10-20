@@ -10,6 +10,6 @@ const app = createApp(App);
 app.use(router);
 app.use(pinia);
 app.mount("#app");
-app.config.errorHandler = (err, vm, info) => {
+app.config.errorHandler = (err, _vm, info) => {
   console.error("Global error handler:", err, info);
 };
