@@ -21,11 +21,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd coordinateApp
-            git pull origin backend
-
-            docker compose down
-
-            docker image rm coordinateapp-app
-
-            docker compose up -d
+            cd final_proj_front
+            git pull origin Giftsa
+            pm2 stop all
+            npm install
+            pm2 start all
