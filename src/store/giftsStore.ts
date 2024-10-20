@@ -137,9 +137,9 @@ export const useGiftsStore = defineStore("gifts", () => {
     loading.value = true;
     deleteError.value = null;
     try {
-      const deleteEvents = await globalDelete("gifts/" + giftId);
-      if (!deleteEvents || deleteEvents.error) {
-        throw new Error(deleteEvents.error || "Failed to delete events");
+      const deleteGift = await globalDelete("gifts/" + giftId);
+      if (!deleteGift || deleteGift.error) {
+        throw new Error(deleteGift.error || "Failed to delete gift");
       }
       await getGifsByEventId(eventId);
     } catch (err) {

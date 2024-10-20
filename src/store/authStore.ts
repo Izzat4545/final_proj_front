@@ -2,15 +2,16 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { UserType } from "../types/userType";
 import { globalPost } from "../utils/networkRequests";
+import Cookies from "js-cookie";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref<UserType | null>(null);
-  const token = ref<string | null>(localStorage.getItem("token") || null);
+  const token = ref<string | null>(Cookies.get("token") || null);
   const loading = ref(false);
   const error = ref<string | null>(null);
 
   const setToken = (token: string) => {
-    localStorage.setItem("token", token);
+    Cookies.set("token", token, { expires: 1 / 24 });
   };
 
   const login = async (email: string, password: string) => {
@@ -29,8 +30,7 @@ export const useAuthStore = defineStore("auth", () => {
       }
 
       token.value = tokenResult.token;
-
-      localStorage.setItem("token", token.value ?? "");
+      setToken(token.value ?? "");
     } catch (err) {
       error.value = (err as Error).message || "Login failed";
     } finally {
@@ -64,8 +64,9 @@ export const useAuthStore = defineStore("auth", () => {
         error.value = tokenResult.error;
         throw new Error(tokenResult.error);
       }
+
       token.value = tokenResult.token;
-      localStorage.setItem("token", token.value ?? "");
+      setToken(token.value ?? "");
     } catch (err) {
       error.value = (err as Error).message || "Registration failed";
     } finally {
@@ -77,7 +78,7 @@ export const useAuthStore = defineStore("auth", () => {
     user.value = null;
     token.value = null;
 
-    localStorage.removeItem("token");
+    Cookies.remove("token");
   };
 
   const isAuthenticated = () => {
@@ -100,6 +101,7 @@ export const useAuthStore = defineStore("auth", () => {
       loading.value = false;
     }
   };
+
   const resetPassword = async (
     code: string,
     newPassword: string,
@@ -109,7 +111,6 @@ export const useAuthStore = defineStore("auth", () => {
     loading.value = true;
     error.value = null;
 
-    // Check if passwords match
     if (newPassword !== repeatPassword) {
       error.value = "Passwords do not match.";
       loading.value = false;
