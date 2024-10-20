@@ -25,4 +25,5 @@ jobs:
             git pull origin Giftsa
             pm2 stop all
             npm install
+            npm run build
             pm2 start all
