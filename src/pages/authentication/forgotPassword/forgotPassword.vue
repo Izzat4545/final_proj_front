@@ -92,15 +92,17 @@ const handleSubmit = async () => {
 
         <!-- Submit Button -->
         <button v-if="step !== 2 && step !== 4" :disabled="authStore.loading" type="submit"
-          class="w-full text-white py-2 px-4 rounded" :class="authStore.loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600'
+          class="w-full text-white flex justify-center items-center gap-2 py-2 px-4 rounded" :class="authStore.loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600'
             ">
-          <div v-if="authStore.loading">Loading..</div>
-          <div v-else>
+          <span v-if="authStore.loading" class="loading loading-spinner loading-sm"></span>
+          <div>
             {{ step === 1 ? "Send Verification Code" : "Reset Password" }}
           </div>
         </button>
       </form>
-      <div class="text-red-600">{{ authStore.error }}</div>
+      <div v-if="authStore.error" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
+        {{ authStore.error }}
+      </div>
     </div>
   </div>
 </template>
