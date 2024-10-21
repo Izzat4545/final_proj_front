@@ -28,58 +28,29 @@ const login = async () => {
       <div class="text-center">Or</div>
       <form @submit.prevent="login">
         <div class="mb-4">
-          <label for="email" class="block text-sm font-medium text-gray-700"
-            >Email</label
-          >
-          <input
-            v-model="email"
-            id="email"
-            type="email"
-            class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-            required
-          />
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input v-model="email" id="email" type="email" class="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            required />
         </div>
         <div class="mb-6">
           <div class="flex items-center justify-between">
-            <label
-              for="password"
-              class="block text-sm font-medium text-gray-700"
-              >Password</label
-            >
-            <router-link to="/auth/reset" class="text-blue-500 hover:underline"
-              >Forgot password</router-link
-            >
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <router-link to="/auth/reset" class="text-blue-500 hover:underline">Forgot password</router-link>
           </div>
-          <input
-            v-model="password"
-            id="password"
-            type="password"
-            class="w-full mt-1 p-2 border border-gray-300 rounded-md"
-            required
-          />
+          <input v-model="password" id="password" type="password"
+            class="w-full mt-1 p-2 border border-gray-300 rounded-md" required />
         </div>
-        <button
-          :disabled="authStore.loading"
-          type="submit"
-          :class="
-            authStore.loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600'
-          "
-          class="w-full text-white py-2 px-4 rounded"
-        >
-          <div v-if="authStore.loading">Loading..</div>
-          <div v-if="!authStore.loading">Login</div>
+        <button type="submit" :class="authStore.loading ? 'bg-gray-500 btn-disabled' : 'bg-blue-500 hover:bg-blue-600'
+          " class="w-full btn text-white flex items-center gap-2 rounded">
+          <span v-if="authStore.loading" class="loading loading-spinner loading-sm"></span>
+          <div>Login</div>
         </button>
       </form>
       <p class="my-4 text-center">
         Don't have an account?
-        <router-link to="/register" class="text-blue-500 hover:underline"
-          >Register</router-link
-        >
+        <router-link to="/register" class="text-blue-500 hover:underline">Register</router-link>
       </p>
-      <div
-        v-if="authStore.error"
-        class="p-4 mb-4 text-red-800 bg-red-100 rounded-lg"
-      >
+      <div v-if="authStore.error" class="p-4 mb-4 text-red-800 bg-red-100 rounded-lg">
         {{ authStore.error }}
       </div>
     </div>

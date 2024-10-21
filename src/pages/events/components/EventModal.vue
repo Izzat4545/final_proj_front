@@ -62,13 +62,8 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Title <span class="text-red-600">*</span>
           </label>
-          <input
-            type="text"
-            v-model="title"
-            class="input input-bordered w-full"
-            placeholder="Enter event title"
-            required
-          />
+          <input type="text" v-model="title" class="input input-bordered w-full" placeholder="Enter event title"
+            required />
         </div>
 
         <!-- Date (Required) -->
@@ -76,12 +71,7 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Date <span class="text-red-600">*</span>
           </label>
-          <input
-            type="date"
-            v-model="date"
-            class="input input-bordered w-full"
-            required
-          />
+          <input type="date" v-model="date" class="input input-bordered w-full" required />
         </div>
 
         <!-- Visibility (Required) -->
@@ -101,11 +91,8 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Description
           </label>
-          <textarea
-            v-model="description"
-            class="textarea textarea-bordered w-full"
-            placeholder="Enter event description (optional)"
-          ></textarea>
+          <textarea v-model="description" class="textarea textarea-bordered w-full"
+            placeholder="Enter event description (optional)"></textarea>
         </div>
 
         <!-- Image (Optional) -->
@@ -113,46 +100,27 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Event Image
           </label>
-          <input
-            type="file"
-            @change="(e) => {
-        const files = (e.target as HTMLInputElement).files;
-        if (files && files.length > 0) {
-          image = files[0];
-        } else {
-          image = null;
-        }
-      }"
-            class="file-input file-input-bordered w-full"
-            accept="image/*"
-          />
+          <input type="file" @change="(e) => {
+            const files = (e.target as HTMLInputElement).files;
+            if (files && files.length > 0) {
+              image = files[0];
+            } else {
+              image = null;
+            }
+          }" class="file-input file-input-bordered w-full" accept="image/*" />
         </div>
 
         <!-- Submit Button -->
-        <button
-          v-if="!event"
-          type="submit"
-          class="btn btn-primary w-full flex justify-center items-center gap-2"
-          :disabled="loading"
-        >
-          <span
-            v-if="loading"
-            class="loading loading-spinner loading-sm"
-          ></span>
+        <button v-if="!event" type="submit"
+          class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
+          <span v-if="loading" class="loading loading-spinner loading-sm"></span>
           {{ loading ? "Creating..." : "Create Event" }}
         </button>
 
         <!-- Update Button -->
-        <button
-          v-if="event"
-          type="submit"
-          class="btn btn-primary w-full flex justify-center items-center gap-2"
-          :disabled="loading"
-        >
-          <span
-            v-if="loading"
-            class="loading loading-spinner loading-sm"
-          ></span>
+        <button v-if="event" type="submit"
+          class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
+          <span v-if="loading" class="loading loading-spinner loading-sm"></span>
           {{ loading ? "Updating..." : "Update Event" }}
         </button>
       </form>

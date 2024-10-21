@@ -19,7 +19,7 @@ export const useEventsStore = defineStore("events", () => {
   const data = ref<Events[] | []>([]);
   const BASE_URL = getEnv("VITE_BASE_URL");
 
-  const createEvents = async (
+  const createEvent = async (
     title: string,
     date: string,
     visibility: string,
@@ -37,10 +37,10 @@ export const useEventsStore = defineStore("events", () => {
       if (description) formData.append("description", description);
       if (image) formData.append("image", image);
 
-      const postEvents = await globalPost("events", formData, true);
+      const postEvent = await globalPost("events", formData, true);
 
-      if (!postEvents || postEvents.error) {
-        throw new Error(postEvents.error || "Unknown error occurred");
+      if (!postEvent || postEvent.error) {
+        throw new Error(postEvent.error || "Unknown error occurred");
       }
       await getEvents();
     } catch (err) {
@@ -95,13 +95,12 @@ export const useEventsStore = defineStore("events", () => {
       if (description) formData.append("description", description);
       if (image) formData.append("image", image);
 
-      const postEvents = await globalPut("events/" + id, formData, true);
+      const updateEvent = await globalPut("events/" + id, formData, true);
 
-      if (!postEvents || postEvents.error) {
-        throw new Error(postEvents.error || "Unknown error occurred");
+      if (!updateEvent || updateEvent.error) {
+        throw new Error(updateEvent.error || "Unknown error occurred");
       }
       await getEvents();
-      console.log("nice");
     } catch (err) {
       postError.value =
         err instanceof Error ? err.message : "Failed to create event";
@@ -115,13 +114,12 @@ export const useEventsStore = defineStore("events", () => {
     loading.value = true;
     deleteError.value = null;
     try {
-      const deleteEvents = await globalDelete("events/" + id);
+      const deleteEvent = await globalDelete("events/" + id);
 
-      if (!deleteEvents || deleteEvents.error) {
-        throw new Error(deleteEvents.error || "Failed to delete events");
+      if (!deleteEvent || deleteEvent.error) {
+        throw new Error(deleteEvent.error || "Failed to delete events");
       }
-
-      data.value = data.value.filter((event: Events) => event.id !== id);
+      await getEvents();
     } catch (err) {
       deleteError.value = err instanceof Error ? err.message : "Fetch failed";
       console.error("Fetch Events Error:", err);
@@ -139,6 +137,6 @@ export const useEventsStore = defineStore("events", () => {
     deleteEventById,
     updateEventById,
     getEvents,
-    createEvents,
+    createEvents: createEvent,
   };
 });

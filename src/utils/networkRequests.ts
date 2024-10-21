@@ -1,9 +1,10 @@
 import { getEnv } from "./getEnv";
+import Cookies from "js-cookie";
 
 const BASE_URL = getEnv("VITE_BASE_URL");
 
 const getAuthToken = () => {
-  return localStorage.getItem("token");
+  return Cookies.get("token");
 };
 
 const getHeaders = (isFormData = false) => {
