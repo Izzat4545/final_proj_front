@@ -7,7 +7,6 @@ import { shortenText } from "../utils/textShortener";
 defineProps<{ gifts: Gifts; isPublic: boolean }>();
 
 const { deleteGiftById } = useGiftsStore();
-
 const handleDelete = async (giftId: string, eventId: string) => {
   await deleteGiftById(giftId, eventId);
 };
