@@ -6,6 +6,7 @@ import Carousel from "../../globalComponents/carouselComponent/Carousel.vue";
 import { usePublicGiftStore } from "../../store/publicGiftsStore";
 import GiftCard from "./components/GiftCard.vue";
 import { storeToRefs } from "pinia";
+import { RouteNames } from "../../enums/Routes";
 
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated());
@@ -41,7 +42,7 @@ onMounted(() => {
     <!-- CREATE WISHLIST BTN -->
     <div class="flex justify-center mt-5">
       <router-link
-        :to="isAuthenticated ? '/events' : '/register'"
+        :to="isAuthenticated ? RouteNames.EVENTS : RouteNames.LOGIN"
         class="text-gray-700 hover:text-blue-500"
       >
         <button

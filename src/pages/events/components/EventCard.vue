@@ -6,6 +6,7 @@ import { useRouter, useRoute } from "vue-router";
 import { useGiftsStore } from "../../../store/giftsStore";
 import { onMounted } from "vue";
 import { shortenText } from "../../../utils/textShortener";
+import { RoutePaths } from "../../../enums/Routes";
 
 const props = defineProps<{
   event: Event;
@@ -18,7 +19,7 @@ const handleDelete = async () => {
   try {
     await eventsStore.deleteEventById(props.event.id);
 
-    await router.push("/events");
+    await router.push(RoutePaths.EVENTS);
   } catch (error) {
     throw (error as Error).message;
   }
@@ -29,7 +30,7 @@ const getGiftByParams = async () => {
     if (route.params.id === props.event.id.toString()) {
       return;
     }
-    await router.push(`/events/${props.event.id}`);
+    await router.push(`${RoutePaths.EVENTS}/${props.event.id}`);
     if (route.params.id) {
       await useGiftsStore().getGifsByEventId(route.params.id.toString());
     }
@@ -47,7 +48,7 @@ onMounted(async () => {
     if (eventExists) {
       await useGiftsStore().getGifsByEventId(route.params.id.toString());
     } else {
-      await router.push("/events");
+      await router.push(RoutePaths.EVENTS);
     }
   }
 });

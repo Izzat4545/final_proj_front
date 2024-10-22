@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "../../../store/authStore";
+import { RoutePaths } from "../../../enums/Routes";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -49,7 +50,7 @@ const handleSubmit = async () => {
       // Proceed to step 4 if no errors are set by the store
       if (!authStore.error) {
         step.value = STEP_FOUR;
-        router.push("/login");
+        router.push(RoutePaths.LOGIN);
         localStorage.removeItem("email");
       }
     }
