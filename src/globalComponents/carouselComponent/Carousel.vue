@@ -14,16 +14,19 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  loop: {
+    type: Boolean,
+    default: true,
+  },
 });
 
-const DELAY = 1000;
+const DELAY = 3000;
 const plugins = [
   Autoplay({
     delay: DELAY,
     stopOnInteraction: true,
     stopOnLastSnap: false,
     active: props.autoplay,
-    stopOnMouseEnter: true,
   }),
   WheelGesturesPlugin({
     forceWheelAxis: "y",
@@ -33,7 +36,7 @@ const plugins = [
 const [emblaRef, emblaApi] = emblaCarouselVue(
   {
     align: "start",
-    loop: true,
+    loop: props.loop,
     containScroll: "keepSnaps",
   },
   plugins
