@@ -15,97 +15,58 @@ const getHeaders = (isFormData = false) => {
   };
 };
 
-export const globalGet = async (
+type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
+
+const request = async (
+  method: RequestMethod,
   endpoint: string,
-  params: Record<string, any> = {}
+  payload: any = null,
+  params: Record<string, any> = {},
+  isFormData = false
 ) => {
   try {
     const url = new URL(`${BASE_URL}/${endpoint}`);
-    Object.keys(params).forEach((key) =>
-      url.searchParams.append(key, params[key])
-    );
 
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: getHeaders(),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(`Error: ${data.error}`);
+    if (method === "GET" && params) {
+      Object.keys(params).forEach((key) =>
+        url.searchParams.append(key, params[key])
+      );
     }
 
-    return data;
-  } catch (error) {
-    console.error("GET request error:", error);
-    throw error;
-  }
-};
-
-export const globalPost = async (
-  endpoint: string,
-  payload: any,
-  isFormData = false
-) => {
-  try {
-    const headers: Record<string, string> = {
-      ...getHeaders(isFormData),
+    const options: RequestInit = {
+      method,
+      headers: getHeaders(isFormData),
     };
 
-    const response = await fetch(`${BASE_URL}/${endpoint}`, {
-      method: "POST",
-      headers,
-      body: isFormData ? payload : JSON.stringify(payload),
-    });
+    if (["POST", "PUT", "DELETE"].includes(method) && payload) {
+      options.body = isFormData ? payload : JSON.stringify(payload);
+    }
+
+    const response = await fetch(url.toString(), options);
     const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(`Error: ${data.error}`);
+    }
+
     return data;
   } catch (error) {
-    throw (error as Error).message;
+    console.error(`${method} request error:`, error);
+    throw error;
   }
 };
 
-export const globalPut = async (
+export const globalGet = (endpoint: string, params = {}) =>
+  request("GET", endpoint, null, params);
+
+export const globalPost = (
   endpoint: string,
   payload: any,
   isFormData = false
-) => {
-  try {
-    const response = await fetch(`${BASE_URL}/${endpoint}`, {
-      method: "PUT",
-      headers: getHeaders(isFormData),
-      body: isFormData ? payload : JSON.stringify(payload),
-    });
+) => request("POST", endpoint, payload, {}, isFormData);
 
-    const data = await response.json();
+export const globalPut = (endpoint: string, payload: any, isFormData = false) =>
+  request("PUT", endpoint, payload, {}, isFormData);
 
-    if (!response.ok) {
-      throw new Error(`Error: ${data.error}`);
-    }
-
-    return data;
-  } catch (error) {
-    console.error("PUT request error:", error);
-    throw error;
-  }
-};
-
-export const globalDelete = async (endpoint: string) => {
-  try {
-    const response = await fetch(`${BASE_URL}/${endpoint}`, {
-      method: "DELETE",
-      headers: getHeaders(),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(`Error: ${data.error}`);
-    }
-
-    return data;
-  } catch (error) {
-    console.error("DELETE request error:", error);
-    throw error;
-  }
-};
+export const globalDelete = (endpoint: string, payload?: any) =>
+  request("DELETE", endpoint, payload);
