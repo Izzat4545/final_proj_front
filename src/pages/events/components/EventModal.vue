@@ -4,9 +4,9 @@ import Modal from "../../../globalComponents/Modal.vue";
 import { useEventsStore } from "../../../store/eventsStore";
 import { EventVisibilities } from "../../../enums/EventVisibilities";
 import { storeToRefs } from "pinia";
-import { Event } from "../../../types/events";
+import { Event as EventType } from "../../../types/events";
 
-const props = defineProps<{ event?: Event }>();
+const props = defineProps<{ event?: EventType }>();
 const eventStore = useEventsStore();
 
 const { postError, loading } = storeToRefs(eventStore);
@@ -20,6 +20,15 @@ const visibility = ref(
 );
 const description = ref(props.event ? props.event.description : "");
 let image = ref<File | null>(null);
+
+const handleFileChange = (e: Event) => {
+  const files = (e.target as HTMLInputElement).files;
+  if (files && files.length > 0) {
+    image.value = files[0];
+  } else {
+    image.value = null;
+  }
+};
 
 const handleEvent = async () => {
   try {
@@ -92,7 +101,7 @@ const handleEvent = async () => {
             Description
           </label>
           <textarea v-model="description" class="textarea textarea-bordered w-full"
-            placeholder="Enter event description (optional)"></textarea>
+            placeholder="Enter event description (optional)" />
         </div>
 
         <!-- Image (Optional) -->
@@ -100,27 +109,21 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Event Image
           </label>
-          <input type="file" @change="(e) => {
-            const files = (e.target as HTMLInputElement).files;
-            if (files && files.length > 0) {
-              image = files[0];
-            } else {
-              image = null;
-            }
-          }" class="file-input file-input-bordered w-full" accept="image/*" />
+          <input type="file" @change="handleFileChange" class="file-input file-input-bordered w-full"
+            accept="image/*" />
         </div>
 
         <!-- Submit Button -->
         <button v-if="!event" type="submit"
           class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
-          <span v-if="loading" class="loading loading-spinner loading-sm"></span>
+          <span v-if="loading" class="loading loading-spinner loading-sm" />
           {{ loading ? "Creating..." : "Create Event" }}
         </button>
 
         <!-- Update Button -->
         <button v-if="event" type="submit"
           class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
-          <span v-if="loading" class="loading loading-spinner loading-sm"></span>
+          <span v-if="loading" class="loading loading-spinner loading-sm" />
           {{ loading ? "Updating..." : "Update Event" }}
         </button>
       </form>
