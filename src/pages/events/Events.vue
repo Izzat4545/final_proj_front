@@ -21,6 +21,8 @@ const {
   loading: giftLoading,
 } = storeToRefs(giftsStore);
 const { getError, data, loading } = storeToRefs(eventStore);
+const SHOW_AS_LIST = "Show as: list";
+const SHOW_AS_CART = "Show as: cart";
 
 onMounted(async () => {
   await eventStore.getEvents();
@@ -28,15 +30,16 @@ onMounted(async () => {
 
 const handleSelectChange = (event: Event) => {
   const selectedValue = (event.target as HTMLSelectElement).value;
-  // Update `isList` based on the selected value
-  isList.value = selectedValue === "Show as: list";
+  isList.value = selectedValue === SHOW_AS_LIST;
 };
 </script>
 <template>
   <div class="container mx-auto">
     <div class="flex justify-between">
       <div class="text-2xl mb-3 font-bold">Events</div>
-      <label for="createModal" class="text-md btn btn-success mb-3 text-white">Add event</label>
+      <label for="createModal" class="text-md btn btn-success mb-3 text-white"
+        >Add event</label
+      >
     </div>
     <!-- Events -->
     <div class="flex justify-center">
@@ -44,12 +47,15 @@ const handleSelectChange = (event: Event) => {
       <div v-if="getError" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
         {{ getError }}
       </div>
-      <div v-if="data.length < 1 && !getError" class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg">
+      <div
+        v-if="data.length < 1 && !getError"
+        class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg"
+      >
         No events has been added
       </div>
     </div>
     <Carousel v-if="!loading && data.length > 0 && !getError">
-      <div v-for="event in data" class="embla__slide">
+      <div v-for="event in data" class="flex-shrink-0 w-[230px] mx-[10px]">
         <EventCard :event="event" />
       </div>
     </Carousel>
@@ -58,33 +64,59 @@ const handleSelectChange = (event: Event) => {
       <div class="flex justify-between items-center">
         <div class="text-2xl my-3 font-bold">Gifts</div>
         <div class="flex items-center gap-2">
-          <select @change="handleSelectChange" :class="route.params.id ? 'select-bordered' : 'select-disabled'"
-            class="select select-md w-full max-w-xs">
-            <option>Show as: list</option>
-            <option selected>Show as: cart</option>
+          <select
+            @change="handleSelectChange"
+            :class="route.params.id ? 'select-bordered' : 'select-disabled'"
+            class="select select-md w-full max-w-xs"
+          >
+            <option>{{ SHOW_AS_LIST }}</option>
+            <option selected>{{ SHOW_AS_CART }}</option>
           </select>
-          <label for="createGiftModal" :class="route.params.id ? 'btn-success' : 'btn-disabled'"
-            class="text-md btn btn-md btn-success text-white">Add Gift</label>
+          <label
+            for="createGiftModal"
+            :class="route.params.id ? 'btn-success' : 'btn-disabled'"
+            class="text-md btn btn-md btn-success text-white"
+            >Add Gift</label
+          >
         </div>
       </div>
       <div class="flex justify-center">
-        <span v-if="giftLoading" class="loading loading-infinity loading-lg"></span>
-        <div v-if="giftGetError" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
+        <span
+          v-if="giftLoading"
+          class="loading loading-infinity loading-lg"
+        ></span>
+        <div
+          v-if="giftGetError"
+          class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg"
+        >
           {{ giftGetError }}
         </div>
-        <div v-if="!route.params.id && !giftGetError" class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg">
+        <div
+          v-if="!route.params.id && !giftGetError"
+          class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg"
+        >
           Select event
         </div>
-        <div class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg" v-if="
-          route.params.id &&
-          !giftGetError &&
-          !giftLoading &&
-          giftData.gifts.length < 1
-        ">
+        <div
+          class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg"
+          v-if="
+            route.params.id &&
+            !giftGetError &&
+            !giftLoading &&
+            giftData.gifts.length < 1
+          "
+        >
           There is no gift in this event
         </div>
       </div>
-      <div v-if="route.params.id && !giftGetError && !giftLoading && giftData.gifts.length > 0">
+      <div
+        v-if="
+          route.params.id &&
+          !giftGetError &&
+          !giftLoading &&
+          giftData.gifts.length > 0
+        "
+      >
         <GiftCard v-if="!isList" :gifts="giftData" :is-public="false" />
         <GiftList v-if="isList" :gifts="giftData" :is-public="false" />
       </div>
@@ -103,10 +135,3 @@ const handleSelectChange = (event: Event) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.embla__slide {
-  flex: 0 0 230px;
-  margin: 0 10px;
-}
-</style>

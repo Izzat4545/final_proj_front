@@ -56,6 +56,7 @@ const request = async (
   }
 };
 
+// To reduce the number of arguments I have kept this functions
 export const globalGet = (endpoint: string, params = {}) =>
   request("GET", endpoint, null, params);
 
