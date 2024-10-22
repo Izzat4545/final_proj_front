@@ -48,7 +48,7 @@ const handleSelectChange = (event: Event) => {
         {{ getError }}
       </div>
       <div
-        v-if="data.length < 1 && !getError"
+        v-if="data.length < 1 && !getError && !loading"
         class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg"
       >
         No events has been added

@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "embla-carousel-autoplay": "^8.3.0",
     "embla-carousel-vue": "8.3.0",
+    "embla-carousel-wheel-gestures": "^8.0.1",
     "js-cookie": "3.0.5",
     "pinia": "2.2.4",
     "vue": "3.5.10",
