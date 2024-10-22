@@ -27,46 +27,15 @@ const scrollToNext = () => {
 </script>
 
 <template>
-  <div class="carousel-container">
-    <div class="embla" ref="emblaRef">
-      <div class="embla__container">
+  <div class="relative">
+    <div class="overflow-hidden" ref="emblaRef">
+      <div class="flex">
         <slot></slot>
       </div>
-      <div v-if="showControls" class="button-container">
-        <PrevButton @click="scrollToPrev" />
-        <NextButton @click="scrollToNext" />
+      <div v-if="showControls" class="absolute inset-1 flex justify-between pointer-events-none items-center px-5">
+        <PrevButton class="pointer-events-auto" @click="scrollToPrev" />
+        <NextButton class="pointer-events-auto" @click="scrollToNext" />
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.carousel-container {
-  position: relative;
-}
-
-.embla {
-  overflow: hidden;
-}
-
-.embla__container {
-  display: flex;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  padding: 0 20px;
-}
-
-.embla__button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-</style>

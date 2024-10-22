@@ -1,7 +1,7 @@
 import createWishlist from "../../../assets/createWishlist.svg";
 import shareWishlist from "../../../assets/shareWishlist.svg";
 import receiveGifts from "../../../assets/receiveGifts.svg";
-export const INSTRCTIONS = [
+export const INSTRUCTIONS = [
   {
     title: "Create Wishlist",
     icon: createWishlist,

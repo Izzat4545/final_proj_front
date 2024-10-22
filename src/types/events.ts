@@ -1,4 +1,4 @@
-import { EventVisibility } from "../enums/EventVisibility";
+import { EventVisibilities } from "../enums/EventVisibilities";
 
 export interface Events {
   link: string;
@@ -7,7 +7,7 @@ export interface Events {
   date: string;
   description: string;
   image: string;
-  visibility: EventVisibility;
+  visibility: EventVisibilities;
   userId: string;
   createdAt: string;
   updatedAt: string;

@@ -8,51 +8,52 @@ import Events from "../pages/events/Events.vue";
 import AuthCallback from "../pages/authentication/authCallback/AuthCallback.vue";
 import ForgotPassword from "../pages/authentication/forgotPassword/forgotPassword.vue";
 import Gifts from "../pages/gifts/Gifts.vue";
+import { RouteNames, RoutePaths } from "../enums/Routes";
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: RoutePaths.HOME,
+    name: RouteNames.HOME,
     component: Home,
   },
   {
-    path: "/settings",
-    name: "Settings",
+    path: RoutePaths.SETTINGS,
+    name: RouteNames.SETTINGS,
     component: Settings,
   },
   {
-    path: "/events",
-    name: "Events",
+    path: RoutePaths.EVENTS,
+    name: RouteNames.EVENTS,
     component: Events,
   },
   {
-    path: "/events/:id",
-    name: "EventsById",
+    path: RoutePaths.EVENTS_BY_ID,
+    name: RouteNames.EVENTS_BY_ID,
     component: Events,
   },
   {
-    path: "/gifts/:eventId",
-    name: "GiftsByEventId",
+    path: RoutePaths.GIFTS_BY_EVENT_ID,
+    name: RouteNames.GIFTS_BY_EVENT_ID,
     component: Gifts,
   },
   {
-    path: "/register",
-    name: "Register",
+    path: RoutePaths.REGISTER,
+    name: RouteNames.REGISTER,
     component: Register,
   },
   {
-    path: "/login",
-    name: "Login",
+    path: RoutePaths.LOGIN,
+    name: RouteNames.LOGIN,
     component: Login,
   },
   {
-    path: "/auth/reset",
-    name: "ForgotPassword",
+    path: RoutePaths.FORGOT_PASSWORD,
+    name: RouteNames.FORGOT_PASSWORD,
     component: ForgotPassword,
   },
   {
-    path: "/auth/callback",
-    name: "AuthCallback",
+    path: RoutePaths.AUTH_CALLBACK,
+    name: RouteNames.AUTH_CALLBACK,
     component: AuthCallback,
   },
 ];
@@ -69,19 +70,23 @@ router.beforeEach((to, _from, next) => {
   // Redirect logged-in users away from login and register routes
   if (
     isAuthenticated &&
-    (to.name === "Register" ||
-      to.name === "Login" ||
-      to.name === "AuthCallback" ||
-      to.name === "ForgotPassword")
+    [
+      RouteNames.REGISTER,
+      RouteNames.LOGIN,
+      RouteNames.AUTH_CALLBACK,
+      RouteNames.FORGOT_PASSWORD,
+    ].includes(to.name as RouteNames)
   ) {
-    next({ name: "Home" });
+    next({ name: RouteNames.HOME });
   }
   // Check if user is not authenticated and trying to access protected routes
   else if (
     !isAuthenticated &&
-    (to.name === "Settings" || to.name === "Events" || to.name === "EventsById")
+    [RouteNames.SETTINGS, RouteNames.EVENTS, RouteNames.EVENTS_BY_ID].includes(
+      to.name as RouteNames
+    )
   ) {
-    next({ name: "Login" });
+    next({ name: RouteNames.LOGIN });
   } else {
     next();
   }

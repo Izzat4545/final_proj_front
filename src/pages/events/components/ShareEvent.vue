@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EventVisibility } from "../../../enums/EventVisibility";
+import { EventVisibilities } from "../../../enums/EventVisibilities";
 import { Events } from "../../../types/events";
 
 defineProps<{
@@ -13,7 +13,7 @@ const copyToClipboard = (text: string) => {
 
 <template>
   <div v-if="
-    [EventVisibility.BY_URL, EventVisibility.PUBLIC].includes(
+    [EventVisibilities.BY_URL, EventVisibilities.PUBLIC].includes(
       event.visibility
     )
   " class="dropdown">

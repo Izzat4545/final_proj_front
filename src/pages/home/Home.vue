@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { INSTRCTIONS } from "./info/instructions";
+import { INSTRUCTIONS } from "./info/instructions";
 import { useAuthStore } from "../../store/authStore";
 import { computed, onMounted } from "vue";
 import Carousel from "../../globalComponents/carouselComponent/Carousel.vue";
@@ -25,7 +25,7 @@ onMounted(() => {
         How to receive a good gift?
       </div>
       <div class="flex flex-col md:flex-row justify-around gap-4 items-start">
-        <div v-for="instructions in INSTRCTIONS">
+        <div v-for="instructions in INSTRUCTIONS">
           <div class="flex flex-col md:flex-row items-center mb-2 gap-2">
             <img :src="instructions.icon" alt="icon" />
             <div class="text-xl font-bold">{{ instructions.title }}</div>

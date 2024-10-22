@@ -35,7 +35,9 @@ const login = async () => {
         <div class="mb-6">
           <div class="flex items-center justify-between">
             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <router-link to="/auth/reset" class="text-blue-500 hover:underline">Forgot password</router-link>
+            <router-link to="/auth/reset" class="text-blue-500 hover:underline">
+              Forgot password
+            </router-link>
           </div>
           <input v-model="password" id="password" type="password"
             class="w-full mt-1 p-2 border border-gray-300 rounded-md" required />
