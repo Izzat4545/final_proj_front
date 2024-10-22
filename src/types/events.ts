@@ -1,6 +1,6 @@
 import { EventVisibilities } from "../enums/EventVisibilities";
 
-export interface Events {
+export interface Event {
   link: string;
   id: string;
   title: string;

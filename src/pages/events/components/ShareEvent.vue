@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { EventVisibilities } from "../../../enums/EventVisibilities";
-import { Events } from "../../../types/events";
+import { Event } from "../../../types/events";
 
 defineProps<{
-  event: Events;
+  event: Event;
 }>();
 
 const copyToClipboard = (text: string) => {

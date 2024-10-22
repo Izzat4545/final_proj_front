@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { PopularGifts } from "../../../types/pupularGifts";
+import { PopularGift } from "../../../types/pupularGifts";
 import { formatNumbers } from "../../../utils/formatNumbers";
 import { shortenText } from "../../../utils/textShortener";
 defineProps<{
-  gift: PopularGifts;
+  gift: PopularGift;
 }>();
 
 </script>

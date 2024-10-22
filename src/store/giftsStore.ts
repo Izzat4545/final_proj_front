@@ -1,14 +1,14 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getEnv } from "../utils/getEnv";
-import { Gifts } from "../types/gifts";
+import { Gift } from "../types/gifts";
 import {
   globalDelete,
   globalGet,
   globalPost,
   globalPut,
 } from "../utils/networkRequests";
-import { PopularGifts } from "../types/pupularGifts";
+import { PopularGift } from "../types/pupularGifts";
 import defaultGift from "../assets/defaultGift.jpeg";
 import defaultEventImage from "../assets/defaultEventImage.png";
 import { filterDate } from "../utils/filterDate";
@@ -18,7 +18,7 @@ export const useGiftsStore = defineStore("gifts", () => {
   const getError = ref<string | null>(null);
   const postError = ref<string | null>(null);
   const deleteError = ref<string | null>(null);
-  const data = ref<Gifts>({
+  const data = ref<Gift>({
     giftCount: 0,
     giftReservedCount: 0,
     gifts: [],
@@ -75,7 +75,7 @@ export const useGiftsStore = defineStore("gifts", () => {
       data.value = {
         giftCount: getGifts.giftCount,
         giftReservedCount: getGifts.giftReservedCount,
-        gifts: getGifts.gifts.map((gift: PopularGifts) => ({
+        gifts: getGifts.gifts.map((gift: PopularGift) => ({
           ...gift,
           image: gift.image ? `${BASE_URL}/${gift.image}` : defaultGift,
           event: {

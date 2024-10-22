@@ -4,9 +4,9 @@ import Modal from "../../../globalComponents/Modal.vue";
 import { useEventsStore } from "../../../store/eventsStore";
 import { EventVisibilities } from "../../../enums/EventVisibilities";
 import { storeToRefs } from "pinia";
-import { Events } from "../../../types/events";
+import { Event } from "../../../types/events";
 
-const props = defineProps<{ event?: Events }>();
+const props = defineProps<{ event?: Event }>();
 const eventStore = useEventsStore();
 
 const { postError, loading } = storeToRefs(eventStore);

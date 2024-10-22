@@ -1,6 +1,6 @@
-import { Events } from "./events";
+import { Event } from "./events";
 
-export type PopularGifts = {
+export type PopularGift = {
   id: string;
   name: string;
   description: string;
@@ -9,11 +9,11 @@ export type PopularGifts = {
   currency: string;
   price: string;
   link: string;
-  reservedEmail: null;
+  reservedEmail: string;
   createdAt: string;
   updatedAt: string;
   eventId: string;
-  event: Events;
+  event: Event;
   originalPrice: string;
   originalCurrency: string;
 };

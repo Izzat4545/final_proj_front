@@ -7,7 +7,7 @@ import {
   globalPost,
   globalPut,
 } from "../utils/networkRequests";
-import { Events } from "../types/events";
+import { Event } from "../types/events";
 import { filterDate } from "../utils/filterDate";
 import defaultEventImage from "../assets/defaultEventImage.png";
 
@@ -16,7 +16,7 @@ export const useEventsStore = defineStore("events", () => {
   const getError = ref<string | null>(null);
   const postError = ref<string | null>(null);
   const deleteError = ref<string | null>(null);
-  const data = ref<Events[] | []>([]);
+  const data = ref<Event[] | []>([]);
   const BASE_URL = getEnv("VITE_BASE_URL");
 
   const createEvent = async (
@@ -62,7 +62,7 @@ export const useEventsStore = defineStore("events", () => {
         throw new Error(getEvents.error || "Failed to fetch events");
       }
 
-      data.value = getEvents.reverse().map((event: Events) => ({
+      data.value = getEvents.reverse().map((event: Event) => ({
         ...event,
         image: event.image ? `${BASE_URL}/${event.image}` : defaultEventImage,
         date: filterDate(event.date),

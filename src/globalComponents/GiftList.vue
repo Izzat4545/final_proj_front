@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { useGiftsStore } from "../store/giftsStore";
-import { Gifts } from "../types/gifts";
+import { Gift } from "../types/gifts";
 import { formatNumbers } from "../utils/formatNumbers";
 import { shortenText } from "../utils/textShortener";
 
-defineProps<{ gifts: Gifts; isPublic: boolean }>();
+defineProps<{ gifts: Gift; isPublic: boolean }>();
 
 const { deleteGiftById } = useGiftsStore();
 
@@ -14,17 +14,11 @@ const handleDelete = async (giftId: string, eventId: string) => {
 </script>
 <template>
   <div class="flex flex-row justify-center sm:flex-col mt-3 gap-5">
-    <div
-      v-for="gift in gifts.gifts"
-      class="bg-white rounded-lg relative shadow-md p-4 flex flex-col sm:flex-row justify-between items-center"
-    >
+    <div v-for="gift in gifts.gifts"
+      class="bg-white rounded-lg relative shadow-md p-4 flex flex-col sm:flex-row justify-between items-center">
       <div class="flex gap-2 flex-col sm:flex-row items-center">
-        <img
-          crossorigin="anonymous"
-          :src="gift.image"
-          alt="gift image"
-          class="w-full h-48 object-cover rounded-lg mb-4"
-        />
+        <img crossorigin="anonymous" :src="gift.image" alt="gift image"
+          class="w-full h-48 object-cover rounded-lg mb-4" />
         <div class="w-full">
           <h3 class="text-lg font-semibold mb-2">
             {{ shortenText(gift.name, 25) }}
@@ -40,34 +34,21 @@ const handleDelete = async (giftId: string, eventId: string) => {
           <p class="text-xl font-bold">
             {{ formatNumbers(gift.price) }} {{ gift.currency }}
           </p>
-          <label
-            v-if="isPublic"
-            :for="gift.id"
-            :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
-            class="btn rounded w-full text-white btn-sm"
-          >
+          <label v-if="isPublic" :for="gift.id" :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
+            class="btn rounded w-full text-white btn-sm">
             {{ gift.reservedEmail ? "reserved" : "reserve" }}
           </label>
-          <a
-            :href="gift.link"
-            target="_blank"
-            class="bg-blue-500 btn btn-sm w-full text-white rounded hover:bg-blue-600 transition-colors my-2"
-          >
+          <a :href="gift.link" target="_blank"
+            class="bg-blue-500 btn btn-sm w-full text-white rounded hover:bg-blue-600 transition-colors my-2">
             Buy in Store
           </a>
         </div>
         <!-- edit and delete -->
         <div v-if="!isPublic" class="flex gap-3 transition-all">
-          <label
-            :for="gift.id"
-            class="btn rounded-full btn-ghost btn-circle btn-sm"
-          >
+          <label :for="gift.id" class="btn rounded-full btn-ghost btn-circle btn-sm">
             <img src="../assets/edit.svg" alt="Edit" />
           </label>
-          <button
-            @click="handleDelete(gift.id, gift.eventId)"
-            class="btn rounded-full btn-ghost btn-circle btn-sm"
-          >
+          <button @click="handleDelete(gift.id, gift.eventId)" class="btn rounded-full btn-ghost btn-circle btn-sm">
             <img src="../assets/delete.svg" alt="Delete" />
           </button>
         </div>
