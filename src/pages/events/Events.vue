@@ -54,7 +54,7 @@ const handleSelectChange = (event: Event) => {
         No events has been added
       </div>
     </div>
-    <Carousel v-if="!loading && data.length > 0 && !getError">
+    <Carousel :autoplay="false" v-if="!loading && data.length > 0 && !getError">
       <div v-for="event in data" class="flex-shrink-0 w-[230px] mx-[10px]">
         <EventCard :event="event" />
       </div>

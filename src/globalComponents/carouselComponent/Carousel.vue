@@ -2,7 +2,6 @@
 import emblaCarouselVue from "embla-carousel-vue";
 import PrevButton from "./PrevButton.vue";
 import NextButton from "./NextButton.vue";
-// import { onMounted, onBeforeUnmount } from "vue";
 import Autoplay from "embla-carousel-autoplay";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
