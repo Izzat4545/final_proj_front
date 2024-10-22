@@ -26,11 +26,12 @@ const handleDelete = async () => {
 
 const getGiftByParams = async () => {
   try {
-    let currentId = route.params.id.toString();
+    if (route.params.id === props.event.id.toString()) {
+      return;
+    }
     await router.push(`/events/${props.event.id}`);
-    if (route.params.id !== currentId) {
+    if (route.params.id) {
       await useGiftsStore().getGifsByEventId(route.params.id.toString());
-      currentId = route.params.id.toString();
     }
   } catch (error) {
     throw error as Error;
