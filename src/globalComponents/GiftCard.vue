@@ -10,13 +10,16 @@ const { deleteGiftById } = useGiftsStore();
 const handleDelete = async (giftId: string, eventId: string) => {
   await deleteGiftById(giftId, eventId);
 };
+
+const GIFT_NAME_LIMIT = 15;
+const GIFT_DESC_LIMIT = 30;
 </script>
 <template>
   <div
     class="flex my-3 justify-center sm:justify-start items-start gap-5 flex-wrap"
   >
     <div
-      v-for="gift in gifts.gifts"
+      v-for="gift in gifts.data"
       class="bg-white rounded-lg w-full max-w-[300px] max-h-[350px] relative shadow-md p-4 flex flex-col items-start"
     >
       <img
@@ -26,10 +29,10 @@ const handleDelete = async (giftId: string, eventId: string) => {
         class="w-full h-48 object-cover rounded-lg mb-4"
       />
       <h3 class="text-lg font-semibold mb-2">
-        {{ shortenText(gift.name, 15) }}
+        {{ shortenText(gift.name, GIFT_NAME_LIMIT) }}
       </h3>
       <p v-if="gift.description" class="text-gray-600 text-sm mb-2">
-        {{ shortenText(gift.description, 30) }}
+        {{ shortenText(gift.description, GIFT_DESC_LIMIT) }}
       </p>
       <!-- Reserve btn if it is public -->
       <label

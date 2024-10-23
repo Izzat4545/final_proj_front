@@ -21,7 +21,8 @@ export const useGiftsStore = defineStore("gifts", () => {
   const data = ref<Gift>({
     giftCount: 0,
     giftReservedCount: 0,
-    gifts: [],
+    meta: { limit: 10, page: 10, totalGifts: 0, totalPages: 1 },
+    data: [],
   });
   const BASE_URL = getEnv("VITE_BASE_URL");
 
@@ -75,7 +76,8 @@ export const useGiftsStore = defineStore("gifts", () => {
       data.value = {
         giftCount: getGifts.giftCount,
         giftReservedCount: getGifts.giftReservedCount,
-        gifts: getGifts.gifts.map((gift: PopularGift) => ({
+        meta: getGifts.meta,
+        data: getGifts.data.map((gift: PopularGift) => ({
           ...gift,
           image: gift.image ? `${BASE_URL}/${gift.image}` : defaultGift,
           event: {

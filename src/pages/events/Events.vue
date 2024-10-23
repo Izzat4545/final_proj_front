@@ -107,7 +107,7 @@ const handleSelectChange = (event: Event) => {
             route.params.id &&
             !giftGetError &&
             !giftLoading &&
-            giftData.gifts.length < 1
+            giftData.data.length < 1
           "
         >
           There is no gift in this event
@@ -118,7 +118,7 @@ const handleSelectChange = (event: Event) => {
           route.params.id &&
           !giftGetError &&
           !giftLoading &&
-          giftData.gifts.length > 0
+          giftData.data.length > 0
         "
       >
         <GiftCard v-if="!isList" :gifts="giftData" :is-public="false" />
@@ -134,7 +134,7 @@ const handleSelectChange = (event: Event) => {
     <!-- Gift Modal for creating -->
     <GiftModal />
     <!-- update modal for the gift modal -->
-    <div v-for="gift in giftData.gifts" :key="gift.id">
+    <div v-for="gift in giftData.data" :key="gift.id">
       <GiftModal :gifts="gift" />
     </div>
   </div>
