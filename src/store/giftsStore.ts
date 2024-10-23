@@ -68,6 +68,7 @@ export const useGiftsStore = defineStore("gifts", () => {
 
     try {
       const getGifts = await globalGet(`gifts/${eventId}`);
+      console.log(getGifts);
 
       if (!getGifts || getGifts.error) {
         throw new Error(getGifts.error || "Failed to fetch gifts");

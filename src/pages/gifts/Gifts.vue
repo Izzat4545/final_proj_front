@@ -32,12 +32,12 @@ const handleSelectChange = (event: Event) => {
     {{ getError }}
   </div>
   <div v-if="!loading && !getError" class="container mx-auto">
-    <div v-if="data.gifts && data.gifts.length > 0 && data.gifts[0].event"
+    <div v-if="data.data && data.data.length > 0 && data.data[0].event"
       class="flex flex-col sm:flex-row mb-4 items-center gap-2">
-      <img class="size-[150px]" crossorigin="anonymous" :src="data.gifts[0].event.image" alt="Event image" />
+      <img class="size-[150px]" crossorigin="anonymous" :src="data.data[0].event.image" alt="Event image" />
       <div class="text-center sm:text-start">
-        <p class="text-xl font-bold">{{ data.gifts[0].event.title }}</p>
-        <p>{{ data.gifts[0].event.date }}</p>
+        <p class="text-xl font-bold">{{ data.data[0].event.title }}</p>
+        <p>{{ data.data[0].event.date }}</p>
         <div class="flex gap-2">
           <p>Gifts count: {{ data.giftCount }}</p>
           <p>Gifts reserved: {{ data.giftReservedCount }}</p>
@@ -45,9 +45,9 @@ const handleSelectChange = (event: Event) => {
       </div>
     </div>
     <div class="flex justify-end items-center">
-      <select @change="handleSelectChange" :class="data.gifts && data.gifts.length > 0
-          ? 'select-bordered'
-          : 'select-disabled'
+      <select @change="handleSelectChange" :class="data.data && data.data.length > 0
+        ? 'select-bordered'
+        : 'select-disabled'
         " class="select select-md w-full max-w-[150px]">
         <option>{{ SHOW_AS_LIST }}</option>
         <option selected>{{ SHOW_AS_CART }}</option>
@@ -56,7 +56,7 @@ const handleSelectChange = (event: Event) => {
     <GiftCard v-if="!isList" :gifts="data" :is-public="true" />
     <GiftList v-if="isList" :gifts="data" :is-public="true" />
   </div>
-  <div v-for="gift in data.gifts">
+  <div v-for="gift in data.data">
     <GiftReserveModal :gift-id="gift.id" />
   </div>
 </template>
