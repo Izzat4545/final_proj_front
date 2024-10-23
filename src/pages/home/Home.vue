@@ -3,7 +3,7 @@ import { INSTRUCTIONS } from "./info/instructions";
 import { useAuthStore } from "../../store/authStore";
 import { computed, onMounted } from "vue";
 import Carousel from "../../globalComponents/carouselComponent/Carousel.vue";
-import { usePublicGiftStore } from "../../store/publicGiftsStore";
+import { usePublicGiftStore } from "../../store/popularGiftsStore";
 import GiftCard from "./components/GiftCard.vue";
 import { storeToRefs } from "pinia";
 import { RouteNames } from "../../enums/Routes";
@@ -41,13 +41,10 @@ onMounted(() => {
 
     <!-- CREATE WISHLIST BTN -->
     <div class="flex justify-center mt-5">
-      <router-link
-        :to="isAuthenticated ? RouteNames.EVENTS : RouteNames.LOGIN"
-        class="text-gray-700 hover:text-blue-500"
-      >
+      <router-link :to="isAuthenticated ? RouteNames.EVENTS : RouteNames.LOGIN"
+        class="text-gray-700 hover:text-blue-500">
         <button
-          class="bg-red-500 text-white p-3 transform transition-transform duration-500 hover:scale-110 rounded-md text-lg"
-        >
+          class="bg-red-500 text-white p-3 transform transition-transform duration-500 hover:scale-110 rounded-md text-lg">
           Create my wishlist
         </button>
       </router-link>
@@ -61,19 +58,13 @@ onMounted(() => {
       <div class="text-red-500" v-if="error">{{ error }}</div>
     </div>
 
-    <Carousel
-      v-if="!error && !loading && data && data.length > 0"
-      :show-controls="true"
-    >
+    <Carousel v-if="!error && !loading && data && data.length > 0" :show-controls="true">
       <div v-for="gift in data" :key="gift.id" class="flex-none mb-4 w-72 mx-2">
         <GiftCard :gift="gift" />
       </div>
     </Carousel>
 
-    <div
-      class="text-center"
-      v-if="!error && !loading && data && data.length < 1"
-    >
+    <div class="text-center" v-if="!error && !loading && data && data.length < 1">
       No popular gifts to show
     </div>
   </div>
