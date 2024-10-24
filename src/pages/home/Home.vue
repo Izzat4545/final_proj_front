@@ -3,10 +3,11 @@ import { INSTRUCTIONS } from "./info/instructions";
 import { useAuthStore } from "../../store/authStore";
 import { computed, onMounted } from "vue";
 import Carousel from "../../globalComponents/carouselComponent/Carousel.vue";
-import { usePublicGiftStore } from "../../store/publicGiftsStore";
-import GiftCard from "./components/GiftCard.vue";
+import { usePublicGiftStore } from "../../store/popularGiftsStore";
 import { storeToRefs } from "pinia";
 import { RouteNames } from "../../enums/Routes";
+import GiftCard from "../../globalComponents/GiftCard.vue";
+import ClaimGiftModal from "../../globalComponents/ClaimGiftModal.vue";
 
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated());
@@ -66,15 +67,18 @@ onMounted(() => {
       :show-controls="true"
     >
       <div v-for="gift in data" :key="gift.id" class="flex-none mb-4 w-72 mx-2">
-        <GiftCard :gift="gift" />
+        <GiftCard :is-public="true" :gift="gift" />
       </div>
     </Carousel>
-
     <div
       class="text-center"
       v-if="!error && !loading && data && data.length < 1"
     >
       No popular gifts to show
     </div>
+  </div>
+  <!-- Claim gift to my event -->
+  <div v-for="gift in data" :key="gift.id" :gift-id="gift.id">
+    <ClaimGiftModal :gift-id="gift.id" />
   </div>
 </template>

@@ -10,6 +10,8 @@ import { useGiftsStore } from "../../store/giftsStore";
 import GiftCard from "../../globalComponents/GiftCard.vue";
 import GiftModal from "../gifts/components/GiftModal.vue";
 import GiftList from "../../globalComponents/GiftList.vue";
+import Pagination from "../../globalComponents/Pagination.vue";
+import { PaginationConfig } from "../../enums/PaginationConfig";
 
 const eventStore = useEventsStore();
 const giftsStore = useGiftsStore();
@@ -107,7 +109,7 @@ const handleSelectChange = (event: Event) => {
             route.params.id &&
             !giftGetError &&
             !giftLoading &&
-            giftData.gifts.length < 1
+            giftData.data.length < 1
           "
         >
           There is no gift in this event
@@ -118,11 +120,43 @@ const handleSelectChange = (event: Event) => {
           route.params.id &&
           !giftGetError &&
           !giftLoading &&
-          giftData.gifts.length > 0
+          giftData.data.length > 0
         "
       >
-        <GiftCard v-if="!isList" :gifts="giftData" :is-public="false" />
-        <GiftList v-if="isList" :gifts="giftData" :is-public="false" />
+        <div
+          class="flex my-3 justify-center sm:justify-start items-start gap-5 flex-wrap"
+        >
+          <GiftCard
+            v-for="gift in giftData.data"
+            v-if="!isList"
+            :gift="gift"
+            :is-public="false"
+          />
+        </div>
+        <div class="flex-col hidden sm:flex justify-center my-3 gap-5">
+          <GiftList
+            v-for="gift in giftData.data"
+            v-if="isList"
+            :gift="gift"
+            :is-public="false"
+          />
+        </div>
+        <div
+          class="flex my-3 sm:hidden justify-center sm:justify-start items-start gap-5 flex-wrap"
+        >
+          <GiftCard
+            v-for="gift in giftData.data"
+            v-if="isList"
+            :gift="gift"
+            :is-public="false"
+          />
+        </div>
+        <div
+          v-if="giftData.meta.totalGifts > PaginationConfig.PAGE_LIMIT"
+          class="flex mb-3 justify-center"
+        >
+          <Pagination />
+        </div>
       </div>
       <!-- update modal -->
       <div v-for="event in data" :key="event.id">
@@ -134,7 +168,7 @@ const handleSelectChange = (event: Event) => {
     <!-- Gift Modal for creating -->
     <GiftModal />
     <!-- update modal for the gift modal -->
-    <div v-for="gift in giftData.gifts" :key="gift.id">
+    <div v-for="gift in giftData.data" :key="gift.id">
       <GiftModal :gifts="gift" />
     </div>
   </div>

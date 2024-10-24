@@ -12,6 +12,7 @@ import { PopularGift } from "../types/pupularGifts";
 import defaultGift from "../assets/defaultGift.jpeg";
 import defaultEventImage from "../assets/defaultEventImage.png";
 import { filterDate } from "../utils/filterDate";
+import { PaginationConfig } from "../enums/PaginationConfig";
 
 export const useGiftsStore = defineStore("gifts", () => {
   const loading = ref(false);
@@ -21,7 +22,8 @@ export const useGiftsStore = defineStore("gifts", () => {
   const data = ref<Gift>({
     giftCount: 0,
     giftReservedCount: 0,
-    gifts: [],
+    meta: { limit: 10, page: 1, totalGifts: 0, totalPages: 1 },
+    data: [],
   });
   const BASE_URL = getEnv("VITE_BASE_URL");
 
@@ -61,12 +63,16 @@ export const useGiftsStore = defineStore("gifts", () => {
     }
   };
 
-  const getGifsByEventId = async (eventId: string) => {
+  const getGifsByEventId = async (
+    eventId: string,
+    page: number = PaginationConfig.INITIAL_PAGE,
+    limit: number = PaginationConfig.PAGE_LIMIT
+  ) => {
     loading.value = true;
     getError.value = null;
 
     try {
-      const getGifts = await globalGet(`gifts/${eventId}`);
+      const getGifts = await globalGet(`gifts/${eventId}`, { page, limit });
 
       if (!getGifts || getGifts.error) {
         throw new Error(getGifts.error || "Failed to fetch gifts");
@@ -75,7 +81,8 @@ export const useGiftsStore = defineStore("gifts", () => {
       data.value = {
         giftCount: getGifts.giftCount,
         giftReservedCount: getGifts.giftReservedCount,
-        gifts: getGifts.gifts.map((gift: PopularGift) => ({
+        meta: getGifts.meta,
+        data: getGifts.data.map((gift: PopularGift) => ({
           ...gift,
           image: gift.image ? `${BASE_URL}/${gift.image}` : defaultGift,
           event: {
@@ -175,11 +182,32 @@ export const useGiftsStore = defineStore("gifts", () => {
     }
   };
 
+  const claimGift = async (giftId: string, targetEventId: string) => {
+    loading.value = true;
+    postError.value = null;
+    try {
+      const addedGift = await globalPost("gifts/popular", {
+        giftId,
+        targetEventId,
+      });
+      if (!addedGift || addedGift.error) {
+        throw new Error(addedGift.error || "Failed to add gift to an event");
+      }
+    } catch (err) {
+      postError.value = err instanceof Error ? err.message : "Post failed";
+      console.error("Post Gift Error:", err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     data,
     loading,
     postError,
     getError,
+    claimGift,
     deleteGiftById,
     createGift,
     getGifsByEventId,

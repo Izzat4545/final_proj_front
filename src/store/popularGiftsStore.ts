@@ -15,7 +15,7 @@ export const usePublicGiftStore = defineStore("publicGiftStore", () => {
     loading.value = true;
     error.value = null;
     try {
-      const getPublicGiftsResult = await globalGet("gifts/public");
+      const getPublicGiftsResult = await globalGet("gifts/popular");
 
       if (getPublicGiftsResult.error) {
         error.value = getPublicGiftsResult.error;
