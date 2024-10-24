@@ -13,8 +13,8 @@ const handleDelete = async (giftId: string, eventId: string) => {
 };
 </script>
 <template>
-  <div class="flex flex-row justify-center sm:flex-col mt-3 gap-5">
-    <div v-for="gift in gifts.gifts"
+  <div class="flex flex-row justify-center sm:flex-col my-3 gap-5">
+    <div v-for="gift in gifts.data"
       class="bg-white rounded-lg relative shadow-md p-4 flex flex-col sm:flex-row justify-between items-center">
       <div class="flex gap-2 flex-col sm:flex-row items-center">
         <img crossorigin="anonymous" :src="gift.image" alt="gift image"

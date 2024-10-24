@@ -15,7 +15,7 @@ export enum RoutePaths {
   SETTINGS = "/settings",
   EVENTS = "/events",
   EVENTS_BY_ID = "/events/:id",
-  GIFTS_BY_EVENT_ID = "/gifts/:eventId",
+  GIFTS_BY_EVENT_ID = "/gifts/:id",
   REGISTER = "/register",
   LOGIN = "/login",
   FORGOT_PASSWORD = "/auth/reset",

@@ -12,6 +12,7 @@ import { PopularGift } from "../types/pupularGifts";
 import defaultGift from "../assets/defaultGift.jpeg";
 import defaultEventImage from "../assets/defaultEventImage.png";
 import { filterDate } from "../utils/filterDate";
+import { PaginationConfig } from "../enums/PaginationConfig";
 
 export const useGiftsStore = defineStore("gifts", () => {
   const loading = ref(false);
@@ -21,7 +22,7 @@ export const useGiftsStore = defineStore("gifts", () => {
   const data = ref<Gift>({
     giftCount: 0,
     giftReservedCount: 0,
-    meta: { limit: 10, page: 10, totalGifts: 0, totalPages: 1 },
+    meta: { limit: 10, page: 1, totalGifts: 0, totalPages: 1 },
     data: [],
   });
   const BASE_URL = getEnv("VITE_BASE_URL");
@@ -62,13 +63,16 @@ export const useGiftsStore = defineStore("gifts", () => {
     }
   };
 
-  const getGifsByEventId = async (eventId: string) => {
+  const getGifsByEventId = async (
+    eventId: string,
+    page: number = PaginationConfig.INITIAL_PAGE,
+    limit: number = PaginationConfig.PAGE_LIMIT
+  ) => {
     loading.value = true;
     getError.value = null;
 
     try {
-      const getGifts = await globalGet(`gifts/${eventId}`);
-      console.log(getGifts);
+      const getGifts = await globalGet(`gifts/${eventId}`, { page, limit });
 
       if (!getGifts || getGifts.error) {
         throw new Error(getGifts.error || "Failed to fetch gifts");

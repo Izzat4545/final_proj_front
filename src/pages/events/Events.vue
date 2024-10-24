@@ -10,6 +10,7 @@ import { useGiftsStore } from "../../store/giftsStore";
 import GiftCard from "../../globalComponents/GiftCard.vue";
 import GiftModal from "../gifts/components/GiftModal.vue";
 import GiftList from "../../globalComponents/GiftList.vue";
+import Pagination from "../../globalComponents/Pagination.vue";
 
 const eventStore = useEventsStore();
 const giftsStore = useGiftsStore();
@@ -93,6 +94,9 @@ const handleSelectChange = (event: Event) => {
       ">
         <GiftCard v-if="!isList" :gifts="giftData" :is-public="false" />
         <GiftList v-if="isList" :gifts="giftData" :is-public="false" />
+        <div v-if="giftData.data.length > 10" class="flex justify-center">
+          <Pagination />
+        </div>
       </div>
       <!-- update modal -->
       <div v-for="event in data" :key="event.id">
