@@ -123,13 +123,26 @@ const handleSelectChange = (event: Event) => {
           giftData.data.length > 0
         "
       >
-        <GiftCard v-if="!isList" :gifts="giftData" :is-public="false" />
-        <GiftList v-if="isList" :gifts="giftData" :is-public="false" />
         <div
-          v-if="
-            giftData.data.length === PaginationConfig.PAGE_LIMIT ||
-            route.query.page
-          "
+          class="flex my-3 justify-center sm:justify-start items-start gap-5 flex-wrap"
+        >
+          <GiftCard
+            v-for="gift in giftData.data"
+            v-if="!isList"
+            :gift="gift"
+            :is-public="false"
+          />
+        </div>
+        <div class="flex flex-row justify-center sm:flex-col my-3 gap-5">
+          <GiftList
+            v-for="gift in giftData.data"
+            v-if="isList"
+            :gift="gift"
+            :is-public="false"
+          />
+        </div>
+        <div
+          v-if="giftData.meta.totalGifts > PaginationConfig.PAGE_LIMIT"
           class="flex justify-center"
         >
           <Pagination />

@@ -85,12 +85,26 @@ const handleSelectChange = (event: Event) => {
     class="container mx-auto"
     v-if="route.params.id && !getError && !loading && data.data.length > 0"
   >
-    <GiftCard v-if="!isList" :gifts="data" :is-public="true" />
-    <GiftList v-if="isList" :gifts="data" :is-public="true" />
     <div
-      v-if="
-        data.data.length === PaginationConfig.PAGE_LIMIT || route.query.page
-      "
+      class="flex my-3 justify-center sm:justify-start items-start gap-5 flex-wrap"
+    >
+      <GiftCard
+        v-for="gift in data.data"
+        v-if="!isList"
+        :gift="gift"
+        :is-public="true"
+      />
+    </div>
+    <div class="flex flex-row justify-center sm:flex-col my-3 gap-5">
+      <GiftList
+        v-for="gift in data.data"
+        v-if="isList"
+        :gift="gift"
+        :is-public="true"
+      />
+    </div>
+    <div
+      v-if="data.meta.totalGifts > PaginationConfig.PAGE_LIMIT"
       class="flex justify-center"
     >
       <Pagination />
