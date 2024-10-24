@@ -7,6 +7,7 @@ import { storeToRefs } from "pinia";
 import GiftReserveModal from "./components/GiftReserveModal.vue";
 import GiftList from "../../globalComponents/GiftList.vue";
 import Pagination from "../../globalComponents/Pagination.vue";
+import { PaginationConfig } from "../../enums/PaginationConfig";
 
 const { getGifsByEventId } = useGiftsStore();
 
@@ -20,8 +21,8 @@ onMounted(async () => {
     await getGifsByEventId(route.params.id.toString());
   }
 });
-const SHOW_AS_LIST = "Show as: list"
-const SHOW_AS_CART = "Show as: cart"
+const SHOW_AS_LIST = "Show as: list";
+const SHOW_AS_CART = "Show as: cart";
 
 const handleSelectChange = (event: Event) => {
   const selectedValue = (event.target as HTMLSelectElement).value;
@@ -30,9 +31,16 @@ const handleSelectChange = (event: Event) => {
 </script>
 <template>
   <div v-if="!loading && !getError" class="container mx-auto">
-    <div v-if="data.data && data.data.length > 0 && data.data[0].event"
-      class="flex flex-col sm:flex-row mb-4 items-center gap-2">
-      <img class="size-[150px]" crossorigin="anonymous" :src="data.data[0].event.image" alt="Event image" />
+    <div
+      v-if="data.data && data.data.length > 0 && data.data[0].event"
+      class="flex flex-col sm:flex-row mb-4 items-center gap-2"
+    >
+      <img
+        class="size-[150px]"
+        crossorigin="anonymous"
+        :src="data.data[0].event.image"
+        alt="Event image"
+      />
       <div class="text-center sm:text-start">
         <p class="text-xl font-bold">{{ data.data[0].event.title }}</p>
         <p>{{ data.data[0].event.date }}</p>
@@ -43,11 +51,19 @@ const handleSelectChange = (event: Event) => {
       </div>
     </div>
   </div>
-  <div v-if="!getError && !loading" class="flex justify-end items-center">
-    <select @change="handleSelectChange" :class="data.data && data.data.length > 0
-      ? 'select-bordered'
-      : 'select-disabled'
-      " class="select select-md w-full max-w-[150px]">
+  <div
+    v-if="!getError && !loading"
+    class="flex container mx-auto justify-end items-center"
+  >
+    <select
+      @change="handleSelectChange"
+      :class="
+        data.data && data.data.length > 0
+          ? 'select-bordered'
+          : 'select-disabled'
+      "
+      class="select select-md w-full max-w-[150px]"
+    >
       <option>{{ SHOW_AS_LIST }}</option>
       <option selected>{{ SHOW_AS_CART }}</option>
     </select>
@@ -58,24 +74,25 @@ const handleSelectChange = (event: Event) => {
     <div v-if="getError" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
       {{ getError }}
     </div>
-    <div class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg" v-if="
-      route.params.id &&
-      !getError &&
-      !loading &&
-      data.data.length < 1
-    ">
+    <div
+      class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg"
+      v-if="route.params.id && !getError && !loading && data.data.length < 1"
+    >
       There is no gift in this event
     </div>
   </div>
-  <div v-if="
-    route.params.id &&
-    !getError &&
-    !loading &&
-    data.data.length > 0
-  ">
+  <div
+    class="container mx-auto"
+    v-if="route.params.id && !getError && !loading && data.data.length > 0"
+  >
     <GiftCard v-if="!isList" :gifts="data" :is-public="true" />
     <GiftList v-if="isList" :gifts="data" :is-public="true" />
-    <div v-if="data.data.length > 10" class="flex justify-center">
+    <div
+      v-if="
+        data.data.length === PaginationConfig.PAGE_LIMIT || route.query.page
+      "
+      class="flex justify-center"
+    >
       <Pagination />
     </div>
   </div>
