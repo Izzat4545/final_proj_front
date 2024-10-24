@@ -133,7 +133,7 @@ const handleSelectChange = (event: Event) => {
             :is-public="false"
           />
         </div>
-        <div class="flex flex-row justify-center sm:flex-col my-3 gap-5">
+        <div class="flex-col hidden sm:flex justify-center my-3 gap-5">
           <GiftList
             v-for="gift in giftData.data"
             v-if="isList"
@@ -142,8 +142,18 @@ const handleSelectChange = (event: Event) => {
           />
         </div>
         <div
+          class="flex my-3 sm:hidden justify-center sm:justify-start items-start gap-5 flex-wrap"
+        >
+          <GiftCard
+            v-for="gift in giftData.data"
+            v-if="isList"
+            :gift="gift"
+            :is-public="false"
+          />
+        </div>
+        <div
           v-if="giftData.meta.totalGifts > PaginationConfig.PAGE_LIMIT"
-          class="flex justify-center"
+          class="flex mb-3 justify-center"
         >
           <Pagination />
         </div>

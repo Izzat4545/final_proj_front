@@ -8,6 +8,7 @@ import GiftReserveModal from "./components/GiftReserveModal.vue";
 import GiftList from "../../globalComponents/GiftList.vue";
 import Pagination from "../../globalComponents/Pagination.vue";
 import { PaginationConfig } from "../../enums/PaginationConfig";
+import ClaimGiftModal from "../../globalComponents/ClaimGiftModal.vue";
 
 const { getGifsByEventId } = useGiftsStore();
 
@@ -95,8 +96,19 @@ const handleSelectChange = (event: Event) => {
         :is-public="true"
       />
     </div>
-    <div class="flex flex-row justify-center sm:flex-col my-3 gap-5">
+    <div class="flex-col hidden sm:flex justify-center my-3 gap-5">
       <GiftList
+        v-for="gift in data.data"
+        v-if="isList"
+        :gift="gift"
+        :is-public="true"
+      />
+    </div>
+    <!-- on small display I am showing the cart -->
+    <div
+      class="flex my-3 sm:hidden justify-center sm:justify-start items-start gap-5 flex-wrap"
+    >
+      <GiftCard
         v-for="gift in data.data"
         v-if="isList"
         :gift="gift"
@@ -105,12 +117,16 @@ const handleSelectChange = (event: Event) => {
     </div>
     <div
       v-if="data.meta.totalGifts > PaginationConfig.PAGE_LIMIT"
-      class="flex justify-center"
+      class="flex mb-3 justify-center"
     >
       <Pagination />
     </div>
   </div>
   <div v-for="gift in data.data" :key="gift.id">
     <GiftReserveModal :gift-id="gift.id" />
+  </div>
+  <!-- Claim gift to my event -->
+  <div v-for="gift in data.data" :key="gift.id" :gift-id="gift.id">
+    <ClaimGiftModal :gift-id="gift.id" />
   </div>
 </template>

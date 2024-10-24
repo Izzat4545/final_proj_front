@@ -1,5 +1,8 @@
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "../store/authStore";
 import { useGiftsStore } from "../store/giftsStore";
+import { useSettings } from "../store/settingsStore";
 import { PopularGift } from "../types/pupularGifts";
 import { formatNumbers } from "../utils/formatNumbers";
 import { shortenText } from "../utils/textShortener";
@@ -7,6 +10,11 @@ import { shortenText } from "../utils/textShortener";
 defineProps<{ gift: PopularGift; isPublic: boolean }>();
 
 const { deleteGiftById } = useGiftsStore();
+
+const useAuthstore = useAuthStore();
+const isAuthenticated = useAuthstore.isAuthenticated();
+const settingStore = useSettings();
+const { data: settingsData } = storeToRefs(settingStore);
 
 const handleDelete = async (giftId: string, eventId: string) => {
   await deleteGiftById(giftId, eventId);
@@ -42,14 +50,26 @@ const handleDelete = async (giftId: string, eventId: string) => {
           v-if="isPublic"
           :for="gift.id"
           :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
-          class="btn rounded w-full text-white btn-sm"
+          class="btn mb-3 rounded w-full text-white btn-sm"
         >
           {{ gift.reservedEmail ? "reserved" : "reserve" }}
+        </label>
+        <label
+          v-if="
+            isPublic &&
+            isAuthenticated &&
+            gift.userId &&
+            settingsData?.id !== gift.userId
+          "
+          :for="gift.id + 'claim'"
+          class="btn btn-success rounded w-full text-white btn-sm"
+        >
+          Claim
         </label>
         <a
           :href="gift.link"
           target="_blank"
-          class="bg-blue-500 btn btn-sm w-full text-white rounded hover:bg-blue-600 transition-colors my-2"
+          class="w-full underline text-gray-500 my-2"
         >
           Buy in Store
         </a>
