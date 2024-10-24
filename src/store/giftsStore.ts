@@ -182,11 +182,32 @@ export const useGiftsStore = defineStore("gifts", () => {
     }
   };
 
+  const claimGift = async (giftId: string, targetEventId: string) => {
+    loading.value = true;
+    postError.value = null;
+    try {
+      const addedGift = await globalPost("gifts/popular", {
+        giftId,
+        targetEventId,
+      });
+      if (!addedGift || addedGift.error) {
+        throw new Error(addedGift.error || "Failed to add gift to an event");
+      }
+    } catch (err) {
+      postError.value = err instanceof Error ? err.message : "Post failed";
+      console.error("Post Gift Error:", err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     data,
     loading,
     postError,
     getError,
+    claimGift,
     deleteGiftById,
     createGift,
     getGifsByEventId,
