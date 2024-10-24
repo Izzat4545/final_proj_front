@@ -1,7 +1,15 @@
-import { PopularGifts } from "./pupularGifts";
+import { PopularGift } from "./pupularGifts";
 
-export interface Gifts {
+export interface Gift {
   giftCount: number;
   giftReservedCount: number;
-  gifts: PopularGifts[];
+  meta: Meta;
+  data: PopularGift[];
+}
+
+export interface Meta {
+  page: number;
+  limit: number;
+  totalPages: number;
+  totalGifts: number;
 }

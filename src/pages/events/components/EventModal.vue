@@ -2,11 +2,11 @@
 import { ref } from "vue";
 import Modal from "../../../globalComponents/Modal.vue";
 import { useEventsStore } from "../../../store/eventsStore";
-import { EventVisibility } from "../../../enums/EventVisibility";
+import { EventVisibilities } from "../../../enums/EventVisibilities";
 import { storeToRefs } from "pinia";
-import { Events } from "../../../types/events";
+import { Event as EventType } from "../../../types/events";
 
-const props = defineProps<{ event?: Events }>();
+const props = defineProps<{ event?: EventType }>();
 const eventStore = useEventsStore();
 
 const { postError, loading } = storeToRefs(eventStore);
@@ -16,10 +16,19 @@ const { createEvents, updateEventById } = useEventsStore();
 const title = ref(props.event ? props.event.title : "");
 const date = ref(props.event ? props.event.date : "");
 const visibility = ref(
-  props.event ? props.event.visibility : EventVisibility.PRIVATE
+  props.event ? props.event.visibility : EventVisibilities.PRIVATE
 );
 const description = ref(props.event ? props.event.description : "");
 let image = ref<File | null>(null);
+
+const handleFileChange = (e: Event) => {
+  const files = (e.target as HTMLInputElement).files;
+  if (files && files.length > 0) {
+    image.value = files[0];
+  } else {
+    image.value = null;
+  }
+};
 
 const handleEvent = async () => {
   try {
@@ -62,13 +71,8 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Title <span class="text-red-600">*</span>
           </label>
-          <input
-            type="text"
-            v-model="title"
-            class="input input-bordered w-full"
-            placeholder="Enter event title"
-            required
-          />
+          <input type="text" v-model="title" class="input input-bordered w-full" placeholder="Enter event title"
+            required />
         </div>
 
         <!-- Date (Required) -->
@@ -76,12 +80,7 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Date <span class="text-red-600">*</span>
           </label>
-          <input
-            type="date"
-            v-model="date"
-            class="input input-bordered w-full"
-            required
-          />
+          <input type="date" v-model="date" class="input input-bordered w-full" required />
         </div>
 
         <!-- Visibility (Required) -->
@@ -90,9 +89,9 @@ const handleEvent = async () => {
             Visibility <span class="text-red-600">*</span>
           </label>
           <select v-model="visibility" class="select select-bordered w-full">
-            <option :value="EventVisibility.PUBLIC">Public</option>
-            <option :value="EventVisibility.PRIVATE">Private</option>
-            <option :value="EventVisibility.BY_URL">By url</option>
+            <option :value="EventVisibilities.PUBLIC">Public</option>
+            <option :value="EventVisibilities.PRIVATE">Private</option>
+            <option :value="EventVisibilities.BY_URL">By url</option>
           </select>
         </div>
 
@@ -101,11 +100,8 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Description
           </label>
-          <textarea
-            v-model="description"
-            class="textarea textarea-bordered w-full"
-            placeholder="Enter event description (optional)"
-          ></textarea>
+          <textarea v-model="description" class="textarea textarea-bordered w-full"
+            placeholder="Enter event description (optional)" />
         </div>
 
         <!-- Image (Optional) -->
@@ -113,46 +109,21 @@ const handleEvent = async () => {
           <label class="block text-sm font-medium text-gray-700 mb-2">
             Event Image
           </label>
-          <input
-            type="file"
-            @change="(e) => {
-        const files = (e.target as HTMLInputElement).files;
-        if (files && files.length > 0) {
-          image = files[0];
-        } else {
-          image = null;
-        }
-      }"
-            class="file-input file-input-bordered w-full"
-            accept="image/*"
-          />
+          <input type="file" @change="handleFileChange" class="file-input file-input-bordered w-full"
+            accept="image/*" />
         </div>
 
         <!-- Submit Button -->
-        <button
-          v-if="!event"
-          type="submit"
-          class="btn btn-primary w-full flex justify-center items-center gap-2"
-          :disabled="loading"
-        >
-          <span
-            v-if="loading"
-            class="loading loading-spinner loading-sm"
-          ></span>
+        <button v-if="!event" type="submit"
+          class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
+          <span v-if="loading" class="loading loading-spinner loading-sm" />
           {{ loading ? "Creating..." : "Create Event" }}
         </button>
 
         <!-- Update Button -->
-        <button
-          v-if="event"
-          type="submit"
-          class="btn btn-primary w-full flex justify-center items-center gap-2"
-          :disabled="loading"
-        >
-          <span
-            v-if="loading"
-            class="loading loading-spinner loading-sm"
-          ></span>
+        <button v-if="event" type="submit"
+          class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
+          <span v-if="loading" class="loading loading-spinner loading-sm" />
           {{ loading ? "Updating..." : "Update Event" }}
         </button>
       </form>

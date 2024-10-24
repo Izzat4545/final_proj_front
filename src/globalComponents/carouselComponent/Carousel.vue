@@ -2,17 +2,46 @@
 import emblaCarouselVue from "embla-carousel-vue";
 import PrevButton from "./PrevButton.vue";
 import NextButton from "./NextButton.vue";
+import Autoplay from "embla-carousel-autoplay";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
-defineProps({
+const props = defineProps({
   showControls: {
+    type: Boolean,
+    default: true,
+  },
+  autoplay: {
+    type: Boolean,
+    default: true,
+  },
+  loop: {
     type: Boolean,
     default: true,
   },
 });
 
-const [emblaRef, emblaApi] = emblaCarouselVue();
+const DELAY = 3000;
+const plugins = [
+  Autoplay({
+    delay: DELAY,
+    stopOnInteraction: true,
+    stopOnLastSnap: false,
+    active: props.autoplay,
+  }),
+  WheelGesturesPlugin({
+    forceWheelAxis: "y",
+  }),
+];
 
-// Scroll functions for prev/next
+const [emblaRef, emblaApi] = emblaCarouselVue(
+  {
+    align: "start",
+    loop: props.loop,
+    containScroll: "keepSnaps",
+  },
+  plugins
+);
+
 const scrollToPrev = () => {
   if (emblaApi.value) {
     emblaApi.value.scrollPrev();
@@ -27,46 +56,18 @@ const scrollToNext = () => {
 </script>
 
 <template>
-  <div class="carousel-container">
-    <div class="embla" ref="emblaRef">
-      <div class="embla__container">
+  <div class="relative">
+    <div class="overflow-hidden" ref="emblaRef">
+      <div class="flex embla__container">
         <slot></slot>
       </div>
-      <div v-if="showControls" class="button-container">
-        <PrevButton @click="scrollToPrev" />
-        <NextButton @click="scrollToNext" />
+      <div
+        v-if="showControls"
+        class="absolute inset-1 flex justify-between pointer-events-none items-center px-5"
+      >
+        <PrevButton class="pointer-events-auto" @click="scrollToPrev" />
+        <NextButton class="pointer-events-auto" @click="scrollToNext" />
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.carousel-container {
-  position: relative;
-}
-
-.embla {
-  overflow: hidden;
-}
-
-.embla__container {
-  display: flex;
-}
-
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  padding: 0 20px;
-}
-
-.embla__button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-</style>

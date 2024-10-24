@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useAuthStore } from "../../../store/authStore";
 import { computed } from "vue";
 import GoogleBtn from "../components/GoogleBtn.vue";
+import { RoutePaths } from "../../../enums/Routes";
 
 const email = ref("");
 const password = ref("");
@@ -46,9 +47,12 @@ const login = async () => {
               class="block text-sm font-medium text-gray-700"
               >Password</label
             >
-            <router-link to="/auth/reset" class="text-blue-500 hover:underline"
-              >Forgot password</router-link
+            <router-link
+              :to="RoutePaths.FORGOT_PASSWORD"
+              class="text-blue-500 hover:underline"
             >
+              Forgot password
+            </router-link>
           </div>
           <input
             v-model="password"
@@ -59,20 +63,26 @@ const login = async () => {
           />
         </div>
         <button
-          :disabled="authStore.loading"
           type="submit"
           :class="
-            authStore.loading ? 'bg-gray-500' : 'bg-blue-500 hover:bg-blue-600'
+            authStore.loading
+              ? 'bg-gray-500 btn-disabled'
+              : 'bg-blue-500 hover:bg-blue-600'
           "
-          class="w-full text-white py-2 px-4 rounded"
+          class="w-full btn text-white flex items-center gap-2 rounded"
         >
-          <div v-if="authStore.loading">Loading..</div>
-          <div v-if="!authStore.loading">Login</div>
+          <span
+            v-if="authStore.loading"
+            class="loading loading-spinner loading-sm"
+          ></span>
+          <div>Login</div>
         </button>
       </form>
       <p class="my-4 text-center">
         Don't have an account?
-        <router-link to="/register" class="text-blue-500 hover:underline"
+        <router-link
+          :to="RoutePaths.REGISTER"
+          class="text-blue-500 hover:underline"
           >Register</router-link
         >
       </p>
