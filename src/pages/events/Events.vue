@@ -12,9 +12,11 @@ import GiftModal from "../gifts/components/GiftModal.vue";
 import GiftList from "../../globalComponents/GiftList.vue";
 import Pagination from "../../globalComponents/Pagination.vue";
 import { PaginationConfig } from "../../enums/PaginationConfig";
+import { useSettings } from "../../store/settingsStore";
 
 const eventStore = useEventsStore();
 const giftsStore = useGiftsStore();
+const settingStore = useSettings();
 const route = useRoute();
 const isList = ref<boolean>(false);
 const {
@@ -28,6 +30,7 @@ const SHOW_AS_CART = "Show as: cart";
 
 onMounted(async () => {
   await eventStore.getEvents();
+  await settingStore.getUserSettings();
 });
 
 const handleSelectChange = (event: Event) => {
