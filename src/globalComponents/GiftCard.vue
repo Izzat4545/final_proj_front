@@ -25,18 +25,18 @@ const GIFT_DESC_LIMIT = 30;
 </script>
 <template>
   <div
-    class="bg-white rounded-lg w-full max-w-[300px] max-h-[450px] relative shadow-md p-4 flex flex-col items-start"
+    class="bg-white rounded-lg w-full max-w-[300px] h-full max-h-[450px] relative shadow-md p-4 flex flex-col items-start"
   >
     <img
       crossorigin="anonymous"
       :src="gift.image"
       alt="gift image"
-      class="w-full h-48 object-cover rounded-lg mb-4"
+      class="w-full h-48 object-cover rounded-lg mb-2"
     />
-    <h3 class="text-lg font-semibold mb-2">
+    <h3 class="text-lg font-semibold mb-1">
       {{ shortenText(gift.name, GIFT_NAME_LIMIT) }}
     </h3>
-    <p v-if="gift.description" class="text-gray-600 text-sm mb-2">
+    <p v-if="gift.description" class="text-gray-600 mb-1 text-sm">
       {{ shortenText(gift.description, GIFT_DESC_LIMIT) }}
     </p>
     <!-- Reserve btn if it is public -->
