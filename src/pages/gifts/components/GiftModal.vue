@@ -74,11 +74,15 @@ const handleEvent = async () => {
       <form @submit.prevent="handleEvent" enctype="multipart/form-data">
         <!-- Name (Required) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="giftName"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Name <span class="text-red-600">*</span>
           </label>
           <input
             type="text"
+            id="giftName"
             v-model="name"
             class="input input-bordered w-full"
             placeholder="Enter gift name"
@@ -88,11 +92,15 @@ const handleEvent = async () => {
 
         <!-- Price (Required) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="giftPrice"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Price <span class="text-red-600">*</span>
           </label>
           <input
             type="number"
+            id="giftPrice"
             placeholder="Enter gift price"
             v-model="price"
             class="input input-bordered w-full"
@@ -102,10 +110,17 @@ const handleEvent = async () => {
 
         <!-- Currency (Required) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="giftCurrency"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Currency <span class="text-red-600">*</span>
           </label>
-          <select v-model="currency" class="select select-bordered w-full">
+          <select
+            id="giftCurrency"
+            v-model="currency"
+            class="select select-bordered w-full"
+          >
             <option :value="Currencies.RUB">RUB</option>
             <option :value="Currencies.USD">USD</option>
             <option :value="Currencies.UZS">UZS</option>
@@ -114,11 +129,15 @@ const handleEvent = async () => {
 
         <!-- Link (Required) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="giftLink"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Shop link <span class="text-red-600">*</span>
           </label>
           <input
             type="text"
+            id="giftLink"
             v-model="link"
             class="input input-bordered w-full"
             placeholder="Enter shop link"
@@ -128,10 +147,14 @@ const handleEvent = async () => {
 
         <!-- Description (Optional) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="giftDescription"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Description
           </label>
           <textarea
+            id="giftDescription"
             v-model="description"
             class="textarea textarea-bordered w-full"
             placeholder="Enter event description (optional)"
@@ -140,11 +163,15 @@ const handleEvent = async () => {
 
         <!-- Image (Optional) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="giftImage"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Event Image
           </label>
           <input
             type="file"
+            id="giftImage"
             @change="handleFileChange"
             class="file-input file-input-bordered w-full"
             accept="image/*"

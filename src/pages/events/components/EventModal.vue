@@ -10,7 +10,6 @@ const props = defineProps<{ event?: EventType }>();
 const eventStore = useEventsStore();
 
 const { postError, loading } = storeToRefs(eventStore);
-
 const { createEvents, updateEventById } = useEventsStore();
 
 const title = ref(props.event ? props.event.title : "");
@@ -49,8 +48,10 @@ const handleEvent = async () => {
         description.value,
         image.value
       );
-      // resettings the form
-      (title.value = ""), (date.value = ""), (description.value = "");
+      // reset the form
+      title.value = "";
+      date.value = "";
+      description.value = "";
     }
   } catch (err) {
     throw new Error((err as Error).message || "Failed to create event");
@@ -68,65 +69,114 @@ const handleEvent = async () => {
       <form @submit.prevent="handleEvent" enctype="multipart/form-data">
         <!-- Title (Required) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="event-title"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Title <span class="text-red-600">*</span>
           </label>
-          <input type="text" v-model="title" class="input input-bordered w-full" placeholder="Enter event title"
-            required />
+          <input
+            type="text"
+            id="event-title"
+            v-model="title"
+            class="input input-bordered w-full"
+            placeholder="Enter event title"
+            required
+          />
         </div>
 
         <!-- Date (Required) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="event-date"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Date <span class="text-red-600">*</span>
           </label>
-          <input type="date" v-model="date" class="input input-bordered w-full" required />
+          <input
+            type="date"
+            id="event-date"
+            v-model="date"
+            class="input input-bordered w-full"
+            required
+          />
         </div>
 
         <!-- Visibility (Required) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="event-visibility"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Visibility <span class="text-red-600">*</span>
           </label>
-          <select v-model="visibility" class="select select-bordered w-full">
+          <select
+            id="event-visibility"
+            v-model="visibility"
+            class="select select-bordered w-full"
+          >
             <option :value="EventVisibilities.PUBLIC">Public</option>
             <option :value="EventVisibilities.PRIVATE">Private</option>
-            <option :value="EventVisibilities.BY_URL">By url</option>
+            <option :value="EventVisibilities.BY_URL">By URL</option>
           </select>
         </div>
 
         <!-- Description (Optional) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="event-description"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Description
           </label>
-          <textarea v-model="description" class="textarea textarea-bordered w-full"
-            placeholder="Enter event description (optional)" />
+          <textarea
+            id="event-description"
+            v-model="description"
+            class="textarea textarea-bordered w-full"
+            placeholder="Enter event description (optional)"
+          />
         </div>
 
         <!-- Image (Optional) -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            for="event-image"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
             Event Image
           </label>
-          <input type="file" @change="handleFileChange" class="file-input file-input-bordered w-full"
-            accept="image/*" />
+          <input
+            type="file"
+            id="event-image"
+            @change="handleFileChange"
+            class="file-input file-input-bordered w-full"
+            accept="image/*"
+          />
         </div>
 
         <!-- Submit Button -->
-        <button v-if="!event" type="submit"
-          class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
+        <button
+          v-if="!event"
+          type="submit"
+          class="btn btn-success text-white w-full flex justify-center items-center gap-2"
+          :disabled="loading"
+        >
           <span v-if="loading" class="loading loading-spinner loading-sm" />
           {{ loading ? "Creating..." : "Create Event" }}
         </button>
 
         <!-- Update Button -->
-        <button v-if="event" type="submit"
-          class="btn btn-success text-white w-full flex justify-center items-center gap-2" :disabled="loading">
+        <button
+          v-if="event"
+          type="submit"
+          class="btn btn-success text-white w-full flex justify-center items-center gap-2"
+          :disabled="loading"
+        >
           <span v-if="loading" class="loading loading-spinner loading-sm" />
           {{ loading ? "Updating..." : "Update Event" }}
         </button>
       </form>
+
       <!-- Error Message -->
       <div v-if="postError" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
         {{ postError }}

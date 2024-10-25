@@ -1,5 +1,6 @@
 <template>
   <button
+    name="prev-btn"
     class="flex items-center justify-center w-12 h-12 border-2 border-gray-300 group rounded-full bg-white transition duration-300 ease-in-out hover:bg-red-500 hover:border-red-500"
     type="button"
   >
