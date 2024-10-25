@@ -3,7 +3,13 @@ defineProps<{ name: string }>();
 </script>
 <template>
   <input type="checkbox" :id="name" class="modal-toggle" />
-  <div class="modal" :aria-labelledby="`${name}-title`" role="dialog">
+  <div
+    class="modal"
+    :id="name"
+    :aria-labelledby="`${name}-title`"
+    role="dialog"
+    title="modal"
+  >
     <div class="modal-box">
       <slot />
       <div class="modal-action">
