@@ -7,6 +7,7 @@ import { shortenText } from "../utils/textShortener";
 import { useAuthStore } from "../store/authStore";
 import { storeToRefs } from "pinia";
 import { useSettings } from "../store/settingsStore";
+import defaultImage from "../assets/defaultGift.jpeg";
 
 defineProps<{ gift: PopularGift; isPublic: boolean }>();
 
@@ -22,6 +23,10 @@ const { data: settingsData } = storeToRefs(settingStore);
 
 const GIFT_NAME_LIMIT = 15;
 const GIFT_DESC_LIMIT = 30;
+
+const handleImageError = (event: Event) => {
+  (event.target as HTMLImageElement).src = defaultImage;
+};
 </script>
 <template>
   <div
@@ -29,9 +34,10 @@ const GIFT_DESC_LIMIT = 30;
   >
     <img
       crossorigin="anonymous"
-      :src="gift.image"
+      :src="gift.image || defaultImage"
       alt="gift image"
       class="size-[250px] mx-auto object-cover rounded-lg mb-2"
+      @error="handleImageError"
     />
     <h3 class="text-lg font-semibold mb-1">
       {{ shortenText(gift.name, GIFT_NAME_LIMIT) }}

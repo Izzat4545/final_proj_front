@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Event } from "../../../types/events";
+import { Event as EventType } from "../../../types/events";
 import { useEventsStore } from "../../../store/eventsStore";
 import ShareEvent from "./ShareEvent.vue";
 import { useRouter, useRoute } from "vue-router";
@@ -7,9 +7,10 @@ import { useGiftsStore } from "../../../store/giftsStore";
 import { onMounted } from "vue";
 import { shortenText } from "../../../utils/textShortener";
 import { RoutePaths } from "../../../enums/Routes";
+import defaultEventImage from "../../../assets/defaultEventImage.png";
 
 const props = defineProps<{
-  event: Event;
+  event: EventType;
 }>();
 const router = useRouter();
 const eventsStore = useEventsStore();
@@ -54,6 +55,10 @@ onMounted(async () => {
     }
   }
 });
+
+const handleImageError = (event: Event) => {
+  (event.target as HTMLImageElement).src = defaultEventImage;
+};
 </script>
 
 <template>
@@ -69,6 +74,7 @@ onMounted(async () => {
         class="h-[130px] object-cover"
         :src="event.image"
         alt="Event Image"
+        @error="handleImageError"
       />
     </figure>
     <div class="card-body">
