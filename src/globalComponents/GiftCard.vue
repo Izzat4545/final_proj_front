@@ -76,15 +76,12 @@ const GIFT_DESC_LIMIT = 30;
       v-if="!isPublic"
       class="flex gap-2 absolute top-0 right-2 transition-all flex-col mt-3"
     >
-      <label
-        :for="gift.id"
-        class="btn rounded-full btn-ghost btn-circle btn-sm"
-      >
+      <label :for="gift.id" class="btn rounded-full btn-circle btn-sm">
         <img src="../assets/edit.svg" alt="Edit" />
       </label>
       <button
         @click="handleDelete(gift.id, gift.eventId)"
-        class="btn rounded-full btn-ghost btn-circle btn-sm"
+        class="btn rounded-full btn-circle btn-sm"
       >
         <img src="../assets/delete.svg" alt="Delete" />
       </button>

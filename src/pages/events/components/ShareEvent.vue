@@ -27,11 +27,7 @@ const copyToClipboard = (text: string) => {
     "
     class="dropdown"
   >
-    <div
-      tabindex="0"
-      role="button"
-      class="btn rounded-full btn-ghost btn-circle btn-sm"
-    >
+    <div tabindex="0" role="button" class="btn rounded-full btn-circle btn-sm">
       <img src="../../../assets/share.svg" alt="Share" />
     </div>
     <div
