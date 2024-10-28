@@ -71,6 +71,7 @@ onMounted(async () => {
     <div class="card-body">
       <h2 class="card-title text-[16px]">{{ shortenText(event.title, 15) }}</h2>
       <p>Event Date: {{ event.date }}</p>
+      <p v-if="event.description">{{ shortenText(event.description, 18) }}</p>
       <div
         @click.stop
         class="flex gap-2 absolute top-0 right-2 transition-all flex-col mt-3"
