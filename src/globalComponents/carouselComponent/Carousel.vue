@@ -29,7 +29,7 @@ const plugins = [
     active: props.autoplay,
   }),
   WheelGesturesPlugin({
-    forceWheelAxis: "y",
+    forceWheelAxis: "x",
   }),
 ];
 
