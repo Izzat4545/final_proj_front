@@ -88,7 +88,7 @@ export const useGiftsStore = defineStore("gifts", () => {
           event: {
             ...gift.event,
             image: gift.event.image
-              ? `${BASE_URL}/${gift.image}`
+              ? `${BASE_URL}/${gift.event.image}`
               : defaultEventImage,
             date: filterDate(gift.event.date),
           },

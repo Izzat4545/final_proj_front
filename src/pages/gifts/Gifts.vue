@@ -37,7 +37,7 @@ const handleSelectChange = (event: Event) => {
       class="flex flex-col sm:flex-row mb-4 items-center gap-2"
     >
       <img
-        class="size-[150px]"
+        class="size-[150px] object-cover rounded-md"
         crossorigin="anonymous"
         :src="data.data[0].event.image"
         alt="Event image"
@@ -87,7 +87,7 @@ const handleSelectChange = (event: Event) => {
     v-if="route.params.id && !getError && !loading && data.data.length > 0"
   >
     <div
-      class="flex my-3 justify-center sm:justify-start items-start gap-5 flex-wrap"
+      class="flex my-3 justify-center sm:justify-start items-stretch gap-5 flex-wrap"
     >
       <GiftCard
         v-for="gift in data.data"
@@ -106,7 +106,7 @@ const handleSelectChange = (event: Event) => {
     </div>
     <!-- on small display I am showing the cart -->
     <div
-      class="flex my-3 sm:hidden justify-center sm:justify-start items-start gap-5 flex-wrap"
+      class="flex my-3 sm:hidden justify-center sm:justify-start items-stretch gap-5 flex-wrap"
     >
       <GiftCard
         v-for="gift in data.data"
