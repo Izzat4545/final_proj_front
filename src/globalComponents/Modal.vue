@@ -12,13 +12,7 @@ defineProps<{ name: string }>();
   >
     <div class="modal-box">
       <slot />
-      <div class="modal-action">
-        <label
-          class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          :for="name"
-          >✕</label
-        >
-      </div>
     </div>
+    <label class="modal-backdrop" :for="name">Close</label>
   </div>
 </template>
