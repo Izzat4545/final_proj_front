@@ -64,7 +64,7 @@ const handleSelectChange = (event: Event) => {
       :loop="false"
       v-if="!loading && data.length > 0 && !getError"
     >
-      <div v-for="event in data" class="flex w-[230px]">
+      <div v-for="event in data" class="flex shrink-0 mx-3">
         <EventCard :event="event" />
       </div>
     </Carousel>

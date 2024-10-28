@@ -31,7 +31,7 @@ const GIFT_DESC_LIMIT = 30;
       crossorigin="anonymous"
       :src="gift.image"
       alt="gift image"
-      class="w-full h-48 object-cover rounded-lg mb-2"
+      class="size-[250px] mx-auto object-cover rounded-lg mb-2"
     />
     <h3 class="text-lg font-semibold mb-1">
       {{ shortenText(gift.name, GIFT_NAME_LIMIT) }}

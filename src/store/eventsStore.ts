@@ -92,7 +92,7 @@ export const useEventsStore = defineStore("events", () => {
       formData.append("title", title);
       formData.append("date", date);
       formData.append("visibility", visibility);
-      formData.append("description", description || "");
+      if (description) formData.append("description", description);
       if (image) formData.append("image", image);
 
       const updateEvent = await globalPut("events/" + id, formData, true);

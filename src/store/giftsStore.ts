@@ -45,7 +45,7 @@ export const useGiftsStore = defineStore("gifts", () => {
       formData.append("currency", currency);
       formData.append("link", link);
       formData.append("price", price);
-      formData.append("description", description || "");
+      if (description) formData.append("description", description);
       if (image) formData.append("image", image);
 
       const postGift = await globalPost("gifts/" + eventId, formData, true);
