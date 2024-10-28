@@ -25,7 +25,7 @@ const GIFT_DESC_LIMIT = 30;
 </script>
 <template>
   <div
-    class="bg-white rounded-lg w-full max-w-[300px] h-full max-h-[450px] relative shadow-md p-4 flex flex-col items-start"
+    class="rounded-lg bg-white w-full max-w-[300px] relative shadow-md p-4 flex flex-col"
   >
     <img
       crossorigin="anonymous"

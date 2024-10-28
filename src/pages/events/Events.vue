@@ -127,7 +127,7 @@ const handleSelectChange = (event: Event) => {
         "
       >
         <div
-          class="flex my-3 justify-center sm:justify-start items-start gap-5 flex-wrap"
+          class="flex my-3 justify-center sm:justify-start items-stretch gap-5 flex-wrap"
         >
           <GiftCard
             v-for="gift in giftData.data"

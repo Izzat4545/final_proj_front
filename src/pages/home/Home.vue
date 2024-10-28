@@ -66,7 +66,11 @@ onMounted(() => {
       v-if="!error && !loading && data && data.length > 0"
       :show-controls="true"
     >
-      <div v-for="gift in data" :key="gift.id" class="flex-none mb-4 w-72 mx-2">
+      <div
+        v-for="gift in data"
+        :key="gift.id"
+        class="flex items-stretch mb-4 w-72 mx-2"
+      >
         <GiftCard :is-public="true" :gift="gift" />
       </div>
     </Carousel>

@@ -58,7 +58,7 @@ const scrollToNext = () => {
 <template>
   <div class="relative">
     <div class="overflow-hidden" ref="emblaRef">
-      <div class="flex embla__container">
+      <div class="flex">
         <slot></slot>
       </div>
       <div
