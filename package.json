@@ -1,7 +1,7 @@
 {
   "name": "final_proj_front",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "author": "Izzatbek",
   "scripts": {
@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@kyvg/vue3-notification": "3.4.1",
     "embla-carousel-autoplay": "8.3.0",
     "embla-carousel-vue": "8.3.0",
     "embla-carousel-wheel-gestures": "8.0.1",

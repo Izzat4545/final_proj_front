@@ -13,6 +13,7 @@ import defaultGift from "../assets/defaultGift.jpeg";
 import defaultEventImage from "../assets/defaultEventImage.png";
 import { filterDate } from "../utils/filterDate";
 import { PaginationConfig } from "../enums/PaginationConfig";
+import { notify } from "@kyvg/vue3-notification";
 
 export const useGiftsStore = defineStore("gifts", () => {
   const loading = ref(false);
@@ -54,9 +55,19 @@ export const useGiftsStore = defineStore("gifts", () => {
         throw new Error(postGift.error || "Unknown error occurred");
       }
       await getGifsByEventId(eventId);
+
+      notify({
+        title: "Gift has been created",
+        type: "success",
+      });
     } catch (err) {
       postError.value =
         err instanceof Error ? err.message : "Failed to create event";
+
+      notify({
+        title: postError.value,
+        type: "error",
+      });
       throw err;
     } finally {
       loading.value = false;
@@ -131,9 +142,19 @@ export const useGiftsStore = defineStore("gifts", () => {
         throw new Error(updateGift.error || "Unknown error occurred");
       }
       await getGifsByEventId(eventId);
+
+      notify({
+        title: "Gift has been updated",
+        type: "success",
+      });
     } catch (err) {
       postError.value =
         err instanceof Error ? err.message : "Failed to update gift";
+
+      notify({
+        title: postError.value,
+        type: "error",
+      });
       throw err;
     } finally {
       loading.value = false;
@@ -149,9 +170,17 @@ export const useGiftsStore = defineStore("gifts", () => {
         throw new Error(deleteGift.error || "Failed to delete gift");
       }
       await getGifsByEventId(eventId);
+
+      notify({
+        title: "Gift has been deleted",
+        type: "success",
+      });
     } catch (err) {
       deleteError.value = err instanceof Error ? err.message : "Fetch failed";
-      console.error("Delete Gift Error:", err);
+      notify({
+        title: deleteError.value,
+        type: "error",
+      });
       throw err;
     } finally {
       loading.value = false;
@@ -173,9 +202,18 @@ export const useGiftsStore = defineStore("gifts", () => {
         throw new Error(reserveGift.error || "Failed to update gift");
       }
       await getGifsByEventId(eventId);
+
+      notify({
+        title: "Gift has been reserved",
+        type: "success",
+      });
     } catch (err) {
       postError.value = err instanceof Error ? err.message : "Fetch failed";
-      console.error("Update Gift Error:", err);
+
+      notify({
+        title: postError.value,
+        type: "error",
+      });
       throw err;
     } finally {
       loading.value = false;
@@ -193,9 +231,18 @@ export const useGiftsStore = defineStore("gifts", () => {
       if (!addedGift || addedGift.error) {
         throw new Error(addedGift.error || "Failed to add gift to an event");
       }
+
+      notify({
+        title: "Gift has been claimed",
+        type: "success",
+      });
     } catch (err) {
       postError.value = err instanceof Error ? err.message : "Post failed";
-      console.error("Post Gift Error:", err);
+
+      notify({
+        title: postError.value,
+        type: "success",
+      });
       throw err;
     } finally {
       loading.value = false;

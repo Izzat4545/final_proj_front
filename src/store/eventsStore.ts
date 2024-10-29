@@ -10,6 +10,7 @@ import {
 import { Event } from "../types/events";
 import { filterDate } from "../utils/filterDate";
 import defaultEventImage from "../assets/defaultEventImage.png";
+import { notify } from "@kyvg/vue3-notification";
 
 export const useEventsStore = defineStore("events", () => {
   const loading = ref(false);
@@ -43,9 +44,19 @@ export const useEventsStore = defineStore("events", () => {
         throw new Error(postEvent.error || "Unknown error occurred");
       }
       await getEvents();
+
+      notify({
+        title: "Event has been created",
+        type: "success",
+      });
     } catch (err) {
       postError.value =
         err instanceof Error ? err.message : "Failed to create event";
+
+      notify({
+        title: postError.value,
+        type: "error",
+      });
       throw err;
     } finally {
       loading.value = false;
@@ -101,9 +112,18 @@ export const useEventsStore = defineStore("events", () => {
         throw new Error(updateEvent.error || "Unknown error occurred");
       }
       await getEvents();
+
+      notify({
+        title: "Event has been updated",
+        type: "success",
+      });
     } catch (err) {
       postError.value =
-        err instanceof Error ? err.message : "Failed to create event";
+        err instanceof Error ? err.message : "Failed to update event";
+      notify({
+        title: postError.value,
+        type: "error",
+      });
       throw err;
     } finally {
       loading.value = false;
@@ -120,9 +140,16 @@ export const useEventsStore = defineStore("events", () => {
         throw new Error(deleteEvent.error || "Failed to delete events");
       }
       await getEvents();
+      notify({
+        title: "Event has been deleted",
+        type: "success",
+      });
     } catch (err) {
       deleteError.value = err instanceof Error ? err.message : "Fetch failed";
-      console.error("Fetch Events Error:", err);
+      notify({
+        title: deleteError.value,
+        type: "success",
+      });
       throw err;
     } finally {
       loading.value = false;

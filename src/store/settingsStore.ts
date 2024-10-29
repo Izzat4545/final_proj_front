@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { globalGet, globalPut } from "../utils/networkRequests";
 import { UserType } from "../types/userType";
+import { notify } from "@kyvg/vue3-notification";
 
 export const useSettings = defineStore("settings", () => {
   const loading = ref(false);
@@ -39,8 +40,18 @@ export const useSettings = defineStore("settings", () => {
       }
 
       updateResult.value = updateUserSettings;
+
+      notify({
+        title: "You have updated successfully",
+        type: "success",
+      });
     } catch (err) {
       error.value = (err as Error).message || "Fetch failed";
+      notify({
+        title: "Settings",
+        text: error.value,
+        type: "error",
+      });
     } finally {
       loading.value = false;
     }
