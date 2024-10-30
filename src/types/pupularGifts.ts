@@ -13,6 +13,7 @@ export type PopularGift = {
   createdAt: string;
   updatedAt: string;
   eventId: string;
+  popularity: number;
   event: Event;
   originalPrice: string;
   originalCurrency: string;

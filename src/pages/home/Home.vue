@@ -66,7 +66,12 @@ onMounted(() => {
       v-if="!error && !loading && data && data.length > 0"
       :show-controls="true"
     >
-      <div v-for="gift in data" :key="gift.id" class="flex shrink-0 mb-4 mx-2">
+      <div
+        v-for="gift in data"
+        :key="gift.id"
+        class="flex shrink-0 mb-4 mx-2 mt-8 tooltip tooltip-top tooltip-info"
+        :data-tip="'Gift popularity: ' + gift.popularity"
+      >
         <GiftCard :is-public="true" :gift="gift" />
       </div>
     </Carousel>
