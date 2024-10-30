@@ -8,6 +8,7 @@ export enum RouteNames {
   LOGIN = "Login",
   FORGOT_PASSWORD = "ForgotPassword",
   AUTH_CALLBACK = "AuthCallback",
+  NOT_FOUND = "NotFound",
 }
 
 export enum RoutePaths {
@@ -20,4 +21,5 @@ export enum RoutePaths {
   LOGIN = "/login",
   FORGOT_PASSWORD = "/auth/reset",
   AUTH_CALLBACK = "/auth/callback",
+  NOT_FOUND = "/:pathMatch(.*)*",
 }

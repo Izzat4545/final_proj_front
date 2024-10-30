@@ -9,6 +9,7 @@ import AuthCallback from "../pages/authentication/authCallback/AuthCallback.vue"
 import ForgotPassword from "../pages/authentication/forgotPassword/forgotPassword.vue";
 import Gifts from "../pages/gifts/Gifts.vue";
 import { RouteNames, RoutePaths } from "../enums/Routes";
+import PageNotFound from "../pages/pageNotFound/PageNotFound.vue";
 
 const routes = [
   {
@@ -55,6 +56,11 @@ const routes = [
     path: RoutePaths.AUTH_CALLBACK,
     name: RouteNames.AUTH_CALLBACK,
     component: AuthCallback,
+  },
+  {
+    path: RoutePaths.NOT_FOUND,
+    name: RouteNames.NOT_FOUND,
+    component: PageNotFound,
   },
 ];
 
