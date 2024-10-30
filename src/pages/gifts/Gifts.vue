@@ -9,6 +9,7 @@ import GiftList from "../../globalComponents/GiftList.vue";
 import Pagination from "../../globalComponents/Pagination.vue";
 import { PaginationConfig } from "../../enums/PaginationConfig";
 import ClaimGiftModal from "../../globalComponents/ClaimGiftModal.vue";
+import { RoutePaths } from "../../enums/Routes";
 
 const { getGifsByEventId } = useGiftsStore();
 
@@ -72,8 +73,14 @@ const handleSelectChange = (event: Event) => {
 
   <div class="flex justify-center">
     <span v-if="loading" class="loading loading-infinity loading-lg"></span>
-    <div v-if="getError" class="p-4 mt-5 text-red-800 bg-red-100 rounded-lg">
-      {{ getError }}
+    <div
+      v-if="getError"
+      class="p-4 flex items-center gap-2 mt-5 text-red-800 bg-red-100 rounded-lg"
+    >
+      <div>{{ getError }}</div>
+      <router-link :to="RoutePaths.HOME" class="underline rounded-full">
+        Go back home
+      </router-link>
     </div>
     <div
       class="p-4 mt-5 text-green-800 bg-green-100 rounded-lg"
