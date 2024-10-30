@@ -55,7 +55,7 @@ onMounted(() => {
     </div>
 
     <!-- POPULAR GIFTS -->
-    <div class="text-center my-10 text-2xl font-bold">Most Popular Gifts</div>
+    <div class="text-center mt-10 text-2xl font-bold">Most Popular Gifts</div>
 
     <div class="flex justify-center">
       <span v-if="loading" class="loading loading-infinity loading-lg"></span>
@@ -69,10 +69,14 @@ onMounted(() => {
       <div
         v-for="gift in data"
         :key="gift.id"
-        class="flex shrink-0 mb-4 mx-2 mt-8 tooltip tooltip-top tooltip-info"
-        :data-tip="'Gift popularity: ' + gift.popularity"
+        class="flex shrink-0 mb-4 mx-2 mt-8"
       >
-        <GiftCard :is-public="true" :gift="gift" />
+        <GiftCard
+          class="tooltip text-start tooltip-top tooltip-info"
+          :is-public="true"
+          :gift="gift"
+          :data-tip="'Gift popularity: ' + gift.popularity"
+        />
       </div>
     </Carousel>
     <div
