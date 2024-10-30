@@ -29,9 +29,7 @@ const handleImageError = (event: Event) => {
 };
 </script>
 <template>
-  <div
-    class="rounded-lg bg-white w-full max-w-[300px] relative shadow-md p-4 flex flex-col"
-  >
+  <div class="rounded-lg bg-white w-full relative shadow-md p-4 flex flex-col">
     <img
       crossorigin="anonymous"
       :src="gift.image || defaultImage"

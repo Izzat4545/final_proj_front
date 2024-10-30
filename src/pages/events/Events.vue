@@ -128,7 +128,7 @@ const handleSelectChange = (event: Event) => {
         "
       >
         <div
-          class="flex my-3 justify-center sm:justify-start items-stretch gap-5 flex-wrap"
+          class="grid mx-auto max-sm:max-w-[300px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 my-3 justify-items-center"
         >
           <GiftCard
             v-for="gift in giftData.data"
@@ -146,11 +146,12 @@ const handleSelectChange = (event: Event) => {
           />
         </div>
         <div
-          class="flex my-3 sm:hidden justify-center sm:justify-start items-start gap-5 flex-wrap"
+          class="grid mx-auto max-sm:max-w-[300px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 my-3 justify-items-center"
         >
           <GiftCard
             v-for="gift in giftData.data"
             v-if="isList"
+            :key="gift.id"
             :gift="gift"
             :is-public="false"
           />

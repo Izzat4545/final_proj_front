@@ -69,7 +69,7 @@ onMounted(() => {
       <div
         v-for="gift in data"
         :key="gift.id"
-        class="flex shrink-0 mb-4 mx-2 mt-8"
+        class="flex max-w-[300px] shrink-0 mb-4 mx-2 mt-8"
       >
         <GiftCard
           class="tooltip text-start tooltip-top tooltip-info"

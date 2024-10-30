@@ -94,7 +94,7 @@ const handleSelectChange = (event: Event) => {
     v-if="route.params.id && !getError && !loading && data.data.length > 0"
   >
     <div
-      class="flex my-3 justify-center sm:justify-start items-stretch gap-5 flex-wrap"
+      class="grid mx-auto max-sm:max-w-[300px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 my-3 justify-items-center"
     >
       <GiftCard
         v-for="gift in data.data"
@@ -113,7 +113,7 @@ const handleSelectChange = (event: Event) => {
     </div>
     <!-- on small display I am showing the cart -->
     <div
-      class="flex my-3 sm:hidden justify-center sm:justify-start items-stretch gap-5 flex-wrap"
+      class="grid mx-auto max-sm:max-w-[300px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 my-3 justify-items-center"
     >
       <GiftCard
         v-for="gift in data.data"
