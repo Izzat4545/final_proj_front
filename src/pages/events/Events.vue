@@ -62,6 +62,7 @@ const handleSelectChange = (event: Event) => {
     <Carousel
       :autoplay="false"
       :loop="false"
+      :show-controls="data.length > 5"
       v-if="!loading && data.length > 0 && !getError"
     >
       <div v-for="event in data" class="flex shrink-0 mx-3">
