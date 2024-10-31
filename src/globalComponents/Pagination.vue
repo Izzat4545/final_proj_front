@@ -16,7 +16,7 @@ const currentPage = ref(Number(route.query.page) || PaginationConfig.INITIAL_PAG
 const limit = ref(Number(route.query.limit) || PaginationConfig.PAGE_LIMIT);
 
 const fetchGifts = async () => {
-  await getGifsByEventId(route.params.id.toString(), currentPage.value, limit.value);
+  await getGifsByEventId(route.params.id.toString(), route.query.category?.toString(), currentPage.value, limit.value);
 };
 
 const changePage = async (page: number) => {
