@@ -14,6 +14,7 @@ import defaultEventImage from "../assets/defaultEventImage.png";
 import { filterDate } from "../utils/filterDate";
 import { PaginationConfig } from "../enums/PaginationConfig";
 import { notify } from "@kyvg/vue3-notification";
+import { GiftCategories } from "../enums/GiftCategories";
 
 export const useGiftsStore = defineStore("gifts", () => {
   const loading = ref(false);
@@ -34,6 +35,7 @@ export const useGiftsStore = defineStore("gifts", () => {
     price: string,
     currency: string,
     link: string,
+    category: GiftCategories,
     description?: string,
     image?: File | null
   ) => {
@@ -46,6 +48,7 @@ export const useGiftsStore = defineStore("gifts", () => {
       formData.append("currency", currency);
       formData.append("link", link);
       formData.append("price", price);
+      formData.append("category", category);
       if (description) formData.append("description", description);
       if (image) formData.append("image", image);
 
@@ -76,6 +79,7 @@ export const useGiftsStore = defineStore("gifts", () => {
 
   const getGifsByEventId = async (
     eventId: string,
+    category?: GiftCategories,
     page: number = PaginationConfig.INITIAL_PAGE,
     limit: number = PaginationConfig.PAGE_LIMIT
   ) => {
@@ -83,7 +87,11 @@ export const useGiftsStore = defineStore("gifts", () => {
     getError.value = null;
 
     try {
-      const getGifts = await globalGet(`gifts/${eventId}`, { page, limit });
+      const getGifts = await globalGet(`gifts/${eventId}`, {
+        page,
+        limit,
+        ...(category ? { category } : {}),
+      });
 
       if (!getGifts || getGifts.error) {
         throw new Error(getGifts.error || "Failed to fetch gifts");
