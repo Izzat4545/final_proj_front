@@ -8,7 +8,6 @@ defineProps<{ name: string }>();
     :id="name"
     :aria-labelledby="`${name}-title`"
     role="dialog"
-    title="modal"
   >
     <div class="modal-box">
       <slot />

@@ -79,7 +79,7 @@ export const useGiftsStore = defineStore("gifts", () => {
 
   const getGifsByEventId = async (
     eventId: string,
-    category?: GiftCategories,
+    category?: string,
     page: number = PaginationConfig.INITIAL_PAGE,
     limit: number = PaginationConfig.PAGE_LIMIT
   ) => {
