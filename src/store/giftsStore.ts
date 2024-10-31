@@ -14,7 +14,6 @@ import defaultEventImage from "../assets/defaultEventImage.png";
 import { filterDate } from "../utils/filterDate";
 import { PaginationConfig } from "../enums/PaginationConfig";
 import { notify } from "@kyvg/vue3-notification";
-import { GiftCategories } from "../enums/GiftCategories";
 
 export const useGiftsStore = defineStore("gifts", () => {
   const loading = ref(false);

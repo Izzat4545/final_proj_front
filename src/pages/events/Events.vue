@@ -5,7 +5,7 @@ import EventModal from "./components/EventModal.vue";
 import { useEventsStore } from "../../store/eventsStore";
 import { storeToRefs } from "pinia";
 import { onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { useGiftsStore } from "../../store/giftsStore";
 import GiftCard from "../../globalComponents/GiftCard.vue";
 import GiftModal from "../gifts/components/GiftModal.vue";
@@ -13,13 +13,12 @@ import GiftList from "../../globalComponents/GiftList.vue";
 import Pagination from "../../globalComponents/Pagination.vue";
 import { PaginationConfig } from "../../enums/PaginationConfig";
 import { useSettings } from "../../store/settingsStore";
-import { GiftCategories } from "../../enums/GiftCategories";
+import GiftCategoryFilter from "../../globalComponents/GiftCategoryFilter.vue";
 
 const eventStore = useEventsStore();
 const giftsStore = useGiftsStore();
 const settingStore = useSettings();
 const route = useRoute();
-const router = useRouter();
 const isList = ref<boolean>(false);
 const {
   data: giftData,
@@ -29,7 +28,6 @@ const {
 const { getError, data, loading } = storeToRefs(eventStore);
 const SHOW_AS_LIST = "Show as: list";
 const SHOW_AS_CART = "Show as: cart";
-const DEFAULT_CATEGORY = "All";
 
 onMounted(async () => {
   await eventStore.getEvents();
@@ -39,21 +37,6 @@ onMounted(async () => {
 const handleSelectChange = (event: Event) => {
   const selectedValue = (event.target as HTMLSelectElement).value;
   isList.value = selectedValue === SHOW_AS_LIST;
-};
-
-const handleCategoryChange = async (event: Event) => {
-  const selectedCategory = (event.target as HTMLSelectElement).value;
-
-  if (selectedCategory === DEFAULT_CATEGORY) {
-    await router.push({ path: "/events/" + route.params.id });
-  } else {
-    await router.push({ query: { category: selectedCategory } });
-  }
-
-  await useGiftsStore().getGifsByEventId(
-    route.params.id.toString(),
-    route.query.category?.toString()
-  );
 };
 </script>
 <template>
@@ -89,23 +72,10 @@ const handleCategoryChange = async (event: Event) => {
     </Carousel>
     <!-- Gifts related to the event -->
     <div>
-      <div class="flex justify-between items-center">
+      <div class="flex flex-col sm:flex-row justify-between items-center">
         <div class="text-2xl my-3 font-bold">Gifts</div>
         <div class="flex items-center gap-2">
-          <select
-            :class="route.params.id ? 'select-bordered' : 'select-disabled'"
-            class="select select-md w-[100px]"
-            @change="handleCategoryChange"
-          >
-            <option selected :value="DEFAULT_CATEGORY">
-              {{ DEFAULT_CATEGORY }}
-            </option>
-            <option :value="GiftCategories.FAMILY">Family</option>
-            <option :value="GiftCategories.IT">IT</option>
-            <option :value="GiftCategories.KIDS">Kids</option>
-            <option :value="GiftCategories.LUXURY">Luxury</option>
-            <option :value="GiftCategories.PETS">Pets</option>
-          </select>
+          <GiftCategoryFilter default-route="/events/" />
           <select
             @change="handleSelectChange"
             :class="route.params.id ? 'select-bordered' : 'select-disabled'"
