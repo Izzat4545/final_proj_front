@@ -8,6 +8,7 @@ export type PopularGift = {
   userId: string;
   currency: string;
   price: string;
+  category: string;
   link: string;
   reservedEmail: string;
   createdAt: string;

@@ -35,7 +35,7 @@ export const useGiftsStore = defineStore("gifts", () => {
     price: string,
     currency: string,
     link: string,
-    category: GiftCategories,
+    category: string,
     description?: string,
     image?: File | null
   ) => {
@@ -129,6 +129,7 @@ export const useGiftsStore = defineStore("gifts", () => {
     price: string,
     currency: string,
     link: string,
+    category: string,
     description?: string,
     image?: File | null
   ) => {
@@ -141,6 +142,7 @@ export const useGiftsStore = defineStore("gifts", () => {
       formData.append("price", price);
       formData.append("currency", currency);
       formData.append("link", link);
+      formData.append("category", category);
       if (description) formData.append("description", description);
       if (image) formData.append("image", image);
 
