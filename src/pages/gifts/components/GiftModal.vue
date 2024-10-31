@@ -6,6 +6,7 @@ import { useGiftsStore } from "../../../store/giftsStore";
 import { PopularGift } from "../../../types/pupularGifts";
 import { Currencies } from "../../../enums/Currencies";
 import { useRoute } from "vue-router";
+import { GiftCategories } from "../../../enums/GiftCategories";
 
 const props = defineProps<{ gifts?: PopularGift }>();
 const giftStore = useGiftsStore();
@@ -15,8 +16,10 @@ const { createGift, updateGiftById } = useGiftsStore();
 const name = ref(props.gifts ? props.gifts.name : "");
 const price = ref(props.gifts ? props.gifts.price : "");
 const currency = ref(props.gifts ? props.gifts?.currency : Currencies.USD);
+const DEFAULT_CATEGORY = "Select category";
+const category = ref(props.gifts ? props.gifts?.category : DEFAULT_CATEGORY);
 const link = ref(props.gifts ? props.gifts?.link : "");
-const description = ref(props.gifts ? props.gifts.description : undefined);
+const description = ref(props.gifts ? props.gifts.description : "");
 let image = ref<File | null>(null);
 
 const handleFileChange = (e: Event) => {
@@ -38,6 +41,7 @@ const handleEvent = async () => {
         price.value,
         currency.value,
         link.value,
+        category.value,
         description.value,
         image.value
       );
@@ -48,6 +52,7 @@ const handleEvent = async () => {
         price.value,
         currency.value,
         link.value,
+        category.value,
         description.value,
         image.value
       );
@@ -57,6 +62,7 @@ const handleEvent = async () => {
         (image.value = null),
         (link.value = ""),
         (description.value = "");
+      category.value = DEFAULT_CATEGORY;
     }
   } catch (err) {
     throw new Error((err as Error).message || "Failed to create gift");
@@ -121,9 +127,33 @@ const handleEvent = async () => {
             v-model="currency"
             class="select select-bordered w-full"
           >
-            <option :value="Currencies.RUB">RUB</option>
-            <option :value="Currencies.USD">USD</option>
-            <option :value="Currencies.UZS">UZS</option>
+            <option :value="Currencies.RUB">{{ Currencies.RUB }}</option>
+            <option :value="Currencies.USD">{{ Currencies.USD }}</option>
+            <option :value="Currencies.UZS">{{ Currencies.UZS }}</option>
+          </select>
+        </div>
+
+        <!-- Category (Required) -->
+        <div class="mb-4">
+          <label
+            for="giftCategory"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Category <span class="text-red-600">*</span>
+          </label>
+          <select
+            id="giftCategory"
+            v-model="category"
+            class="select select-bordered w-full"
+          >
+            <option selected disabled :value="DEFAULT_CATEGORY">
+              {{ DEFAULT_CATEGORY }}
+            </option>
+            <option :value="GiftCategories.FAMILY">Family</option>
+            <option :value="GiftCategories.IT">IT</option>
+            <option :value="GiftCategories.KIDS">Kids</option>
+            <option :value="GiftCategories.LUXURY">Luxury</option>
+            <option :value="GiftCategories.PETS">Pets</option>
           </select>
         </div>
 

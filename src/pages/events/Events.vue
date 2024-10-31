@@ -13,6 +13,7 @@ import GiftList from "../../globalComponents/GiftList.vue";
 import Pagination from "../../globalComponents/Pagination.vue";
 import { PaginationConfig } from "../../enums/PaginationConfig";
 import { useSettings } from "../../store/settingsStore";
+import GiftCategoryFilter from "../../globalComponents/GiftCategoryFilter.vue";
 
 const eventStore = useEventsStore();
 const giftsStore = useGiftsStore();
@@ -71,9 +72,10 @@ const handleSelectChange = (event: Event) => {
     </Carousel>
     <!-- Gifts related to the event -->
     <div>
-      <div class="flex justify-between items-center">
+      <div class="flex flex-col sm:flex-row justify-between items-center">
         <div class="text-2xl my-3 font-bold">Gifts</div>
         <div class="flex items-center gap-2">
+          <GiftCategoryFilter default-route="/events/" />
           <select
             @change="handleSelectChange"
             :class="route.params.id ? 'select-bordered' : 'select-disabled'"

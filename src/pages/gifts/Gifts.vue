@@ -10,6 +10,7 @@ import Pagination from "../../globalComponents/Pagination.vue";
 import { PaginationConfig } from "../../enums/PaginationConfig";
 import ClaimGiftModal from "../../globalComponents/ClaimGiftModal.vue";
 import { RoutePaths } from "../../enums/Routes";
+import GiftCategoryFilter from "../../globalComponents/GiftCategoryFilter.vue";
 
 const { getGifsByEventId } = useGiftsStore();
 
@@ -19,8 +20,11 @@ const isList = ref<boolean>(false);
 const route = useRoute();
 
 onMounted(async () => {
-  if (route.params.id) {
-    await getGifsByEventId(route.params.id.toString());
+  if (route.params.id || route.query.category) {
+    await getGifsByEventId(
+      route.params.id.toString(),
+      route.query.category?.toString()
+    );
   }
 });
 const SHOW_AS_LIST = "Show as: list";
@@ -32,7 +36,7 @@ const handleSelectChange = (event: Event) => {
 };
 </script>
 <template>
-  <div v-if="!loading && !getError" class="container mx-auto">
+  <div class="container mx-auto">
     <div
       v-if="data.data && data.data.length > 0 && data.data[0].event"
       class="flex flex-col sm:flex-row mb-4 items-center gap-2"
@@ -54,9 +58,10 @@ const handleSelectChange = (event: Event) => {
     </div>
   </div>
   <div
-    v-if="!getError && !loading"
-    class="flex container mx-auto justify-end items-center"
+    v-if="!getError"
+    class="flex container mx-auto justify-end gap-2 items-center"
   >
+    <GiftCategoryFilter default-route="/gifts/" />
     <select
       @change="handleSelectChange"
       :class="
