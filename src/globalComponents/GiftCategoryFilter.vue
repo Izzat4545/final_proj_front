@@ -13,6 +13,8 @@ const handleCategoryChange = async (event?: Event) => {
     ? (event.target as HTMLSelectElement).value
     : route.query.category?.toString() || DEFAULT_CATEGORY;
 
+  if (!route.params.id) return; // Add this check to prevent execution if params.id is missing
+
   if (selectedCategory === DEFAULT_CATEGORY) {
     await router.push({ path: props.defaultRoute + route.params.id });
   } else {
@@ -21,11 +23,15 @@ const handleCategoryChange = async (event?: Event) => {
 
   await useGiftsStore().getGifsByEventId(
     route.params.id.toString(),
-    selectedCategory.toString() !== DEFAULT_CATEGORY
-      ? selectedCategory.toString()
-      : undefined
+    selectedCategory !== DEFAULT_CATEGORY ? selectedCategory : undefined
   );
 };
+
+onMounted(async () => {
+  if (route.params.id) {
+    await handleCategoryChange();
+  }
+});
 
 onMounted(async () => {
   await handleCategoryChange();
