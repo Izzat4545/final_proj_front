@@ -18,6 +18,7 @@ export const useEventsStore = defineStore("events", () => {
   const postError = ref<string | null>(null);
   const deleteError = ref<string | null>(null);
   const data = ref<Event[] | []>([]);
+  const singleEvent = ref<Event | null>(null);
   const BASE_URL = getEnv("VITE_BASE_URL");
 
   const createEvent = async (
@@ -78,6 +79,32 @@ export const useEventsStore = defineStore("events", () => {
         image: event.image ? `${BASE_URL}/${event.image}` : defaultEventImage,
         date: filterDate(event.date),
       }));
+    } catch (err) {
+      getError.value = err instanceof Error ? err.message : "Fetch failed";
+      console.error("Fetch Events Error:", err);
+      throw err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const getEventById = async (id: string) => {
+    loading.value = true;
+    getError.value = null;
+    try {
+      const getEvent = await globalGet("events/" + id);
+
+      if (!getEvent || getEvent.error) {
+        throw new Error(getEvent.error || "Failed to fetch event");
+      }
+
+      singleEvent.value = {
+        ...getEvent,
+        image: getEvent.image
+          ? `${BASE_URL}/${getEvent.image}`
+          : defaultEventImage,
+        date: filterDate(getEvent.date),
+      };
     } catch (err) {
       getError.value = err instanceof Error ? err.message : "Fetch failed";
       console.error("Fetch Events Error:", err);
@@ -158,9 +185,11 @@ export const useEventsStore = defineStore("events", () => {
 
   return {
     data,
+    singleEvent,
     loading,
     getError,
     postError,
+    getEventById,
     deleteEventById,
     updateEventById,
     getEvents,

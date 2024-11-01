@@ -10,8 +10,6 @@ import {
 } from "../utils/networkRequests";
 import { PopularGift } from "../types/pupularGifts";
 import defaultGift from "../assets/defaultGift.jpeg";
-import defaultEventImage from "../assets/defaultEventImage.png";
-import { filterDate } from "../utils/filterDate";
 import { PaginationConfig } from "../enums/PaginationConfig";
 import { notify } from "@kyvg/vue3-notification";
 
@@ -21,8 +19,6 @@ export const useGiftsStore = defineStore("gifts", () => {
   const postError = ref<string | null>(null);
   const deleteError = ref<string | null>(null);
   const data = ref<Gift>({
-    giftCount: 0,
-    giftReservedCount: 0,
     meta: { limit: 10, page: 1, totalGifts: 0, totalPages: 1 },
     data: [],
   });
@@ -97,19 +93,10 @@ export const useGiftsStore = defineStore("gifts", () => {
       }
 
       data.value = {
-        giftCount: getGifts.giftCount,
-        giftReservedCount: getGifts.giftReservedCount,
         meta: getGifts.meta,
         data: getGifts.data.map((gift: PopularGift) => ({
           ...gift,
           image: gift.image ? `${BASE_URL}/${gift.image}` : defaultGift,
-          event: {
-            ...gift.event,
-            image: gift.event.image
-              ? `${BASE_URL}/${gift.event.image}`
-              : defaultEventImage,
-            date: filterDate(gift.event.date),
-          },
         })),
       };
     } catch (err) {

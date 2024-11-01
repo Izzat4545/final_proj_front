@@ -9,6 +9,8 @@ export interface Event {
   image: string;
   visibility: EventVisibilities;
   userId: string;
+  giftCount: number;
+  giftReservedCount: number;
   createdAt: string;
   updatedAt: string;
 }

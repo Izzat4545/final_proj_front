@@ -1,8 +1,6 @@
 import { PopularGift } from "./pupularGifts";
 
 export interface Gift {
-  giftCount: number;
-  giftReservedCount: number;
   meta: Meta;
   data: PopularGift[];
 }
