@@ -16,21 +16,15 @@ const isAuthenticated = useAuthstore.isAuthenticated();
 const settingStore = useSettings();
 const { data: settingsData } = storeToRefs(settingStore);
 
-const handleDelete = async (giftId: string, eventId: string) => {
-  await deleteGiftById(giftId, eventId);
+const handleDelete = async (giftId: string) => {
+  await deleteGiftById(giftId);
 };
 </script>
 <template>
-  <div
-    class="bg-white rounded-lg relative shadow-md p-4 flex flex-col sm:flex-row justify-between items-center"
-  >
+  <div class="bg-white rounded-lg relative shadow-md p-4 flex flex-col sm:flex-row justify-between items-center">
     <div class="flex gap-2 flex-col sm:flex-row items-center">
-      <img
-        crossorigin="anonymous"
-        :src="gift.image"
-        alt="gift image"
-        class="w-full h-48 object-cover rounded-lg mb-4"
-      />
+      <img crossorigin="anonymous" :src="gift.image" alt="gift image"
+        class="w-full h-48 object-cover rounded-lg mb-4" />
       <div class="w-full">
         <h3 class="text-lg font-semibold mb-2">
           {{ shortenText(gift.name, 25) }}
@@ -46,46 +40,28 @@ const handleDelete = async (giftId: string, eventId: string) => {
         <p class="text-xl font-bold">
           {{ formatNumbers(gift.price) }} {{ gift.currency }}
         </p>
-        <label
-          v-if="isPublic"
-          :for="gift.id"
-          :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
-          class="btn mb-3 rounded w-full text-white btn-sm"
-        >
+        <label v-if="isPublic" :for="gift.id" :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
+          class="btn mb-3 rounded w-full text-white btn-sm">
           {{ gift.reservedEmail ? "reserved" : "reserve" }}
         </label>
-        <label
-          v-if="
-            isPublic &&
-            isAuthenticated &&
-            gift.userId &&
-            settingsData?.id !== gift.userId
-          "
-          :for="gift.id + 'claim'"
-          class="btn btn-success rounded w-full text-white btn-sm"
-        >
+        <label v-if="
+          isPublic &&
+          isAuthenticated &&
+          gift.userId &&
+          settingsData?.id !== gift.userId
+        " :for="gift.id + 'claim'" class="btn btn-success rounded w-full text-white btn-sm">
           Claim
         </label>
-        <a
-          :href="gift.link"
-          target="_blank"
-          class="w-full underline text-gray-500 my-2"
-        >
+        <a :href="gift.link" target="_blank" class="w-full underline text-gray-500 my-2">
           Buy in Store
         </a>
       </div>
       <!-- edit and delete -->
       <div v-if="!isPublic" class="flex gap-3 transition-all">
-        <label
-          :for="gift.id"
-          class="btn rounded-full btn-ghost btn-circle btn-sm"
-        >
+        <label :for="gift.id" class="btn rounded-full btn-ghost btn-circle btn-sm">
           <img src="../assets/edit.svg" alt="Edit" />
         </label>
-        <button
-          @click="handleDelete(gift.id, gift.eventId)"
-          class="btn rounded-full btn-ghost btn-circle btn-sm"
-        >
+        <button @click="handleDelete(gift.id)" class="btn rounded-full btn-ghost btn-circle btn-sm">
           <img src="../assets/delete.svg" alt="Delete" />
         </button>
       </div>
