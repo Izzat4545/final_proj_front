@@ -24,6 +24,5 @@ jobs:
             cd final_proj_front
             git pull
             pm2 stop all
-            npm install
             npm run build
             pm2 start all

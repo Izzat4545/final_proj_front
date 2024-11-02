@@ -40,7 +40,8 @@ const handleDelete = async (giftId: string) => {
         <p class="text-xl font-bold">
           {{ formatNumbers(gift.price) }} {{ gift.currency }}
         </p>
-        <label v-if="isPublic" :for="gift.id" :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
+        <label v-if="isPublic && settingsData?.id !== gift.userId" :for="gift.id"
+          :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
           class="btn mb-3 rounded w-full text-white btn-sm">
           {{ gift.reservedEmail ? "reserved" : "reserve" }}
         </label>
