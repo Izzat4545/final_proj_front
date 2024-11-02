@@ -34,7 +34,6 @@ export const useGiftsStore = defineStore("gifts", () => {
     description?: string,
     image?: File | null
   ) => {
-    loading.value = true;
     postError.value = null;
 
     try {
@@ -67,8 +66,6 @@ export const useGiftsStore = defineStore("gifts", () => {
         type: "error",
       });
       throw err;
-    } finally {
-      loading.value = false;
     }
   };
 
@@ -94,7 +91,7 @@ export const useGiftsStore = defineStore("gifts", () => {
 
       data.value = {
         meta: getGifts.meta,
-        data: getGifts.data.map((gift: PopularGift) => ({
+        data: getGifts.data.reverse().map((gift: PopularGift) => ({
           ...gift,
           image: gift.image ? `${BASE_URL}/${gift.image}` : defaultGift,
         })),
@@ -157,16 +154,14 @@ export const useGiftsStore = defineStore("gifts", () => {
     }
   };
 
-  const deleteGiftById = async (giftId: string, eventId: string) => {
-    loading.value = true;
+  const deleteGiftById = async (giftId: string) => {
     deleteError.value = null;
     try {
       const deleteGift = await globalDelete("gifts/" + giftId);
       if (!deleteGift || deleteGift.error) {
         throw new Error(deleteGift.error || "Failed to delete gift");
       }
-      await getGifsByEventId(eventId);
-
+      data.value.data = data.value.data.filter((gift) => gift.id !== giftId);
       notify({
         title: "Gift has been deleted",
         type: "success",
@@ -178,8 +173,6 @@ export const useGiftsStore = defineStore("gifts", () => {
         type: "error",
       });
       throw err;
-    } finally {
-      loading.value = false;
     }
   };
 

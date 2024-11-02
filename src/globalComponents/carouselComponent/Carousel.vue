@@ -58,13 +58,10 @@ const scrollToNext = () => {
 <template>
   <div class="relative">
     <div class="overflow-hidden" ref="emblaRef">
-      <div class="flex">
+      <div v-auto-animate class="flex">
         <slot></slot>
       </div>
-      <div
-        v-if="showControls"
-        class="absolute inset-1 flex justify-between pointer-events-none items-center px-5"
-      >
+      <div v-if="showControls" class="absolute inset-1 flex justify-between pointer-events-none items-center px-5">
         <PrevButton class="pointer-events-auto" @click="scrollToPrev" />
         <NextButton class="pointer-events-auto" @click="scrollToNext" />
       </div>

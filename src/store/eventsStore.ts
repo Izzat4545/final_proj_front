@@ -28,9 +28,8 @@ export const useEventsStore = defineStore("events", () => {
     description?: string,
     image?: File | null
   ) => {
-    loading.value = true;
     postError.value = null;
-
+    loading.value = true;
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -158,7 +157,6 @@ export const useEventsStore = defineStore("events", () => {
   };
 
   const deleteEventById = async (id: string) => {
-    loading.value = true;
     deleteError.value = null;
     try {
       const deleteEvent = await globalDelete("events/" + id);
@@ -166,7 +164,7 @@ export const useEventsStore = defineStore("events", () => {
       if (!deleteEvent || deleteEvent.error) {
         throw new Error(deleteEvent.error || "Failed to delete events");
       }
-      await getEvents();
+      data.value = data.value.filter((event) => event.id !== id);
       notify({
         title: "Event has been deleted",
         type: "success",
@@ -178,8 +176,6 @@ export const useEventsStore = defineStore("events", () => {
         type: "success",
       });
       throw err;
-    } finally {
-      loading.value = false;
     }
   };
 
