@@ -55,9 +55,8 @@ const handleSelectChange = (event: Event) => {
         No events has been added
       </div>
     </div>
-    <Carousel :autoplay="false" :loop="false" :show-controls="data.length > 5"
-      v-if="!loading && data.length > 0 && !getError">
-      <div v-for="event in data" class="flex shrink-0 mx-3">
+    <Carousel :autoplay="false" :loop="false" :show-controls="data.length > 5" v-if="data.length > 0 && !getError">
+      <div v-for="event in data" class="flex shrink-0 mx-3" :key="event.id">
         <EventCard :event="event" />
       </div>
     </Carousel>
@@ -96,17 +95,16 @@ const handleSelectChange = (event: Event) => {
       <div v-if="
         route.params.id &&
         !giftGetError &&
-        !giftLoading &&
-        giftData.data.length > 0
+        giftData.data.length > 0 && !giftLoading
       ">
-        <div
+        <div v-auto-animate
           class="grid mx-auto max-sm:max-w-[300px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 my-3 justify-items-center">
-          <GiftCard v-for="gift in giftData.data" v-if="!isList" :gift="gift" :is-public="false" />
+          <GiftCard v-for="gift in giftData.data" v-if="!isList" :gift="gift" :is-public="false" :key="gift.id" />
         </div>
-        <div class="flex-col hidden sm:flex justify-center my-3 gap-5">
-          <GiftList v-for="gift in giftData.data" v-if="isList" :gift="gift" :is-public="false" />
+        <div v-auto-animate class="flex-col hidden sm:flex justify-center my-3 gap-5">
+          <GiftList v-for="gift in giftData.data" v-if="isList" :gift="gift" :is-public="false" :key="gift.id" />
         </div>
-        <div :class="isList && 'grid sm:hidden'"
+        <div v-auto-animate :class="isList && 'grid sm:hidden'"
           class="mx-auto max-sm:max-w-[300px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 my-3 justify-items-center">
           <GiftCard v-for="gift in giftData.data" v-if="isList" :key="gift.id" :gift="gift" :is-public="false" />
         </div>

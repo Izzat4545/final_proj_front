@@ -13,8 +13,8 @@ defineProps<{ gift: PopularGift; isPublic: boolean }>();
 
 const { deleteGiftById } = useGiftsStore();
 const useAuthstore = useAuthStore();
-const handleDelete = async (giftId: string, eventId: string) => {
-  await deleteGiftById(giftId, eventId);
+const handleDelete = async (giftId: string) => {
+  await deleteGiftById(giftId);
 };
 const isAuthenticated = useAuthstore.isAuthenticated();
 const route = useRoute();
@@ -30,13 +30,8 @@ const handleImageError = (event: Event) => {
 </script>
 <template>
   <div class="rounded-lg bg-white w-full relative shadow-md p-4 flex flex-col">
-    <img
-      crossorigin="anonymous"
-      :src="gift.image || defaultImage"
-      alt="gift image"
-      class="size-[250px] mx-auto object-cover rounded-lg mb-2"
-      @error="handleImageError"
-    />
+    <img crossorigin="anonymous" :src="gift.image || defaultImage" alt="gift image"
+      class="size-[250px] mx-auto object-cover rounded-lg mb-2" @error="handleImageError" />
     <h3 class="text-lg font-semibold mb-1">
       {{ shortenText(gift.name, GIFT_NAME_LIMIT) }}
     </h3>
@@ -44,49 +39,31 @@ const handleImageError = (event: Event) => {
       {{ shortenText(gift.description, GIFT_DESC_LIMIT) }}
     </p>
     <!-- Reserve btn if it is public -->
-    <label
-      v-if="isPublic && route.params.id && settingsData?.id !== gift.userId"
-      :for="gift.id"
-      :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'"
-      class="btn rounded mb-2 w-full text-white btn-sm"
-    >
+    <label v-if="isPublic && route.params.id && settingsData?.id !== gift.userId" :for="gift.id"
+      :class="gift.reservedEmail ? 'btn-disabled' : 'btn-success'" class="btn rounded mb-2 w-full text-white btn-sm">
       {{ gift.reservedEmail ? "reserved" : "reserve" }}
     </label>
     <!-- Claim btn if user is registered and doesnt own the gift -->
-    <label
-      v-if="
-        isPublic &&
-        isAuthenticated &&
-        gift.userId &&
-        settingsData?.id !== gift.userId
-      "
-      :for="gift.id + 'claim'"
-      class="btn btn-success rounded w-full text-white btn-sm"
-    >
+    <label v-if="
+      isPublic &&
+      isAuthenticated &&
+      gift.userId &&
+      settingsData?.id !== gift.userId
+    " :for="gift.id + 'claim'" class="btn btn-success rounded w-full text-white btn-sm">
       Claim
     </label>
-    <a
-      :href="gift.link"
-      target="_blank"
-      class="w-full underline text-gray-500 my-2"
-    >
+    <a :href="gift.link" target="_blank" class="w-full underline text-gray-500 my-2">
       Buy in Store
     </a>
     <p class="text-xl font-bold">
       {{ formatNumbers(gift.price) }} {{ gift.currency }}
     </p>
     <!-- edit and delete -->
-    <div
-      v-if="!isPublic"
-      class="flex gap-2 absolute top-0 right-2 transition-all flex-col mt-3"
-    >
+    <div v-if="!isPublic" class="flex gap-2 absolute top-0 right-2 transition-all flex-col mt-3">
       <label :for="gift.id" class="btn rounded-full btn-circle btn-sm">
         <img src="../assets/edit.svg" alt="Edit" />
       </label>
-      <button
-        @click="handleDelete(gift.id, gift.eventId)"
-        class="btn rounded-full btn-circle btn-sm"
-      >
+      <button @click="handleDelete(gift.id)" class="btn rounded-full btn-circle btn-sm">
         <img src="../assets/delete.svg" alt="Delete" />
       </button>
     </div>
