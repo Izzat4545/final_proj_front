@@ -136,7 +136,9 @@ const handleSubmit = async () => {
             class="loading loading-spinner loading-sm"
           ></span>
           <div>
-            {{ step === 1 ? "Send Verification Code" : "Reset Password" }}
+            {{
+              step === STEP_ONE ? "Send Verification Code" : "Reset Password"
+            }}
           </div>
         </button>
       </form>

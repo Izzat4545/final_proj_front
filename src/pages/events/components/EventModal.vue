@@ -19,6 +19,11 @@ const visibility = ref(
 );
 const description = ref(props.event ? props.event.description : "");
 let image = ref<File | null>(null);
+const VISIBILITY_OPTIONS = [
+  { label: "Public", value: EventVisibilities.PUBLIC },
+  { label: "Private", value: EventVisibilities.PRIVATE },
+  { label: "By URL", value: EventVisibilities.BY_URL },
+];
 
 const handleFileChange = (e: Event) => {
   const files = (e.target as HTMLInputElement).files;
@@ -115,9 +120,13 @@ const handleEvent = async () => {
             v-model="visibility"
             class="select select-bordered w-full"
           >
-            <option :value="EventVisibilities.PUBLIC">Public</option>
-            <option :value="EventVisibilities.PRIVATE">Private</option>
-            <option :value="EventVisibilities.BY_URL">By URL</option>
+            <option
+              v-for="option in VISIBILITY_OPTIONS"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
           </select>
         </div>
 
