@@ -22,6 +22,21 @@ const link = ref(props.gifts ? props.gifts?.link : "");
 const description = ref(props.gifts ? props.gifts.description : "");
 let image = ref<File | null>(null);
 
+const CURRENCY_OPTIONS = [
+  { label: Currencies.RUB, value: Currencies.RUB },
+  { label: Currencies.USD, value: Currencies.USD },
+  { label: Currencies.UZS, value: Currencies.UZS },
+];
+
+const CATEGORIES = [
+  { label: DEFAULT_CATEGORY, value: DEFAULT_CATEGORY },
+  { label: "Family", value: GiftCategories.FAMILY },
+  { label: "IT", value: GiftCategories.IT },
+  { label: "Kids", value: GiftCategories.KIDS },
+  { label: "Luxury", value: GiftCategories.LUXURY },
+  { label: "Pets", value: GiftCategories.PETS },
+];
+
 const handleFileChange = (e: Event) => {
   const files = (e.target as HTMLInputElement).files;
   if (files && files.length > 0) {
@@ -127,9 +142,13 @@ const handleEvent = async () => {
             v-model="currency"
             class="select select-bordered w-full"
           >
-            <option :value="Currencies.RUB">{{ Currencies.RUB }}</option>
-            <option :value="Currencies.USD">{{ Currencies.USD }}</option>
-            <option :value="Currencies.UZS">{{ Currencies.UZS }}</option>
+            <option
+              v-for="option in CURRENCY_OPTIONS"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
           </select>
         </div>
 
@@ -146,14 +165,15 @@ const handleEvent = async () => {
             v-model="category"
             class="select select-bordered w-full"
           >
-            <option selected disabled :value="DEFAULT_CATEGORY">
-              {{ DEFAULT_CATEGORY }}
+            <option
+              v-for="option in CATEGORIES"
+              :key="option.value"
+              :value="option.value"
+              :disabled="option.value === ''"
+              :selected="option.value === ''"
+            >
+              {{ option.label }}
             </option>
-            <option :value="GiftCategories.FAMILY">Family</option>
-            <option :value="GiftCategories.IT">IT</option>
-            <option :value="GiftCategories.KIDS">Kids</option>
-            <option :value="GiftCategories.LUXURY">Luxury</option>
-            <option :value="GiftCategories.PETS">Pets</option>
           </select>
         </div>
 

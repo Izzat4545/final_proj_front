@@ -47,10 +47,7 @@ const handleReservation = async () => {
           class="btn btn-success text-white w-full flex justify-center items-center gap-2"
           :disabled="loading"
         >
-          <span
-            v-if="loading"
-            class="loading loading-spinner loading-sm"
-          ></span>
+          <span v-if="loading" class="loading loading-spinner loading-sm" />
           {{ loading ? "Creating..." : "Create reservation" }}
         </button>
       </form>

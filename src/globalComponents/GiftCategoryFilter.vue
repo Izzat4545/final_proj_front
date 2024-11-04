@@ -3,17 +3,27 @@ import { useRoute, useRouter } from "vue-router";
 import { GiftCategories } from "../enums/GiftCategories";
 import { useGiftsStore } from "../store/giftsStore";
 import { onMounted } from "vue";
+
 const route = useRoute();
 const router = useRouter();
 const DEFAULT_CATEGORY = "All";
 const props = defineProps<{ defaultRoute: "/events/" | "/gifts/" }>();
+
+const CATEGORIES = [
+  { label: DEFAULT_CATEGORY, value: DEFAULT_CATEGORY },
+  { label: "Family", value: GiftCategories.FAMILY },
+  { label: "IT", value: GiftCategories.IT },
+  { label: "Kids", value: GiftCategories.KIDS },
+  { label: "Luxury", value: GiftCategories.LUXURY },
+  { label: "Pets", value: GiftCategories.PETS },
+];
 
 const handleCategoryChange = async (event?: Event) => {
   const selectedCategory = event
     ? (event.target as HTMLSelectElement).value
     : route.query.category?.toString() || DEFAULT_CATEGORY;
 
-  if (!route.params.id) return; // Add this check to prevent execution if params.id is missing
+  if (!route.params.id) return;
 
   if (selectedCategory === DEFAULT_CATEGORY) {
     await router.push({ path: props.defaultRoute + route.params.id });
@@ -32,11 +42,8 @@ onMounted(async () => {
     await handleCategoryChange();
   }
 });
-
-onMounted(async () => {
-  await handleCategoryChange();
-});
 </script>
+
 <template>
   <select
     :class="route.params.id ? 'select-bordered' : 'select-disabled'"
@@ -44,43 +51,15 @@ onMounted(async () => {
     @change="handleCategoryChange"
   >
     <option
+      v-for="category in CATEGORIES"
+      :key="category.value"
       :selected="
-        route.query.category === undefined ||
-        route.query.category === DEFAULT_CATEGORY
+        route.query.category === category.value ||
+        (!route.query.category && category.value === DEFAULT_CATEGORY)
       "
-      :value="DEFAULT_CATEGORY"
+      :value="category.value"
     >
-      {{ DEFAULT_CATEGORY }}
-    </option>
-    <option
-      :selected="route.query.category === GiftCategories.FAMILY"
-      :value="GiftCategories.FAMILY"
-    >
-      Family
-    </option>
-    <option
-      :selected="route.query.category === GiftCategories.IT"
-      :value="GiftCategories.IT"
-    >
-      IT
-    </option>
-    <option
-      :selected="route.query.category === GiftCategories.KIDS"
-      :value="GiftCategories.KIDS"
-    >
-      Kids
-    </option>
-    <option
-      :selected="route.query.category === GiftCategories.LUXURY"
-      :value="GiftCategories.LUXURY"
-    >
-      Luxury
-    </option>
-    <option
-      :selected="route.query.category === GiftCategories.PETS"
-      :value="GiftCategories.PETS"
-    >
-      Pets
+      {{ category.label }}
     </option>
   </select>
 </template>
