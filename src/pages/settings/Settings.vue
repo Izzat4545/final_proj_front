@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { useSettings } from "../../store/settingsStore";
 import { Currencies } from "../../enums/Currencies";
 import { storeToRefs } from "pinia";
+import { CURRENCY_OPTIONS } from "../../constants/constants";
 
 const settingsStore = useSettings();
 
@@ -13,11 +14,6 @@ const newPassword = ref<string | undefined>();
 const newEmail = ref<string | undefined>();
 const newName = ref<string | undefined>();
 const currency = ref<Currencies | undefined>();
-const CURRENCY_OPTIONS = [
-  { label: Currencies.RUB, value: Currencies.RUB },
-  { label: Currencies.USD, value: Currencies.USD },
-  { label: Currencies.UZS, value: Currencies.UZS },
-];
 
 const handleUpdate = async () => {
   try {

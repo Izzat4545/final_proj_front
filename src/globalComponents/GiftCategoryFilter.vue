@@ -1,22 +1,13 @@
 <script lang="ts" setup>
 import { useRoute, useRouter } from "vue-router";
-import { GiftCategories } from "../enums/GiftCategories";
 import { useGiftsStore } from "../store/giftsStore";
 import { onMounted } from "vue";
+import { CATEGORIES } from "../constants/constants";
 
 const route = useRoute();
 const router = useRouter();
 const DEFAULT_CATEGORY = "All";
 const props = defineProps<{ defaultRoute: "/events/" | "/gifts/" }>();
-
-const CATEGORIES = [
-  { label: DEFAULT_CATEGORY, value: DEFAULT_CATEGORY },
-  { label: "Family", value: GiftCategories.FAMILY },
-  { label: "IT", value: GiftCategories.IT },
-  { label: "Kids", value: GiftCategories.KIDS },
-  { label: "Luxury", value: GiftCategories.LUXURY },
-  { label: "Pets", value: GiftCategories.PETS },
-];
 
 const handleCategoryChange = async (event?: Event) => {
   const selectedCategory = event

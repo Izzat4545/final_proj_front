@@ -6,7 +6,7 @@ import { useGiftsStore } from "../../../store/giftsStore";
 import { PopularGift } from "../../../types/pupularGifts";
 import { Currencies } from "../../../enums/Currencies";
 import { useRoute } from "vue-router";
-import { GiftCategories } from "../../../enums/GiftCategories";
+import { CATEGORIES, CURRENCY_OPTIONS } from "../../../constants/constants";
 
 const props = defineProps<{ gifts?: PopularGift }>();
 const giftStore = useGiftsStore();
@@ -21,21 +21,6 @@ const category = ref(props.gifts ? props.gifts?.category : DEFAULT_CATEGORY);
 const link = ref(props.gifts ? props.gifts?.link : "");
 const description = ref(props.gifts ? props.gifts.description : "");
 let image = ref<File | null>(null);
-
-const CURRENCY_OPTIONS = [
-  { label: Currencies.RUB, value: Currencies.RUB },
-  { label: Currencies.USD, value: Currencies.USD },
-  { label: Currencies.UZS, value: Currencies.UZS },
-];
-
-const CATEGORIES = [
-  { label: DEFAULT_CATEGORY, value: DEFAULT_CATEGORY },
-  { label: "Family", value: GiftCategories.FAMILY },
-  { label: "IT", value: GiftCategories.IT },
-  { label: "Kids", value: GiftCategories.KIDS },
-  { label: "Luxury", value: GiftCategories.LUXURY },
-  { label: "Pets", value: GiftCategories.PETS },
-];
 
 const handleFileChange = (e: Event) => {
   const files = (e.target as HTMLInputElement).files;
